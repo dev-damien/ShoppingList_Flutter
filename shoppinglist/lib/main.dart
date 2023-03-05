@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'MinimaList',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       home: const SignUpPage(),
     );
   }
