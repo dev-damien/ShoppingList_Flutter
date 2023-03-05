@@ -1,6 +1,8 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppinglist/application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/presentation/signup/widgets/signin_register_button.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -8,6 +10,9 @@ class SignUpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late String _email;
+    late String _password;
+
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     //just a very simple validation that checks for the basic structure of the provided mail
@@ -21,6 +26,7 @@ class SignUpForm extends StatelessWidget {
         return "Please enter email";
       }
       if (RegExp(emailRegex).hasMatch(input)) {
+        _email = input;
         return null;
       }
       return "Invalid email format";
@@ -33,89 +39,125 @@ class SignUpForm extends StatelessWidget {
       if (input.length < 6) {
         return "Password is too short";
       }
+      _password = input;
       return null;
     }
 
     final themeData = Theme.of(context);
 
-    return Form(
-      key: formKey,
-      child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        children: [
-          const SizedBox(
-            height: 80,
+    return BlocConsumer<SignUpFormBloc, SignUpFormState>(
+      listener: (context, state) {
+        // TODO: navigate to another page (homepage) if auth successfull
+        // TODO: show error message otherwise
+      },
+      builder: (context, state) {
+        return Form(
+          autovalidateMode: state.showValidationMessages
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
+          key: formKey,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: [
+              const SizedBox(
+                height: 80,
+              ),
+              Text(
+                "Welcome",
+                style: themeData.textTheme.displayLarge!.copyWith(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 4,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Please register or login",
+                style: themeData.textTheme.displayLarge!.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 4,
+                ),
+              ),
+              const SizedBox(
+                height: 80,
+              ),
+              TextFormField(
+                cursorColor: themeData.colorScheme.onPrimary,
+                decoration: const InputDecoration(labelText: "E-Mail"),
+                validator: validateEmail,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                cursorColor: themeData.colorScheme.onPrimary,
+                decoration: const InputDecoration(labelText: "Password"),
+                obscureText: true,
+                validator: validatePassword,
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SignInRegisterButton(
+                buttonText: "Sign In",
+                callback: () {
+                  if (formKey.currentState!.validate()) {
+                    BlocProvider.of<SignUpFormBloc>(context).add(
+                        SignInWithEmailAndPasswordPressed(
+                            email: _email, password: _password));
+                  } else {
+                    BlocProvider.of<SignUpFormBloc>(context).add(
+                        SignInWithEmailAndPasswordPressed(
+                            email: null, password: null));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Invalid input",
+                            style: themeData.textTheme.bodyLarge),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SignInRegisterButton(
+                buttonText: "Register",
+                callback: () {
+                  if (formKey.currentState!.validate()) {
+                    BlocProvider.of<SignUpFormBloc>(context).add(
+                        RegisterWithEmailAndPasswordPressed(
+                            email: _email, password: _password));
+                  } else {
+                    BlocProvider.of<SignUpFormBloc>(context).add(
+                        RegisterWithEmailAndPasswordPressed(
+                            email: null, password: null));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Invalid input",
+                            style: themeData.textTheme.bodyLarge),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    );
+                  }
+                },
+              ),
+              if (state.isSubmitting) ...[
+                const SizedBox(
+                  height: 10,
+                ),
+                LinearProgressIndicator(
+                  color: themeData.colorScheme.secondary,
+                )
+              ]
+            ],
           ),
-          Text(
-            "Welcome",
-            style: themeData.textTheme.displayLarge!.copyWith(
-              fontSize: 50,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 4,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Please register or login",
-            style: themeData.textTheme.displayLarge!.copyWith(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 4,
-            ),
-          ),
-          const SizedBox(
-            height: 80,
-          ),
-          TextFormField(
-            cursorColor: themeData.colorScheme.onPrimary,
-            decoration: const InputDecoration(labelText: "E-Mail"),
-            validator: validateEmail,
-            autovalidateMode: AutovalidateMode.disabled,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextFormField(
-            cursorColor: themeData.colorScheme.onPrimary,
-            decoration: const InputDecoration(labelText: "Password"),
-            obscureText: true,
-            validator: validatePassword,
-            autovalidateMode: AutovalidateMode.disabled,
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          SignInRegisterButton(
-            buttonText: "Sign In",
-            callback: () {
-              print("sign in clicked");
-              if (formKey.currentState!.validate()) {
-                print("validated");
-              } else {
-                print("unvalid");
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Invalid input",
-                        style: themeData.textTheme.bodyLarge),
-                    backgroundColor: Colors.redAccent,
-                  ),
-                );
-              }
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SignInRegisterButton(
-            buttonText: "Register",
-            callback: () {
-              print("register button clicked");
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/presentation/signup/signup_page.dart';
 import 'package:shoppinglist/theme.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runApp(const MyApp());
 }
 
