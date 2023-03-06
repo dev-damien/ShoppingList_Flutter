@@ -1,8 +1,9 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/application/auth/signupform/sign_up_form_bloc.dart';
+import 'package:shoppinglist/core/failures/auth_failures.dart';
+import 'package:shoppinglist/presentation/routes/router.gr.dart';
 import 'package:shoppinglist/presentation/signup/widgets/signin_register_button.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -43,12 +44,42 @@ class SignUpForm extends StatelessWidget {
       return null;
     }
 
+    String mapFailureMessage(AuthFailure auth_failure) {
+      switch (auth_failure.runtimeType) {
+        case ServerFailure:
+          return "Something went wrong";
+        case EmailAlreadyInUseFailure:
+          return "Email already in use";
+        case InvalidEmailAndPasswordCombinationFailure:
+          return "Invalid credentials";
+        default:
+          return "Something went wrong";
+      }
+    }
+
     final themeData = Theme.of(context);
 
     return BlocConsumer<SignUpFormBloc, SignUpFormState>(
       listener: (context, state) {
-        // TODO: navigate to another page (homepage) if auth successfull
-        // TODO: show error message otherwise
+        state.authFailureOrSuccessOption.fold(
+          () => {},
+          (eitherFailureOrSuccess) => eitherFailureOrSuccess.fold(
+            (failure) => {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(mapFailureMessage(failure),
+                      style: themeData.textTheme.bodyLarge),
+                  backgroundColor: Colors.redAccent,
+                ),
+              )
+            },
+            (success) => {
+              AutoRouter.of(context).push(
+                const HomePageRoute(),
+              )
+            },
+          ),
+        );
       },
       builder: (context, state) {
         return Form(
