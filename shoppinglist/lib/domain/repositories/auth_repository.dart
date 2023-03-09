@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-
-import '../../core/failures/auth_failures.dart';
+import 'package:shoppinglist/core/failures/auth_failures.dart';
+import 'package:shoppinglist/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword(
@@ -10,4 +10,6 @@ abstract class AuthRepository {
       {required String email, required String password});
 
   Future<void> signOut();
+
+  Option<CustomUser> getSignedInUser();
 }

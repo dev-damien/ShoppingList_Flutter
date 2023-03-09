@@ -15,5 +15,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthStateUnauthenticated());
       },
     );
+    on<AuthCheckRequestedEvent>(
+      (event, emit) async {
+        final userOption = authRepository.getSignedInUser();
+        userOption.fold(() => emit(AuthStateUnauthenticated()),
+            (a) => emit(AuthStateAuthenticated()));
+      },
+    );
   }
 }
