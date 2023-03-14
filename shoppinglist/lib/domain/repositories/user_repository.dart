@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shoppinglist/core/failures/user_failure.dart';
+import 'package:shoppinglist/core/failures/user_failures.dart';
 
 abstract class UserRepository {
   //todo might be useless

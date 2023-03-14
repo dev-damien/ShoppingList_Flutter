@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:shoppinglist/domain/entities/id.dart';
 import 'package:shoppinglist/domain/entities/item.dart';
 

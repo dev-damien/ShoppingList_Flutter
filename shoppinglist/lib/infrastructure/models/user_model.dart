@@ -66,7 +66,7 @@ class UserModel {
     List<String>? friendRequestsSent,
     List<String>? friends,
     List<ListPreviewModel>? listsPreview,
-    dynamic? serverTimestamp,
+    dynamic serverTimestamp,
   }) {
     return UserModel(
       id: id ?? this.id,

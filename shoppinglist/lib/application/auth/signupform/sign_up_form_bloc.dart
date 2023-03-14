@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 import 'package:shoppinglist/core/failures/auth_failures.dart';
 import 'package:shoppinglist/domain/repositories/auth_repository.dart';
 

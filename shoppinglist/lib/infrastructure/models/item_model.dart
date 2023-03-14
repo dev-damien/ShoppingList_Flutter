@@ -61,7 +61,7 @@ class ItemModel {
     String? addedTime,
     String? boughtBy,
     String? boughtTime,
-    dynamic? serverTimestamp,
+    dynamic serverTimestamp,
   }) {
     return ItemModel(
       id: id ?? this.id,

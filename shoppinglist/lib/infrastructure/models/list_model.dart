@@ -52,7 +52,7 @@ class ListModel {
     List<String>? members,
     String? imageId,
     List<ItemModel>? items,
-    dynamic? serverTimestamp,
+    dynamic serverTimestamp,
   }) {
     return ListModel(
       id: id ?? this.id,

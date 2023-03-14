@@ -7,7 +7,7 @@ class AppTheme {
   static final Color _lightPrimaryVariantColor = Colors.blueGrey.shade800;
   static final Color _lightOnPrimaryColor = Colors.blueGrey.shade200;
   static const Color _lightTextColorPrimary = Colors.black;
-  static final Color _appbarColorLight = Colors.blue;
+  static const Color _appbarColorLight = Colors.blue;
 
   static final Color _darkPrimaryColor = Colors.blueGrey.shade900;
   static const Color _darkPrimaryVariantColor = Colors.black;
