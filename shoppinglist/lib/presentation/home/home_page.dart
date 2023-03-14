@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/application/list_previews/observer/observer_bloc.dart';
 import 'package:shoppinglist/injection.dart';
+import 'package:shoppinglist/presentation/home/widgets/home_body.dart';
 import 'package:shoppinglist/presentation/routes/router.gr.dart';
 
 class HomePage extends StatelessWidget {
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget {
             ),
             title: const Text("Lists"),
           ),
-          body: const Placeholder(),
+          body: const HomeBody(),
         ),
       ),
     );
