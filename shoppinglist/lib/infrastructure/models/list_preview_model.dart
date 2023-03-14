@@ -27,7 +27,7 @@ class ListPreviewModel {
     return ListPreviewModel(
       id: "", //is set later because its not part of the map
       title: map['title'] as String,
-      imageId: map['imageId'] as String,
+      imageId: map['image_id'] as String,
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }

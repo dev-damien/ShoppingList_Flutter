@@ -13,7 +13,7 @@ extension FirestoreExt on FirebaseFirestore {
 }
 
 extension DocumentReferenceExt on DocumentReference {
-  CollectionReference<Map<String, dynamic>> get ListPreviewCollection =>
+  CollectionReference<Map<String, dynamic>> get listPreviewCollection =>
       collection("lists_preview");
 }
 
