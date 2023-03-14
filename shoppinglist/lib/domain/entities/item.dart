@@ -8,10 +8,10 @@ class Item {
   final String title;
   final int quantity;
   final bool isBought;
-  final UniqueID addedBy;
-  final Timestamp addedTime;
-  final UniqueID? boughtBy;
-  final Timestamp? boughtTime;
+  final String addedBy;
+  final String addedTime;
+  final String boughtBy;
+  final String boughtTime;
 
   Item(
       {required this.id,
@@ -29,10 +29,10 @@ class Item {
         title: "",
         quantity: 0,
         isBought: false,
-        addedBy: UniqueID(),
-        addedTime: Timestamp(0, 0),
-        boughtBy: null,
-        boughtTime: null);
+        addedBy: "",
+        addedTime: "",
+        boughtBy: "",
+        boughtTime: "");
   }
 
   Item copyWith({
@@ -40,10 +40,10 @@ class Item {
     String? title,
     int? quantity,
     bool? isBought,
-    UniqueID? addedBy,
-    Timestamp? addedTime,
-    UniqueID? boughtBy,
-    Timestamp? boughtTime,
+    String? addedBy,
+    String? addedTime,
+    String? boughtBy,
+    String? boughtTime,
   }) {
     return Item(
       id: id ?? this.id,

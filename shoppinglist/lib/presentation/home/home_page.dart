@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
               );
             },
           ),
-          title: const Text("Todo"),
+          title: const Text("Lists"),
         ),
         body: const Placeholder(),
       ),

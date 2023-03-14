@@ -6,8 +6,8 @@ import 'package:shoppinglist/domain/entities/item.dart';
 class ListData {
   final UniqueID id;
   final String title;
-  final List<UniqueID> members;
-  final UniqueID imageId; //todo: this might become another datatype
+  final List<String> members;
+  final String imageId; //todo: this might become another datatype
   final List<Item> items;
 
   ListData(
@@ -22,15 +22,15 @@ class ListData {
         id: UniqueID(),
         title: "",
         members: List.empty(),
-        imageId: UniqueID(),
+        imageId: "",
         items: List.empty());
   }
 
   ListData copyWith({
     UniqueID? id,
     String? title,
-    List<UniqueID>? members,
-    UniqueID? imageId,
+    List<String>? members,
+    String? imageId,
     List<Item>? items,
   }) {
     return ListData(

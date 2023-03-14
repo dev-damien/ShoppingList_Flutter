@@ -4,11 +4,11 @@ import 'package:shoppinglist/domain/entities/list_preview.dart';
 class UserData {
   final UniqueID id;
   final String name;
-  final UniqueID imageId; //todo: this might become another datatype
-  final List<UniqueID> favourites;
-  final List<UniqueID> friendRequests;
-  final List<UniqueID> friendRequestsSent;
-  final List<UniqueID> friends;
+  final String imageId; //todo: this might become another datatype
+  final List<String> favourites;
+  final List<String> friendRequests;
+  final List<String> friendRequestsSent;
+  final List<String> friends;
   final List<ListPreview> listsPreview;
 
   UserData(
@@ -26,21 +26,21 @@ class UserData {
         listsPreview: List.empty(),
         id: UniqueID(),
         name: "",
-        imageId: UniqueID(),
-        favourites: List.empty(),
-        friendRequests: List.empty(),
-        friendRequestsSent: List.empty(),
-        friends: List.empty());
+        imageId: "",
+        favourites: List<String>.empty(),
+        friendRequests: List<String>.empty(),
+        friendRequestsSent: List<String>.empty(),
+        friends: List<String>.empty());
   }
 
   UserData copyWith({
     UniqueID? id,
     String? name,
-    UniqueID? imageId,
-    List<UniqueID>? favourites,
-    List<UniqueID>? friendRequests,
-    List<UniqueID>? friendRequestsSent,
-    List<UniqueID>? friends,
+    String? imageId,
+    List<String>? favourites,
+    List<String>? friendRequests,
+    List<String>? friendRequestsSent,
+    List<String>? friends,
     List<ListPreview>? listsPreview,
   }) {
     return UserData(
