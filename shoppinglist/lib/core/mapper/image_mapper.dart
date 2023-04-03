@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ImageMapper {
-  final Map<String, Map<String, Icon>> string2iconTest = {
+
+  final Map<String, Map<String, Icon>> string2icon = {
     "square_list": {
       "light": const Icon(CupertinoIcons.square_list),
       "dark": const Icon(CupertinoIcons.square_list_fill)
@@ -95,8 +97,21 @@ class ImageMapper {
       "dark": const Icon(CupertinoIcons.stopwatch_fill)
     },
     "tickets": {
-      "light": const Icon(CupertinoIcons.ticket),
+      "light": const Icon(CupertinoIcons.tickets),
       "dark": const Icon(CupertinoIcons.tickets_fill)
     },
   };
+
+  Icon toIcon(String id, bool isDarkmode){
+      
+      return null
+  }
+
+    String toID(IconData id){
+      //TODO implement from icon to id
+      throw UnimplementedError();
+  }
+
+  Icon getIcon()
+
 }

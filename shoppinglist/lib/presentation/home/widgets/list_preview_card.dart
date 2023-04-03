@@ -17,14 +17,20 @@ class ListPreviewCard extends StatelessWidget {
     return Card(
       elevation: 16,
       color: themeData.colorScheme.onPrimary, //todo change color
+      margin: const EdgeInsets.only(top: 3, left: 2, right: 2),
       child: ListTile(
-        leading: const Icon(CupertinoIcons
-            .square_list), //todo set depending on selected image by user
+        leading: const Icon(
+          CupertinoIcons.square_list,
+          size: 40,
+        ), //todo set depending on selected image by user
         title: Text(
           listPreview.title,
-          style: themeData.textTheme.headlineLarge!
-              .copyWith(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+          style: themeData.textTheme.headlineLarge!.copyWith(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
         ),
+        trailing: listPreview.isFavorite
+            ? const Icon(CupertinoIcons.star)
+            : const Icon(CupertinoIcons.star_fill),
       ),
     );
   }

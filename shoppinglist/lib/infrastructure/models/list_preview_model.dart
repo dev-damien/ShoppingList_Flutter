@@ -6,12 +6,14 @@ class ListPreviewModel {
   final String id;
   final String title;
   final String imageId; //todo: this might become another datatype
+  final bool isFavorite;
   final dynamic serverTimestamp;
 
   ListPreviewModel(
       {required this.id,
       required this.title,
       required this.imageId,
+      required this.isFavorite,
       required this.serverTimestamp});
 
   Map<String, dynamic> toMap() {
@@ -19,6 +21,7 @@ class ListPreviewModel {
       'id': id,
       'title': title,
       'imageId': imageId,
+      'isFavorite': isFavorite,
       'serverTimestamp': serverTimestamp,
     };
   }
@@ -28,6 +31,7 @@ class ListPreviewModel {
       id: "", //is set later because its not part of the map
       title: map['title'] as String,
       imageId: map['image_id'] as String,
+      isFavorite: map['is_favorite'] as bool,
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
@@ -36,12 +40,14 @@ class ListPreviewModel {
     String? id,
     String? title,
     String? imageId,
+    bool? isFavorite,
     dynamic serverTimestamp,
   }) {
     return ListPreviewModel(
       id: id ?? this.id,
       title: title ?? this.title,
       imageId: imageId ?? this.imageId,
+      isFavorite: isFavorite ?? this.isFavorite,
       serverTimestamp: serverTimestamp ?? this.serverTimestamp,
     );
   }
@@ -53,10 +59,10 @@ class ListPreviewModel {
 
   ListPreview toDomain() {
     return ListPreview(
-      id: UniqueID.fromUniqueString(id),
-      title: title,
-      imageId: imageId,
-    );
+        id: UniqueID.fromUniqueString(id),
+        title: title,
+        imageId: imageId,
+        isFavorite: isFavorite);
   }
 
   factory ListPreviewModel.fromDomain(ListPreview listPreview) {
@@ -64,6 +70,7 @@ class ListPreviewModel {
         id: listPreview.id.value,
         title: listPreview.title,
         imageId: listPreview.imageId,
+        isFavorite: listPreview.isFavorite,
         serverTimestamp: FieldValue.serverTimestamp());
   }
 }

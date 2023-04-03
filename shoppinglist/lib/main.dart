@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/application/auth/authbloc/auth_bloc.dart';
@@ -20,6 +21,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //todo remove
+    print(CupertinoIcons.phone.hashCode);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
