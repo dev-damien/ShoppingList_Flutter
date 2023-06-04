@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
+import 'package:shoppinglist/presentation/routes/router.dart';
 import 'package:shoppinglist/presentation/routes/router.gr.dart' as r;
 import 'package:shoppinglist/theme.dart';
 
@@ -21,8 +22,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //todo remove
-    print(CupertinoIcons.phone.hashCode);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
