@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class ImageMapper {
   final Map<String, Map<String, Icon>> string2icon = {

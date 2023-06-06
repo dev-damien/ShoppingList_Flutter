@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/application/list_previews/observer/observer_bloc.dart';
-import 'package:shoppinglist/core/failures/auth_failures.dart';
 import 'package:shoppinglist/core/failures/list_preview_failures.dart';
 import 'package:shoppinglist/presentation/home/widgets/list_preview_card.dart';
 

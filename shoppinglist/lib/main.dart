@@ -1,11 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
-import 'package:shoppinglist/presentation/routes/router.dart';
 import 'package:shoppinglist/presentation/routes/router.gr.dart' as r;
 import 'package:shoppinglist/theme.dart';
 
