@@ -34,8 +34,8 @@ dependencies:
 
   # The following adds the CupertinoÜ Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  bloc: ^8.1.1
+  cupertino_icons: ^1.0.5
+  bloc: ^8.1.2
   flutter_bloc: ^8.1.2
   get_it: ^7.2.0
   firebase_auth: ^4.2.9
@@ -45,7 +45,7 @@ dependencies:
   auto_route: ^5.0.4
   auto_route_generator: ^5.0.3
   uuid: ^3.0.7
-  mockito: ^5.4.0
+  mockito: ^5.4.1
   equatable: ^2.0.5
   build_runner: ^2.3.3
 
