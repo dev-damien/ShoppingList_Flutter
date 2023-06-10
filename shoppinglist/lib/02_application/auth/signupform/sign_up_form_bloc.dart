@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
 import 'package:shoppinglist/core/failures/auth_failures.dart';
-import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 
 part 'sign_up_form_event.dart';
 part 'sign_up_form_state.dart';
 
 class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
-  final AuthRepository authRepository;
-  SignUpFormBloc({required this.authRepository})
+  final AuthUsecases authUsecases;
+  SignUpFormBloc({required this.authUsecases})
       : super(SignUpFormState(
             isSubmitting: false,
             showValidationMessages: false,
@@ -20,7 +20,7 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
       } else {
         emit(state.copyWith(isSubmitting: true, showValidationMessages: false));
         final failureOrSuccess =
-            await authRepository.registerWithEmailAndPassword(
+            await authUsecases.registerWithEmailAndPassword(
                 email: event.email!, password: event.password!);
         emit(state.copyWith(
             isSubmitting: false,
@@ -37,7 +37,7 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
           emit(state.copyWith(
               isSubmitting: true, showValidationMessages: false));
           final failureOrSuccess =
-              await authRepository.signInWithEmailAndPassword(
+              await authUsecases.signInWithEmailAndPassword(
                   email: event.email!, password: event.password!);
           emit(state.copyWith(
               isSubmitting: false,

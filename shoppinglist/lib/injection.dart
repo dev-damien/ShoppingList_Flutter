@@ -6,6 +6,7 @@ import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.da
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_preview_repository.dart';
+import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/auth_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
 
@@ -14,8 +15,12 @@ final sl = GetIt.I; //service locator
 Future<void> init() async {
   //? ################# auth ####################
   //! state management
-  sl.registerFactory(() => SignUpFormBloc(authRepository: sl()));
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
+  sl.registerFactory(() => SignUpFormBloc(authUsecases: sl()));
+  sl.registerFactory(() => AuthBloc(authUsecases: sl()));
+
+  //! usecases
+  sl.registerLazySingleton<AuthUsecases>(
+      () => AuthUsecases(authRepository: sl()));
 
   //! repos
   sl.registerLazySingleton<AuthRepository>(
