@@ -7,6 +7,7 @@ import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_preview_repository.dart';
 import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/list_preview_usecases.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/auth_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
 
@@ -21,6 +22,8 @@ Future<void> init() async {
   //! usecases
   sl.registerLazySingleton<AuthUsecases>(
       () => AuthUsecases(authRepository: sl()));
+  sl.registerLazySingleton(
+      () => ListPreviewUsecases(listPreviewRepository: sl()));
 
   //! repos
   sl.registerLazySingleton<AuthRepository>(
@@ -30,10 +33,10 @@ Future<void> init() async {
   final firebaseAuth = FirebaseAuth.instance;
   sl.registerLazySingleton(() => firebaseAuth);
 
-  //? ################# lists ####################
+  //? ################ lists ###############################################################################
 
   //! state management
-  sl.registerFactory(() => ObserverBloc(listPreviewRepository: sl()));
+  sl.registerFactory(() => ObserverBloc(listPreviewUsecases: sl()));
 
   //! repos
   sl.registerLazySingleton<ListPreviewRepository>(
