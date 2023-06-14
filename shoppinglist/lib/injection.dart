@@ -22,8 +22,6 @@ Future<void> init() async {
   //! usecases
   sl.registerLazySingleton<AuthUsecases>(
       () => AuthUsecases(authRepository: sl()));
-  sl.registerLazySingleton(
-      () => ListPreviewUsecases(listPreviewRepository: sl()));
 
   //! repos
   sl.registerLazySingleton<AuthRepository>(
@@ -37,6 +35,10 @@ Future<void> init() async {
 
   //! state management
   sl.registerFactory(() => ObserverBloc(listPreviewUsecases: sl()));
+
+  //! usecases
+  sl.registerLazySingleton(
+      () => ListPreviewUsecases(listPreviewRepository: sl()));
 
   //! repos
   sl.registerLazySingleton<ListPreviewRepository>(
