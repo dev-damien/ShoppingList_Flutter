@@ -34,11 +34,6 @@ void main() {
       Right([listPreview])
     ]);
 
-    final Stream<Either<ListPreviewFailure, List<ListPreview>>>
-        listPreviewStream_insufficientPermissions =
-        Stream<Either<ListPreviewFailure, List<ListPreview>>>.fromIterable(
-            [Left(InsufficientPermissions())]);
-
     test("should return the same listPreview as repo", () {
       //* arrange
       when(mockListPreviewRepository.watchAll())
@@ -61,7 +56,13 @@ void main() {
       });
     });
 
-    test("should return the same failure as repo", () {
+    final Stream<Either<ListPreviewFailure, List<ListPreview>>>
+        listPreviewStream_insufficientPermissions =
+        Stream<Either<ListPreviewFailure, List<ListPreview>>>.fromIterable(
+            [Left(InsufficientPermissions())]);
+
+    test("should return the same failure as repo (InsufficientPermissions)",
+        () {
       //* arrange
       when(mockListPreviewRepository.watchAll())
           .thenAnswer((_) => listPreviewStream_insufficientPermissions);
@@ -74,6 +75,59 @@ void main() {
         expect(element.isLeft(), true);
 
         element.fold((failure) => expect(failure, InsufficientPermissions()),
+            (value) => expect(1, 2));
+
+        // verify that method is called
+        verify(mockListPreviewRepository.watchAll());
+        // verify that class is called only used once
+        verifyNoMoreInteractions(mockListPreviewRepository);
+      });
+    });
+
+
+    final Stream<Either<ListPreviewFailure, List<ListPreview>>>
+        listPreviewStream_unexpectedFailure =
+        Stream<Either<ListPreviewFailure, List<ListPreview>>>.fromIterable(
+            [Left(UnexpectedFailure())]);
+    test("should return the same failure as repo (UnexpectedFailure)", () {
+      //* arrange
+      when(mockListPreviewRepository.watchAll())
+          .thenAnswer((_) => listPreviewStream_unexpectedFailure);
+
+      //* act
+      final result = mockListPreviewRepository.watchAll();
+
+      //* assert
+      result.listen((element) {
+        expect(element.isLeft(), true);
+
+        element.fold((failure) => expect(failure, UnexpectedFailure()),
+            (value) => expect(1, 2));
+
+        // verify that method is called
+        verify(mockListPreviewRepository.watchAll());
+        // verify that class is called only used once
+        verifyNoMoreInteractions(mockListPreviewRepository);
+      });
+    });
+
+    final Stream<Either<ListPreviewFailure, List<ListPreview>>>
+        listPreviewStream_unexpectedFailureFirebase =
+        Stream<Either<ListPreviewFailure, List<ListPreview>>>.fromIterable(
+            [Left(UnexpectedFailureFirebase())]);
+    test("should return the same failure as repo (UnexpectedFailureFirebase)", () {
+      //* arrange
+      when(mockListPreviewRepository.watchAll())
+          .thenAnswer((_) => listPreviewStream_unexpectedFailureFirebase);
+
+      //* act
+      final result = mockListPreviewRepository.watchAll();
+
+      //* assert
+      result.listen((element) {
+        expect(element.isLeft(), true);
+
+        element.fold((failure) => expect(failure, UnexpectedFailureFirebase()),
             (value) => expect(1, 2));
 
         // verify that method is called
