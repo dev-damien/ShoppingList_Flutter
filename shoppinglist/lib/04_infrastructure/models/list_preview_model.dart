@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
 import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 
-class ListPreviewModel {
+class ListPreviewModel with EquatableMixin{
   final String id;
   final String title;
   final String imageId; //todo: this might become another datatype
@@ -73,4 +74,7 @@ class ListPreviewModel {
         isFavorite: listPreview.isFavorite,
         serverTimestamp: FieldValue.serverTimestamp());
   }
+  
+  @override
+  List<Object?> get props => [id, title, imageId, isFavorite];
 }
