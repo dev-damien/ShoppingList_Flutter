@@ -16,13 +16,14 @@ class ListPreviewCard extends StatelessWidget {
     final themeData = Theme.of(context);
     return Card(
       elevation: 16,
-      color: themeData.colorScheme.onPrimary, //todo change color
+      color: themeData.colorScheme.onPrimary, //TODO change color
       margin: const EdgeInsets.only(top: 3, left: 2, right: 2),
-      child: ListTile(
+      child: CupertinoListTile(
+        backgroundColor: themeData.colorScheme.onBackground,
         leading: const Icon(
           CupertinoIcons.square_list,
           size: 40,
-        ), //todo set depending on selected image by user
+        ), //TODO set depending on selected image by user
         title: Text(
           listPreview.title,
           style: themeData.textTheme.headlineLarge!.copyWith(
