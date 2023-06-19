@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/04_infrastructure/local/theme_local_storage.dart';
 
 class ImageMapper {
+
+  final ThemeLocalDatasource themeLocalDatasource;
+
+  ImageMapper({required this.themeLocalDatasource});
+
   final Map<String, Map<String, Icon>> string2icon = {
     "square_list": {
       "light": const Icon(CupertinoIcons.square_list),
@@ -100,16 +106,16 @@ class ImageMapper {
     },
   };
 
-  Icon toIcon(String id, bool isDarkmode) {
-    throw UnimplementedError();
+  Future<Icon> toIcon(String id) async{
+    final theme = await themeLocalDatasource.getCachedThemeData();
+    final icon = string2icon[id]?[theme];
+    if (icon!=null) return icon;
+    return string2icon["square_list"]![theme]!;
   }
 
   String toID(IconData id) {
-    //TODO implement from icon to id
+    //TODO implement from icon to id (might not be neccessary)
     throw UnimplementedError();
   }
 
-  Icon getIcon() {
-    throw UnimplementedError();
-  }
 }
