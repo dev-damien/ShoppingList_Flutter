@@ -68,11 +68,11 @@ class SignUpForm extends StatelessWidget {
               showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                  title: Text('Error'),
+                  title: const Text('Error'),
                   content: Text(mapFailureMessage(failure)),
                   actions: [
                     CupertinoDialogAction(
-                      child: Text('OK'),
+                      child: const Text('OK'),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -166,11 +166,11 @@ class SignUpForm extends StatelessWidget {
                     showCupertinoDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
-                        title: Text('Error'),
-                        content: Text('Invalid input'),
+                        title: const Text('Error'),
+                        content: const Text('Invalid input'),
                         actions: [
                           CupertinoDialogAction(
-                            child: Text('OK'),
+                            child: const Text('OK'),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ],
@@ -202,11 +202,11 @@ class SignUpForm extends StatelessWidget {
                     showCupertinoDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
-                        title: Text('Error'),
-                        content: Text('Invalid input'),
+                        title: const Text('Error'),
+                        content: const Text('Invalid input'),
                         actions: [
                           CupertinoDialogAction(
-                            child: Text('OK'),
+                            child: const Text('OK'),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/home/home_page.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_body.dart';
@@ -96,7 +97,7 @@ class SettingsBody extends StatelessWidget {
                   leading: const SizedBox(
                     width: double.infinity,
                     height: double.infinity,
-                    child: Icon(CupertinoIcons.lock), //todo set better icon
+                    child: Icon(CupertinoIcons.mail),
                   ),
                   onTap: () => {
                     //todo reset password with mail
@@ -108,7 +109,7 @@ class SettingsBody extends StatelessWidget {
                   leading: const SizedBox(
                     width: double.infinity,
                     height: double.infinity,
-                    child: Icon(CupertinoIcons.tornado), //todo set better icon
+                    child: Icon(Icons.exit_to_app),
                   ),
                   onTap: () => {
                     BlocProvider.of<AuthBloc>(context)
