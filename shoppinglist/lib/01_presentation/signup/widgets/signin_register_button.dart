@@ -10,22 +10,24 @@ class SignInRegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
 
-    return InkResponse(
-      onTap: () => callback(),
-      child: Container(
-        height: 40,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: themeData.colorScheme.secondary,
-            borderRadius: BorderRadius.circular(8)),
-        child: Center(
-          child: Text(
-            buttonText,
-            style: themeData.textTheme.headlineLarge!.copyWith(
-                fontSize: 14,
-                color: themeData.colorScheme.onSecondary,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 4),
+    return Material(
+      child: InkResponse(
+        onTap: () => callback(),
+        child: Container(
+          height: 40,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: themeData.colorScheme.secondary,
+              borderRadius: BorderRadius.circular(8)),
+          child: Center(
+            child: Text(
+              buttonText,
+              style: themeData.textTheme.headlineLarge!.copyWith(
+                  fontSize: 14,
+                  color: themeData.colorScheme.onSecondary,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 4),
+            ),
           ),
         ),
       ),

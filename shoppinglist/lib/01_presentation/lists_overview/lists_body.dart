@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
@@ -38,10 +39,8 @@ class ListsBody extends StatelessWidget {
             return Container();
           }
           if (state is ObserverLoading) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: themeData.colorScheme.secondary,
-              ),
+            return const Center(
+              child: CupertinoActivityIndicator(),
             );
           }
           if (state is ObserverFailure) {
@@ -52,14 +51,16 @@ class ListsBody extends StatelessWidget {
             );
           }
           if (state is ObserverSuccess) {
-            return ListView.builder(
-              itemCount: state.listPreviews.length,
-              itemBuilder: (context, index) {
-                final listPreview = state.listPreviews[index];
-                return ListPreviewCard(
-                  listPreview: listPreview,
-                );
-              },
+            return CupertinoListSection(
+              children: List.generate(
+                state.listPreviews.length,
+                (index) {
+                  final listPreview = state.listPreviews[index];
+                  return ListPreviewCard(
+                    listPreview: listPreview,
+                  );
+                },
+              ),
             );
           }
           return Container();

@@ -5,16 +5,6 @@ class FriendsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        border: Border.all(
-          color: Colors.red,
-          width: 2,
-        ),
-      ),
-    );
+    return const Placeholder();
   }
 }
