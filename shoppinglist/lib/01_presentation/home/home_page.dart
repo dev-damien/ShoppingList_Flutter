@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shoppinglist/01_presentation/friends/friends_body.dart';
-import 'package:shoppinglist/01_presentation/settings/settings_body.dart';
+import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
+import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_body.dart';
 
 class HomePage extends StatelessWidget {
@@ -39,21 +39,14 @@ class HomePage extends StatelessWidget {
                   ),
                 );
               case 1:
+                return const FriendsBody();
+              case 2:
                 return const CupertinoPageScaffold(
                   navigationBar: CupertinoNavigationBar(
-                    middle: Text('Friends'),
-                  ),
-                  child: SafeArea(
-                    child: FriendsBody(),
-                  ),
-                );
-              case 2:
-                return CupertinoPageScaffold(
-                  navigationBar: const CupertinoNavigationBar(
                     middle: Text('Settings'),
                   ),
                   child: SafeArea(
-                    child: SettingsBody(),
+                    child: SettingsPage(),
                   ),
                 );
               default:
