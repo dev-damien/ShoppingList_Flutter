@@ -27,6 +27,7 @@ class AlertDialogLogout extends StatelessWidget {
             isDestructiveAction: true,
             onPressed: () {
               Navigator.pop(context);
+              
             },
             child: const Text('Yes'),
           ),

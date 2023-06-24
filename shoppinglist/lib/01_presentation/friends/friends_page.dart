@@ -6,41 +6,52 @@ class FriendsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      // A list of sliver widgets.
-      slivers: <Widget>[
-        const CupertinoSliverNavigationBar(
-          leading: Icon(CupertinoIcons.person_2),
-          // This title is visible in both collapsed and expanded states.
-          // When the "middle" parameter is omitted, the widget provided
-          // in the "largeTitle" parameter is used instead in the collapsed state.
-          largeTitle: Text('Friends'),
-          trailing: Icon(CupertinoIcons.add_circled),
-        ),
-        // This widget fills the remaining space in the viewport.
-        // Drag the scrollable area to collapse the CupertinoSliverNavigationBar.
-        SliverFillRemaining(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              const Text('Drag me up', textAlign: TextAlign.center),
-              CupertinoButton.filled(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<Widget>(
-                      builder: (BuildContext context) {
-                        return const FriendRequestsPage();
-                      },
-                    ),
-                  );
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text("Friends"),
+        trailing: Icon(CupertinoIcons.person_add),
+      ),
+      child: SafeArea(
+        //todo UI finetuning: maybe use .filled for normal button. depends on final design decisions
+        child: CupertinoButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute<Widget>(
+                builder: (BuildContext context) {
+                  return const FriendRequestsPage();
                 },
-                child: const Text('Go to Next Page'),
               ),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Friend Requests'),
+              const SizedBox(
+                width: 10,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: CupertinoColors
+                      .lightBackgroundGray, // Set the desired background color
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Set the desired corner radius
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                child: const Text(
+                  '3', //todo set the real amount of requests
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

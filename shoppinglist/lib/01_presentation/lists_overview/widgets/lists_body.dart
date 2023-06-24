@@ -24,7 +24,6 @@ class ListsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     final observerBloc = sl<ObserverBloc>()..add(ObserveAllEvent());
 
     return MultiBlocProvider(

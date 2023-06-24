@@ -15,13 +15,12 @@ class ListPreviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile.notched(
-      leading: const Align(
-        alignment: Alignment.centerLeft,
-        child: Icon(
-          CupertinoIcons.square_list,
-          size: 40,
-        ),
-      ), //TODO set depending on selected image by user
+      leading: const SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Icon(CupertinoIcons.list_bullet),
+        //TODO set depending on selected image by user
+      ),
       title: Text(
         listPreview.title,
       ),

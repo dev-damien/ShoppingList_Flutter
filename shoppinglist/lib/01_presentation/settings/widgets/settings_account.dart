@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoppinglist/01_presentation/lists_overview/lists_body.dart';
+import 'package:shoppinglist/01_presentation/lists_overview/widgets/lists_body.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 
 class SettingsAccount extends StatelessWidget {

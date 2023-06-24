@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
+import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
-import 'package:shoppinglist/01_presentation/lists_overview/lists_body.dart';
+import 'package:shoppinglist/01_presentation/lists_overview/widgets/lists_body.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -30,14 +31,7 @@ class HomePage extends StatelessWidget {
           builder: (BuildContext context) {
             switch (index) {
               case 0:
-                return const CupertinoPageScaffold(
-                  navigationBar: CupertinoNavigationBar(
-                    middle: Text('Lists'),
-                  ),
-                  child: SafeArea(
-                    child: ListsBody(),
-                  ),
-                );
+                return const ListsOverviewPage();
               case 1:
                 return const FriendsBody();
               case 2:
