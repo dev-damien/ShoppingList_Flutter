@@ -91,11 +91,6 @@ class UserModel {
     for (ListPreviewModel listPreview in listsPreview) {
       listsPreviewDomain.add(listPreview.toDomain());
     }
-    List<ListPreview> listsPreviewDomain2 =
-        (listsPreview.map<ListPreview>((e) => e.toDomain())).toList();
-    print(listsPreviewDomain);
-    print("--------------------------------------");
-    print(listsPreviewDomain2);
     return UserData(
         listsPreview: listsPreviewDomain,
         id: UniqueID.fromUniqueString(id),
