@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shoppinglist/01_presentation/friends/widgets/friend_requests_body.dart';
+import 'friend_requests_page.dart';
 
 class FriendsBody extends StatelessWidget {
   const FriendsBody({super.key});

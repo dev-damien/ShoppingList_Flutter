@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class FriendRequestsPage extends StatelessWidget {
-  const FriendRequestsPage({super.key});
+class FriendRequestsBody extends StatelessWidget {
+  const FriendRequestsBody({super.key});
 
   @override
   Widget build(BuildContext context) {
