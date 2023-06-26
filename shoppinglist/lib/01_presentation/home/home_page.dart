@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
               case 0:
                 return const ListsOverviewPage();
               case 1:
-                return const FriendsBody();
+                return const FriendsPage();
               case 2:
                 return const CupertinoPageScaffold(
                   navigationBar: CupertinoNavigationBar(
