@@ -1,7 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 
 class ListPreviewCard extends StatelessWidget {
