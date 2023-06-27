@@ -7,7 +7,7 @@ class FriendsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.secondarySystemBackground,
+      //backgroundColor: CupertinoColors.secondarySystemBackground,
       navigationBar: CupertinoNavigationBar(
         middle: Text("Friends"),
         trailing: Icon(CupertinoIcons.person_add),

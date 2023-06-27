@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/01_presentation/friends/widgets/friends_list.dart';
 import 'package:shoppinglist/01_presentation/friends/widgets/friends_requests_button.dart.dart';
 
 class FriendsBody extends StatelessWidget {
@@ -6,10 +7,16 @@ class FriendsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
         FriendsRequestsButton(),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+          ),
+          child: FriendsList(),
+        ),
       ],
     );
   }
