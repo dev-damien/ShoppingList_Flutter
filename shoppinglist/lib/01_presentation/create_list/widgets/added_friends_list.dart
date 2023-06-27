@@ -68,7 +68,7 @@ class AddedFriendsList extends StatelessWidget {
             thumbVisibility: true,
             child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
-              child: CupertinoListSection(
+              child: CupertinoListSection.insetGrouped(
                 topMargin: 0,
                 margin: EdgeInsets.all(0),
                 children: List.generate(
