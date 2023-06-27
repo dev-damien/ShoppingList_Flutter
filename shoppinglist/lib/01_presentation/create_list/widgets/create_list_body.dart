@@ -18,7 +18,9 @@ class CreateListBody extends StatelessWidget {
               width: 35,
             ),
             Padding(
-              padding: EdgeInsets.only(top: 15, bottom: 20),
+              padding: EdgeInsets.only(
+                top: 25,
+              ),
               child: SelectedIcon(),
             ),
             Padding(
@@ -32,6 +34,16 @@ class CreateListBody extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        CupertinoButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(CupertinoIcons.pen),
+              Text("Change list image"),
+            ],
+          ),
+          onPressed: () {},
         ),
         Padding(
           padding: EdgeInsets.only(left: 15, right: 15),

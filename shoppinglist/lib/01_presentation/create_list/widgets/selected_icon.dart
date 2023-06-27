@@ -8,7 +8,7 @@ class SelectedIcon extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         border: Border.fromBorderSide(
-          BorderSide(color: CupertinoColors.activeBlue, width: 3),
+          BorderSide(color: CupertinoColors.systemGrey, width: 3),
         ),
         borderRadius: BorderRadius.all(
           Radius.circular(5),
