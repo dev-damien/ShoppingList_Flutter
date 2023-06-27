@@ -6,14 +6,16 @@ class FriendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      //backgroundColor: CupertinoColors.secondarySystemBackground,
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+    return CupertinoPageScaffold(
+      backgroundColor:
+          !isDark ? CupertinoColors.secondarySystemBackground : null,
       navigationBar: CupertinoNavigationBar(
         middle: Text("Friends"),
         trailing: Icon(CupertinoIcons.person_add),
       ),
       child: SafeArea(
-        //todo UI finetuning: maybe use .filled for normal button. depends on final design decisions
         child: FriendsBody(),
       ),
     );
