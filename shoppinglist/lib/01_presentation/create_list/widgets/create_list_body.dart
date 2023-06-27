@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/01_presentation/create_list/widgets/added_friends_list.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/selected_icon.dart';
+import 'package:shoppinglist/01_presentation/util/number_notification.dart';
 
 class CreateListBody extends StatelessWidget {
   const CreateListBody({super.key});
@@ -67,11 +69,8 @@ class CreateListBody extends StatelessWidget {
         ),
         //TODO if friends added, display here in scrollable list
         Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: Container(
-            height: 250,
-            child: Placeholder(),
-          ),
+          padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
+          child: AddedFriendsList(),
         ),
         SizedBox(
           height: 30,
