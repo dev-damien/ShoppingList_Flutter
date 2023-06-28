@@ -6,7 +6,7 @@ class NumberNotification extends StatelessWidget {
 
   const NumberNotification(
       {super.key,
-      this.backgroundColor = CupertinoColors.lightBackgroundGray,
+      this.backgroundColor = CupertinoColors.systemGrey,
       required this.number});
 
   @override
@@ -19,8 +19,9 @@ class NumberNotification extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: Text(
-        number.toString(), //todo set the real amount of requests
+        number.toString(),
         style: const TextStyle(
+          color: CupertinoColors.separator,
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),

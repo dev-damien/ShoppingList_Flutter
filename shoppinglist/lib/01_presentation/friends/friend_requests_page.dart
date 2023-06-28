@@ -10,6 +10,7 @@ class FriendRequestsPage extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         leading: CupertinoNavigationBarBackButton(
           onPressed: () => Navigator.pop(context),
+          previousPageTitle: 'Friends',
         ),
         middle: const Text('Friend requests'),
       ),
