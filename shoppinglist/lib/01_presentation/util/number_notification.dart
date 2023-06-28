@@ -21,7 +21,7 @@ class NumberNotification extends StatelessWidget {
       child: Text(
         number.toString(),
         style: const TextStyle(
-          color: CupertinoColors.separator,
+          color: CupertinoColors.white,
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),
