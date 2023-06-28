@@ -71,7 +71,11 @@ class ListDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     return CupertinoPageScaffold(
+      backgroundColor:
+          !isDark ? CupertinoColors.secondarySystemBackground : null,
       navigationBar: CupertinoNavigationBar(
         leading: CupertinoNavigationBarBackButton(
           onPressed: () => Navigator.pop(context),
@@ -87,7 +91,9 @@ class ListDetailPage extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        child: ListDetailBody(listData: listData,),
+        child: ListDetailBody(
+          listData: listData,
+        ),
       ),
     );
   }
