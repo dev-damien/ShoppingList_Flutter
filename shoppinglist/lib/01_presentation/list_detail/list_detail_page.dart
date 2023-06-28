@@ -6,7 +6,7 @@ import 'package:shoppinglist/03_domain/entities/list.dart';
 
 class ListDetailPage extends StatelessWidget {
   UniqueID listId;
-  ListData list = ListData(
+  ListData listData = ListData(
     id: UniqueID.fromUniqueString("uniqueID"),
     title: "Vietnam",
     members: [],
@@ -78,9 +78,16 @@ class ListDetailPage extends StatelessWidget {
           previousPageTitle: 'Lists',
         ),
         middle: Text(listId.value),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Icon(CupertinoIcons.ellipsis),
+          onPressed: () {
+            //TODO implement options for list (edit, leave, delete)
+          },
+        ),
       ),
       child: SafeArea(
-        child: ListDetailBody(),
+        child: ListDetailBody(listData: listData,),
       ),
     );
   }

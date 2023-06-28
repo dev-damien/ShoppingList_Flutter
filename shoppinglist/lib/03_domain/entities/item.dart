@@ -1,6 +1,7 @@
 import 'package:shoppinglist/03_domain/entities/id.dart';
 
 class Item {
+  /// unique id of the item
   final UniqueID id;
   final String title;
   final int quantity;
