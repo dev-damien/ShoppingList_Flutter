@@ -15,17 +15,17 @@ class ListDetailPage extends StatelessWidget {
       [
         Item(
           id: UniqueID.fromUniqueString("uniqueIDItem"),
-          title: "item1",
+          title: "Bananen klein",
           quantity: 1,
           isBought: false,
-          addedBy: "addedBy",
-          addedTime: "addedTime",
-          boughtBy: "boughtBy",
-          boughtTime: "boughtTime",
+          addedBy: "Damien",
+          addedTime: "01.02.2019",
+          boughtBy: "Andrea",
+          boughtTime: "12.12.2019",
         ),
         Item(
           id: UniqueID.fromUniqueString("uniqueIDItem"),
-          title: "item2",
+          title: "Schokolade zartbitter 90% von lindt",
           quantity: 42,
           isBought: true,
           addedBy: "addedBy",
@@ -36,7 +36,7 @@ class ListDetailPage extends StatelessWidget {
         Item(
           id: UniqueID.fromUniqueString("uniqueIDItem"),
           title: "item1",
-          quantity: 1,
+          quantity: 123,
           isBought: false,
           addedBy: "addedBy",
           addedTime: "addedTime",

@@ -85,14 +85,23 @@ class ItemCard extends StatelessWidget {
           leading: SizedBox(
             width: double.infinity,
             height: double.infinity,
-            //TODO set selected icon of friend
-            child: Text(item.quantity.toString()),
+            child: Center(
+              child: Text(
+                item.quantity.toString(),
+              ),
+            ),
           ),
           title: Text(
             item.title,
           ),
-          subtitle: Text("Subtitle"),
-          additionalInfo: Text("additional info"),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('by ' + item.addedBy),
+              Text(item.addedTime),
+            ],
+          ),
+          //additionalInfo: Text(item.addedBy),
           trailing: CupertinoButton(
             child: Icon(
               CupertinoIcons.ellipsis,
