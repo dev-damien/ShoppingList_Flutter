@@ -50,6 +50,7 @@ class ListsBody extends StatelessWidget {
           }
           if (state is ObserverSuccess) {
             return CupertinoListSection(
+              topMargin: 0,
               children: List.generate(
                 state.listPreviews.length,
                 (index) {
