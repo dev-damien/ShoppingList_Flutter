@@ -11,11 +11,24 @@ class ListDetailBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        top: 20,
         left: 15,
         right: 15,
       ),
-      child: ItemsList(items: listData.items,),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            ItemsList(
+              items: listData.items,
+            ),
+            SizedBox(
+              height: 50,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
