@@ -9,7 +9,7 @@ class ItemsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoListSection.insetGrouped(
+    return CupertinoListSection(
       topMargin: 0,
       margin: EdgeInsets.all(0),
       children: List.generate(

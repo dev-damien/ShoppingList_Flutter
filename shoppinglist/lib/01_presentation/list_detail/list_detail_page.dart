@@ -66,7 +66,7 @@ class ListDetailPage extends StatelessWidget {
           boughtBy: 'boughtBy',
           boughtTime: 'boughtTime',
         ),
-         Item(
+        Item(
           id: UniqueID.fromUniqueString('uniqueIDItem'),
           title: 'Bananen klein',
           quantity: 1,
@@ -116,7 +116,7 @@ class ListDetailPage extends StatelessWidget {
           boughtBy: 'boughtBy',
           boughtTime: 'boughtTime',
         ),
-         Item(
+        Item(
           id: UniqueID.fromUniqueString('uniqueIDItem'),
           title: 'Bananen klein',
           quantity: 1,
@@ -166,7 +166,7 @@ class ListDetailPage extends StatelessWidget {
           boughtBy: 'boughtBy',
           boughtTime: 'boughtTime',
         ),
-         Item(
+        Item(
           id: UniqueID.fromUniqueString('uniqueIDItem'),
           title: 'Bananen klein',
           quantity: 1,
@@ -234,13 +234,26 @@ class ListDetailPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           previousPageTitle: 'Lists',
         ),
-        middle: Text(listId.value),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Icon(CupertinoIcons.ellipsis),
-          onPressed: () {
-            //TODO implement options for list (edit, leave, delete)
-          },
+        middle: Text(listData.title, overflow: TextOverflow.ellipsis, maxLines: 2,),
+        trailing: FittedBox(
+          child: Row(
+            children: [
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                child: Icon(CupertinoIcons.add),
+                onPressed: () {
+                  //TODO implement add new items, switch to add items mode and add done button in right corner
+                },
+              ),
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                child: Icon(CupertinoIcons.ellipsis),
+                onPressed: () {
+                  //TODO implement options for list (edit, leave, delete)
+                },
+              ),
+            ],
+          ),
         ),
       ),
       child: SafeArea(
