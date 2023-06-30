@@ -13,7 +13,7 @@ class FriendRequestsList extends StatelessWidget {
       child: CupertinoScrollbar(
         child: SingleChildScrollView(
           physics: ScrollPhysics(),
-          child: CupertinoListSection.insetGrouped(
+          child: CupertinoListSection(
             topMargin: 0,
             margin: EdgeInsets.all(0),
             children: List.generate(
