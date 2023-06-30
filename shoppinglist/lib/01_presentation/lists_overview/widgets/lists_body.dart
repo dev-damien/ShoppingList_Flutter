@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppinglist/01_presentation/lists_overview/widgets/lists_list.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
 import 'package:shoppinglist/core/failures/list_preview_failures.dart';
-import 'package:shoppinglist/01_presentation/lists_overview/widgets/list_preview_card.dart';
 import 'package:shoppinglist/injection.dart';
 
 class ListsBody extends StatelessWidget {
@@ -49,18 +49,7 @@ class ListsBody extends StatelessWidget {
             );
           }
           if (state is ObserverSuccess) {
-            return CupertinoListSection(
-              topMargin: 0,
-              children: List.generate(
-                state.listPreviews.length,
-                (index) {
-                  final listPreview = state.listPreviews[index];
-                  return ListPreviewCard(
-                    listPreview: listPreview,
-                  );
-                },
-              ),
-            );
+            return ListsList(listPreviews: state.listPreviews);
           }
           return Container();
         },
