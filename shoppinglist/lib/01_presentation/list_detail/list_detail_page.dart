@@ -234,7 +234,11 @@ class ListDetailPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           previousPageTitle: 'Lists',
         ),
-        middle: Text(listData.title, overflow: TextOverflow.ellipsis, maxLines: 2,),
+        middle: Text(
+          listData.title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ),
         trailing: FittedBox(
           child: Row(
             children: [
@@ -243,6 +247,7 @@ class ListDetailPage extends StatelessWidget {
                 child: Icon(CupertinoIcons.add),
                 onPressed: () {
                   //TODO implement add new items, switch to add items mode and add done button in right corner
+                  print("switch to addItems mode");
                 },
               ),
               CupertinoButton(
@@ -250,6 +255,7 @@ class ListDetailPage extends StatelessWidget {
                 child: Icon(CupertinoIcons.ellipsis),
                 onPressed: () {
                   //TODO implement options for list (edit, leave, delete)
+                  print("show options for list");
                 },
               ),
             ],

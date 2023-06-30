@@ -101,13 +101,13 @@ class ItemCard extends StatelessWidget {
               Text(item.addedTime),
             ],
           ),
-          //additionalInfo: Text(item.addedBy),
           trailing: CupertinoButton(
             child: Icon(
               CupertinoIcons.ellipsis,
             ),
             onPressed: () {
               //TODO implement show options (mark as bought, edit, delete)
+              print("show options of item");
             },
           ),
         ),

@@ -20,12 +20,21 @@ class AddItemCard extends StatelessWidget {
             ),
           ),
           title: CupertinoTextField(
+            key: Key('itemTitleInput'),
             keyboardType: TextInputType.text,
             placeholder: 'Enter item ...',
           ),
           trailing: CupertinoButton(
             child: Icon(CupertinoIcons.arrow_right_circle_fill),
-            onPressed: () {},
+            onPressed: () {
+              //TODO test if input is valid
+
+              //TODO add item to list
+
+              //TODO reset input fields and move focus to title field
+
+              print('New item would be added');
+            },
           ),
         ),
       ],
