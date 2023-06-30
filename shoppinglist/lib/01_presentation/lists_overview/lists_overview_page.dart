@@ -14,8 +14,10 @@ class ListsOverviewPage extends StatelessWidget {
           !isDark ? CupertinoColors.secondarySystemBackground : null,
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Lists'),
-        trailing: GestureDetector(
-          onTap: () {
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Icon(CupertinoIcons.add, size: 30),
+          onPressed: () {
             Navigator.push(
               context,
               CupertinoPageRoute<Widget>(
@@ -24,8 +26,7 @@ class ListsOverviewPage extends StatelessWidget {
                 },
               ),
             );
-          }, // Call the method when the add icon is tapped
-          child: const Icon(CupertinoIcons.add),
+          },
         ),
       ),
       child: const SafeArea(

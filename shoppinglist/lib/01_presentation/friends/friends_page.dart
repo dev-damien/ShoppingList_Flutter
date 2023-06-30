@@ -13,7 +13,17 @@ class FriendsPage extends StatelessWidget {
           !isDark ? CupertinoColors.secondarySystemBackground : null,
       navigationBar: CupertinoNavigationBar(
         middle: Text("Friends"),
-        trailing: Icon(CupertinoIcons.person_add),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Icon(
+            CupertinoIcons.person_add,
+            size: 30,
+          ),
+          onPressed: () {
+            //TODO implement open add friend dialog
+            print("open add friend dialog");
+          },
+        ),
       ),
       child: SafeArea(
         child: FriendsBody(),

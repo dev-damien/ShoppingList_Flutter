@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 
 class FriendRequestsBody extends StatelessWidget {
@@ -5,6 +7,6 @@ class FriendRequestsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Placeholder();
   }
 }
