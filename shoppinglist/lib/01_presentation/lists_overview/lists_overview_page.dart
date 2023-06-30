@@ -7,7 +7,11 @@ class ListsOverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     return CupertinoPageScaffold(
+      backgroundColor:
+          !isDark ? CupertinoColors.secondarySystemBackground : null,
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Lists'),
         trailing: GestureDetector(
