@@ -4,7 +4,7 @@ import 'package:shoppinglist/core/failures/user_failures.dart';
 
 abstract class UserRepository {
   //todo might be useless
-  Stream<Either<UserFailure, List<User>>> watchAll();
+  Stream<Either<UserFailure, User>> watch();
 
   Future<Either<UserFailure, Unit>> update(User user);
 

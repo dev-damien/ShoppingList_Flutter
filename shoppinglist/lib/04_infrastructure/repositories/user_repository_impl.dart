@@ -17,7 +17,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<Either<UserFailure, List<User>>> watchAll() {
+  Stream<Either<UserFailure, User>> watch() {
     // TODO: implement watchAll
     throw UnimplementedError();
   }
