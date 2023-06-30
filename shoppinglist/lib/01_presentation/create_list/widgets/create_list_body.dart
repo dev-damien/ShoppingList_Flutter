@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/added_friends_list.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/selected_icon.dart';
-import 'package:shoppinglist/01_presentation/util/number_notification.dart';
 
 class CreateListBody extends StatelessWidget {
   const CreateListBody({super.key});
