@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/01_presentation/add_friends/add_friends_page.dart';
 import 'package:shoppinglist/01_presentation/friends/widgets/friends_body.dart';
 
 class FriendsPage extends StatelessWidget {
@@ -20,8 +21,14 @@ class FriendsPage extends StatelessWidget {
             size: 30,
           ),
           onPressed: () {
-            //TODO implement open add friend dialog
-            print("open add friend dialog");
+            Navigator.push(
+              context,
+              CupertinoPageRoute<Widget>(
+                builder: (BuildContext context) {
+                  return const AddFriendsPage();
+                },
+              ),
+            );
           },
         ),
       ),
