@@ -5,19 +5,9 @@ class SelectedIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border.fromBorderSide(
-          BorderSide(color: CupertinoColors.systemGrey, width: 3),
-        ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
-      ),
-      child: const Icon(
-        CupertinoIcons.list_bullet,
-        size: 100,
-      ),
+    return const Icon(
+      CupertinoIcons.list_bullet,
+      size: 100,
     );
   }
 }
