@@ -52,8 +52,6 @@ class FriendsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //TODO UI choice either limit size or not
-      // height: 200,
       child: CupertinoScrollbar(
         child: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),

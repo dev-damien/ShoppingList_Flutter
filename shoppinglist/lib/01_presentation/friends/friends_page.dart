@@ -32,8 +32,14 @@ class FriendsPage extends StatelessWidget {
           },
         ),
       ),
-      child: SafeArea(
-        child: FriendsBody(),
+      child: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: SafeArea(
+            child: FriendsBody(),
+          ),
+        ),
       ),
     );
   }

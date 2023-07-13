@@ -12,9 +12,10 @@ class FriendCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      // whole tile triggers the event, without only widgets like icon or title
+      behavior: HitTestBehavior.translucent,
       onLongPress: () {
-        //TODO remove print and open option menu
-        print("long press down on ${friend.nickname}");
+        _showFriendActionSheet(context);
       },
       child: CupertinoListTile.notched(
         leading: const SizedBox(
@@ -27,11 +28,39 @@ class FriendCard extends StatelessWidget {
           friend.nickname,
         ),
         trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
           child: Icon(
             CupertinoIcons.ellipsis,
           ),
-          onPressed: () {},
+          onPressed: () {
+            _showFriendActionSheet(context);
+          },
         ),
+      ),
+    );
+  }
+
+  void _showFriendActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Text('Options for ${friend.nickname}'),
+        //message: const Text('Message'),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Change nickname'),
+          ),
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Remove as friend'),
+          ),
+        ],
       ),
     );
   }

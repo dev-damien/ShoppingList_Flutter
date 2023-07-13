@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/friend_requests/widgets/friend_request_card.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
-import 'package:shoppinglist/03_domain/entities/id.dart';
 
 class FriendRequestsList extends StatelessWidget {
   List<Friend> friendRequests;
@@ -10,9 +9,10 @@ class FriendRequestsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: double.infinity,
       child: CupertinoScrollbar(
         child: SingleChildScrollView(
-          physics: ScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           child: CupertinoListSection(
             topMargin: 0,
             margin: EdgeInsets.all(0),

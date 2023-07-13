@@ -19,8 +19,14 @@ class AddFriendsPage extends StatelessWidget {
         ),
         middle: const Text('Add Friends'),
       ),
-      child: const SafeArea(
-        child: AddFriendsBody(),
+      child: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: const SafeArea(
+            child: AddFriendsBody(),
+          ),
+        ),
       ),
     );
   }
