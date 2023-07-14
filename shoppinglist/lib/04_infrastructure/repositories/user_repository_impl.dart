@@ -35,19 +35,21 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<UserFailure, Unit>> create(UserData user) async {
-    try {
-      final userDoc = await firestore.userDocument();
-      final todoModel = UserModel.fromDomain(user);
+    throw UnimplementedError();
 
-      await userDoc.todoCollection.doc(todoModel.id).set(todoModel.toMap());
+    //   try {
+    //     final userDoc = await firestore.userDocument();
+    //     final todoModel = UserModel.fromDomain(user);
 
-      return right(unit);
-    } on FirebaseException catch (e) {
-      if (e.code.contains("PERMISSION_DENIED")) {
-        return left(InsufficientPermisssons());
-      } else {
-        return left(UnexpectedFailure());
-      }
-    }
+    //     await userDoc.todoCollection.doc(todoModel.id).set(todoModel.toMap());
+
+    //     return right(unit);
+    //   } on FirebaseException catch (e) {
+    //     if (e.code.contains("PERMISSION_DENIED")) {
+    //       return left(InsufficientPermisssons());
+    //     } else {
+    //       return left(UnexpectedFailure());
+    //     }
+    //   }
   }
 }

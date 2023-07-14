@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/core/failures/auth_failures.dart';
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart';
-import 'package:shoppinglist/01_presentation/signup/widgets/signin_register_button.dart';
 
 class SignUpForm extends StatelessWidget {
   const SignUpForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String? _emailInput;
+    String? _passwordInput;
     String? _email;
     String? _password;
 
@@ -52,6 +53,22 @@ class SignUpForm extends StatelessWidget {
         default:
           return "Something went wrong";
       }
+    }
+
+    void _showCupertinoDialog(String title, String message) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
     }
 
     final themeData = CupertinoTheme.of(context);
@@ -120,13 +137,15 @@ class SignUpForm extends StatelessWidget {
                 height: 80,
               ),
               CupertinoTextField(
-                cursorColor: themeData.primaryColor,
                 decoration: BoxDecoration(
-                  border: Border.all(color: themeData.primaryColor),
+                  border: Border.all(color: CupertinoColors.activeBlue),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 placeholder: 'E-Mail',
-                onChanged: validateEmail,
+                onChanged: (input) {
+                  _emailInput = input;
+                  validateEmail(input);
+                },
                 // validator: validateEmail,
               ),
               const SizedBox(
@@ -135,20 +154,23 @@ class SignUpForm extends StatelessWidget {
               CupertinoTextField(
                 cursorColor: themeData.primaryColor,
                 decoration: BoxDecoration(
-                  border: Border.all(color: themeData.primaryColor),
+                  border: Border.all(color: CupertinoColors.activeBlue),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 placeholder: 'Password',
                 obscureText: true,
-                onChanged: validatePassword,
+                onChanged: (input) {
+                  validatePassword(input);
+                  _passwordInput = input;
+                },
                 // validator: validatePassword,
               ),
               const SizedBox(
                 height: 40,
               ),
-              SignInRegisterButton(
-                buttonText: "Sign In",
-                callback: () {
+              CupertinoButton.filled(
+                child: Text("Sign In"),
+                onPressed: () {
                   if (_email != null && _password != null) {
                     BlocProvider.of<SignUpFormBloc>(context).add(
                       SignInWithEmailAndPasswordPressed(
@@ -163,28 +185,17 @@ class SignUpForm extends StatelessWidget {
                         password: null,
                       ),
                     );
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) => CupertinoAlertDialog(
-                        title: const Text('Error'),
-                        content: const Text('Invalid input'),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text('OK'),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      ),
-                    );
+                    String message = validateEmail(_emailInput) ?? validatePassword(_passwordInput)?? "Unexpected Error";
+                    _showCupertinoDialog("Information", message);
                   }
                 },
               ),
               const SizedBox(
                 height: 20,
               ),
-              SignInRegisterButton(
-                buttonText: "Register",
-                callback: () {
+              CupertinoButton.filled(
+                child: Text("Register"),
+                onPressed: () {
                   if (_email != null && _password != null) {
                     BlocProvider.of<SignUpFormBloc>(context).add(
                       RegisterWithEmailAndPasswordPressed(
@@ -199,19 +210,8 @@ class SignUpForm extends StatelessWidget {
                         password: null,
                       ),
                     );
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) => CupertinoAlertDialog(
-                        title: const Text('Error'),
-                        content: const Text('Invalid input'),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text('OK'),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      ),
-                    );
+                    //String title = validateEmail(_email);
+                    _showCupertinoDialog("", "");
                   }
                 },
               ),
