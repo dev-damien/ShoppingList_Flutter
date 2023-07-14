@@ -21,4 +21,10 @@ class UserRepositoryImpl implements UserRepository {
     // TODO: implement watchAll
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<UserFailure, User>> create(User user) {
+    // TODO: implement create
+    throw UnimplementedError();
+  }
 }

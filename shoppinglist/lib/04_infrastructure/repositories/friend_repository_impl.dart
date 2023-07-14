@@ -4,7 +4,6 @@ import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/04_infrastructure/extensions/firebase_helpers.dart';
 import 'package:shoppinglist/04_infrastructure/models/friend_model.dart';
-import 'package:shoppinglist/04_infrastructure/models/list_preview_model.dart';
 import 'package:shoppinglist/core/failures/friend_failures.dart';
 
 class FriendRepositoryImpl implements FriendRepository {

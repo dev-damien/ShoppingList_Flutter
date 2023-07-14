@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shoppinglist/core/failures/user_failures.dart';
 
 abstract class UserRepository {
+  Future<Either<UserFailure, User>> create(User user);
+
   //todo might be useless
   Stream<Either<UserFailure, User>> watch();
 
