@@ -16,8 +16,14 @@ class ListPreviewCard extends StatelessWidget {
       leading: const SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: Icon(CupertinoIcons.list_bullet),
         //TODO set depending on selected image by user
+        child: Padding(
+          padding: EdgeInsets.zero,
+          child: Icon(
+            CupertinoIcons.square_list_fill,
+            size: 35,
+          ),
+        ),
       ),
       title: Text(
         listPreview.title,
@@ -30,7 +36,9 @@ class ListPreviewCard extends StatelessWidget {
           context,
           CupertinoPageRoute<Widget>(
             builder: (BuildContext context) {
-              return ListDetailPage(listId: listPreview.id,);
+              return ListDetailPage(
+                listId: listPreview.id,
+              );
             },
           ),
         );

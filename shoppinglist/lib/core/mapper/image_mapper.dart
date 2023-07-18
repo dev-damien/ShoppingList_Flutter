@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/04_infrastructure/local/theme_local_storage.dart';
 
 class ImageMapper {
-
   final ThemeLocalDatasource themeLocalDatasource;
 
   ImageMapper({required this.themeLocalDatasource});
@@ -106,10 +105,10 @@ class ImageMapper {
     },
   };
 
-  Future<Icon> toIcon(String id) async{
+  Future<Icon> toIcon(String id) async {
     final theme = await themeLocalDatasource.getCachedThemeData();
     final icon = string2icon[id]?[theme];
-    if (icon!=null) return icon;
+    if (icon != null) return icon;
     return string2icon["square_list"]![theme]!;
   }
 
@@ -117,5 +116,4 @@ class ImageMapper {
     //TODO implement from icon to id (might not be neccessary)
     throw UnimplementedError();
   }
-
 }
