@@ -20,7 +20,7 @@ import '04_infrastructure/local/theme_local_storage.dart';
 final sl = GetIt.I; //service locator
 
 Future<void> init() async {
-  //? ################# auth ###############################################################################
+  //? ################# local ###############################################################################
 
   //! datasource
   sl.registerLazySingleton<ThemeLocalDatasource>(
@@ -40,8 +40,10 @@ Future<void> init() async {
       () => AuthUsecases(authRepository: sl()));
 
   //! repos
-  sl.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(firebaseAuth: sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
+        firebaseAuth: sl(),
+        firestore: sl(),
+      ));
 
   //? ################ lists ###############################################################################
 
