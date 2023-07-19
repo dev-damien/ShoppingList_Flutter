@@ -17,6 +17,7 @@ class AddFriendsBody extends StatelessWidget {
           ),
           child: CupertinoSearchTextField(),
         ),
+        Text("id here"),
         //TODO add list displaying matching account(s)
       ],
     );

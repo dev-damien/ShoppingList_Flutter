@@ -24,6 +24,10 @@ class HomePage extends StatelessWidget {
             icon: Icon(CupertinoIcons.settings),
             label: "Settings",
           ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.profile_circled),
+            label: "Account",
+          ),
         ],
       ),
       tabBuilder: (BuildContext context, int index) {
@@ -43,6 +47,8 @@ class HomePage extends StatelessWidget {
                     child: SettingsPage(),
                   ),
                 );
+              case 3:
+                return const Placeholder();
               default:
                 return const CupertinoPageScaffold(
                   navigationBar: CupertinoNavigationBar(
