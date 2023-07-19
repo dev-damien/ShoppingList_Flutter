@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
-import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/04_infrastructure/models/list_preview_model.dart';
 
@@ -12,12 +11,10 @@ class UserModel {
   final List<String> friendRequests;
   final List<String> friendRequestsSent;
   final List<String> friends;
-  final List<ListPreviewModel> listsPreview;
   final dynamic serverTimestamp;
 
   UserModel(
-      {required this.listsPreview,
-      required this.id,
+      {required this.id,
       required this.name,
       required this.imageId,
       required this.favourites,
@@ -35,7 +32,6 @@ class UserModel {
       'friendRequests': friendRequests,
       'friendRequestsSent': friendRequestsSent,
       'friends': friends,
-      'listsPreview': listsPreview,
       'serverTimestamp': serverTimestamp,
     };
   }
@@ -51,8 +47,6 @@ class UserModel {
       friendRequestsSent:
           List<String>.from((map['friendRequestsSent'] as List<String>)),
       friends: List<String>.from((map['friends'] as List<String>)),
-      listsPreview: List<ListPreviewModel>.from(
-          (map['listsPreview'] as List<ListPreviewModel>)),
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
@@ -76,7 +70,6 @@ class UserModel {
       friendRequests: friendRequests ?? this.friendRequests,
       friendRequestsSent: friendRequestsSent ?? this.friendRequestsSent,
       friends: friends ?? this.friends,
-      listsPreview: listsPreview ?? this.listsPreview,
       serverTimestamp: serverTimestamp ?? this.serverTimestamp,
     );
   }
@@ -87,12 +80,7 @@ class UserModel {
   }
 
   UserData toDomain() {
-    List<ListPreview> listsPreviewDomain = List<ListPreview>.empty();
-    for (ListPreviewModel listPreview in listsPreview) {
-      listsPreviewDomain.add(listPreview.toDomain());
-    }
     return UserData(
-        listsPreview: listsPreviewDomain,
         id: UniqueID.fromUniqueString(id),
         name: name,
         imageId: imageId,
@@ -103,11 +91,7 @@ class UserModel {
   }
 
   factory UserModel.fromDomain(UserData user) {
-    List<ListPreviewModel> listsPreviewModel = (user.listsPreview
-        .map<ListPreviewModel>((e) => ListPreviewModel.fromDomain(e))).toList();
-
     return UserModel(
-        listsPreview: listsPreviewModel,
         id: user.id.value,
         name: user.name,
         imageId: user.imageId,

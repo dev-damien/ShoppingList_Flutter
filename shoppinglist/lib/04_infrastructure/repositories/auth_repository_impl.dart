@@ -19,11 +19,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      //! create user account
+      // create user account
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      //! create basic document for user with default data
+      // create basic document for user with default data
       String uuid = userCredential.user!.uid;
       final Map<String, dynamic> initUserData =
           UserModel.fromDomain(UserData.empty())
