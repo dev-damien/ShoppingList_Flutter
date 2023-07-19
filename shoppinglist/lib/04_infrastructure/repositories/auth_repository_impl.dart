@@ -19,11 +19,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      // create user account
+      //! create user account
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      //create basic document for user with default data
+      //! create basic document for user with default data
       String uuid = userCredential.user!.uid;
       final Map<String, dynamic> initUserData =
           UserModel.fromDomain(UserData.empty())
@@ -32,11 +32,13 @@ class AuthRepositoryImpl implements AuthRepository {
                   name: "todo ask for name",
                   imageId: DefaultValues.defualtProfileIconId)
               .toMap();
+      initUserData['createdTimestamp'] = initUserData['serverTimestamp'];
+      initUserData.remove("serverTimestamp");
       firestore
           .collection("users")
           .doc(uuid)
           .set(initUserData)
-          .onError((e, _) => print("Error writing document: $e"));
+          .onError((e, _) => throw Exception());
 
       return right(unit);
     } on FirebaseAuthException catch (e) {
