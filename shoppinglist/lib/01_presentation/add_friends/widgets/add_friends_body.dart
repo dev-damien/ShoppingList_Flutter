@@ -10,7 +10,13 @@ class AddFriendsBody extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        CupertinoSearchTextField(),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
+          child: CupertinoSearchTextField(),
+        ),
         //TODO add list displaying matching account(s)
       ],
     );
