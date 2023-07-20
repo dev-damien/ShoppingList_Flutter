@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AddFriendsBody extends StatelessWidget {
@@ -38,7 +41,21 @@ class AddFriendsBody extends StatelessWidget {
           onPressed: () {},
           child: Text("open scanner"),
         ),
-        Image.asset('lib/assets/images/cydra.png')
+        MobileScanner(
+          fit: BoxFit.contain,
+          controller: MobileScannerController(
+            detectionSpeed: DetectionSpeed.normal,
+            facing: CameraFacing.front,
+            torchEnabled: true,
+          ),
+          onDetect: (capture) {
+            final List<Barcode> barcodes = capture.barcodes;
+            final Uint8List? image = capture.image;
+            for (final barcode in barcodes) {
+              debugPrint('Barcode found! ${barcode.rawValue}');
+            }
+          },
+        ),
         //TODO add list displaying matching account(s)
       ],
     );
