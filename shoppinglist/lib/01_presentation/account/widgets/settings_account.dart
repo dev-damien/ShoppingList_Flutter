@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +35,7 @@ class SettingsAccount extends StatelessWidget {
           onTap: () {
             //todo open change name page/dialog
             print("change name clicked");
+            print(FirebaseAuth.instance.currentUser);
           },
         ),
         CupertinoListTile.notched(

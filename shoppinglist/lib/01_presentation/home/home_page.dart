@@ -3,7 +3,6 @@ import 'package:shoppinglist/01_presentation/account/account_page.dart';
 import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
-import 'package:shoppinglist/01_presentation/lists_overview/widgets/lists_body.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/add_friends_body.dart';
-import 'package:shoppinglist/01_presentation/create_list/widgets/create_list_body.dart';
 
 class AddFriendsPage extends StatelessWidget {
   const AddFriendsPage({super.key});
@@ -8,6 +8,7 @@ class AddFriendsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    User user = FirebaseAuth.instance.currentUser!;
 
     return CupertinoPageScaffold(
       backgroundColor:
@@ -23,8 +24,10 @@ class AddFriendsPage extends StatelessWidget {
         height: double.infinity,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: const SafeArea(
-            child: AddFriendsBody(),
+          child: SafeArea(
+            child: AddFriendsBody(
+              user: user,
+            ),
           ),
         ),
       ),
