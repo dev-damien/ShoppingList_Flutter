@@ -3,8 +3,12 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shoppinglist/01_presentation/add_friends/widgets/qr_code.dart';
 
 class AddFriendsBody extends StatelessWidget {
   User user;
@@ -28,36 +32,33 @@ class AddFriendsBody extends StatelessWidget {
           ),
           child: CupertinoSearchTextField(),
         ),
-        QrImageView(
-          data: user.uid,
-          version: QrVersions.auto,
-          size: 320,
-          gapless: false,
-          backgroundColor: CupertinoColors.extraLightBackgroundGray,
-          eyeStyle: QrEyeStyle(
-              eyeShape: QrEyeShape.square, color: CupertinoColors.activeBlue),
-        ),
+        QRCode(value: user.uid),
         CupertinoButton.filled(
-          onPressed: () {},
-          child: Text("open scanner"),
-        ),
-        MobileScanner(
-          fit: BoxFit.contain,
-          controller: MobileScannerController(
-            detectionSpeed: DetectionSpeed.normal,
-            facing: CameraFacing.front,
-            torchEnabled: true,
-          ),
-          onDetect: (capture) {
-            final List<Barcode> barcodes = capture.barcodes;
-            final Uint8List? image = capture.image;
-            for (final barcode in barcodes) {
-              debugPrint('Barcode found! ${barcode.rawValue}');
-            }
+          onPressed: () async {
+            scanQR();
           },
+          child: Text("open scanner"),
         ),
         //TODO add list displaying matching account(s)
       ],
     );
+  }
+
+  Future<void> scanQR() async {
+    print('start  scanQR');
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      print('before await QR');
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+              '#ff6666', 'Cancel', true, ScanMode.QR)
+          .whenComplete(() => print('completed'));
+          //TODO do sth with qr code or return it
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    } on Exception {
+      barcodeScanRes = "Unknown error occured";
+    }
   }
 }

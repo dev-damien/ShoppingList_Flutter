@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/add_friends_body.dart';
 
 class AddFriendsPage extends StatelessWidget {
