@@ -1,50 +1,53 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
-import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
-import 'package:shoppinglist/injection.dart';
-import 'package:shoppinglist/01_presentation/home/widgets/home_body.dart';
-import 'package:shoppinglist/01_presentation/routes/router.gr.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/01_presentation/account/account_page.dart';
+import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
+import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
+import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final observerBloc = sl<ObserverBloc>()..add(ObserveAllEvent());
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ObserverBloc>(
-          create: (context) => observerBloc,
-        ),
-      ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthStateUnauthenticated) {
-                AutoRouter.of(context).push(const SignUpPageRoute());
-              }
-            },
-          )
-        ],
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () {
-                //use this wherever needed to logout
-                BlocProvider.of<AuthBloc>(context).add(
-                  SignOutPressedEvent(),
-                );
-              },
-            ),
-            title: const Text("Lists"),
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.square_list),
+            label: "Lists",
           ),
-          body: const HomeBody(),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.person_2),
+            label: "Friends",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.settings),
+            label: "Settings",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.profile_circled),
+            label: "Account",
+          ),
+        ],
       ),
+      tabBuilder: (BuildContext context, int index) {
+        return CupertinoTabView(
+          builder: (BuildContext context) {
+            switch (index) {
+              case 0:
+                return const ListsOverviewPage();
+              case 1:
+                return const FriendsPage();
+              case 2:
+                return const SettingsPage();
+              case 3:
+                return const AccountPage();
+              default:
+                return const ListsOverviewPage();
+            }
+          },
+        );
+      },
     );
   }
 }

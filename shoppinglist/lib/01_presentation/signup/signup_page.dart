@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/injection.dart';
@@ -9,8 +9,8 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
+    return CupertinoPageScaffold(
+      child: BlocProvider(
         create: (context) => sl<SignUpFormBloc>(),
         child: const SignUpForm(),
       ),

@@ -1,14 +1,16 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/core/failures/user_failures.dart';
 
 abstract class UserRepository {
-  //todo might be useless
-  Stream<Either<UserFailure, List<User>>> watchAll();
+  Future<Either<UserFailure, Unit>> create(UserData user);
 
-  Future<Either<UserFailure, Unit>> update(User user);
+  //todo might be useless
+  Stream<Either<UserFailure, Unit>> watch();
+
+  Future<Either<UserFailure, Unit>> update(UserData user);
 
   //todo or use UniqueID only
   //todo maybe remove entirely
-  Future<Either<UserFailure, Unit>> delete(User user);
+  Future<Either<UserFailure, Unit>> delete(UserData user);
 }

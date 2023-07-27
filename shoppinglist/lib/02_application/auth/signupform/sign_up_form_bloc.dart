@@ -12,13 +12,13 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
   SignUpFormBloc({required this.authUsecases})
       : super(SignUpFormState(
             isSubmitting: false,
-            showValidationMessages: false,
+            showValidationMessages: true,
             authFailureOrSuccessOption: none())) {
     on<RegisterWithEmailAndPasswordPressed>((event, emit) async {
       if (event.email == null || event.password == null) {
         emit(state.copyWith(isSubmitting: false, showValidationMessages: true));
       } else {
-        emit(state.copyWith(isSubmitting: true, showValidationMessages: false));
+        emit(state.copyWith(isSubmitting: true, showValidationMessages: true));
         final failureOrSuccess =
             await authUsecases.registerWithEmailAndPassword(
                 email: event.email!, password: event.password!);
@@ -35,7 +35,7 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
               isSubmitting: false, showValidationMessages: true));
         } else {
           emit(state.copyWith(
-              isSubmitting: true, showValidationMessages: false));
+              isSubmitting: true, showValidationMessages: true));
           final failureOrSuccess =
               await authUsecases.signInWithEmailAndPassword(
                   email: event.email!, password: event.password!);

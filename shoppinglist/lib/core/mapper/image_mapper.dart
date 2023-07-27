@@ -1,121 +1,123 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shoppinglist/04_infrastructure/local/theme_local_storage.dart';
+import 'package:shoppinglist/constants/default_values.dart';
 
 class ImageMapper {
-
-  final ThemeLocalDatasource themeLocalDatasource;
-
-  ImageMapper({required this.themeLocalDatasource});
-
-  final Map<String, Map<String, Icon>> string2icon = {
+  static const Map<String, Map<String, Icon>> string2icon = {
     "square_list": {
-      "light": const Icon(CupertinoIcons.square_list),
-      "dark": const Icon(CupertinoIcons.square_list_fill)
+      "default": Icon(CupertinoIcons.square_list),
+      "filled": Icon(CupertinoIcons.square_list_fill)
     },
     "airplane": {
-      "light": const Icon(CupertinoIcons.airplane),
-      "dark": const Icon(CupertinoIcons.airplane)
+      "default": Icon(CupertinoIcons.airplane),
+      "filled": Icon(CupertinoIcons.airplane)
     },
     "bag": {
-      "light": const Icon(CupertinoIcons.bag),
-      "dark": const Icon(CupertinoIcons.bag_fill)
+      "default": Icon(CupertinoIcons.bag),
+      "filled": Icon(CupertinoIcons.bag_fill)
     },
     "bandage": {
-      "light": const Icon(CupertinoIcons.bandage),
-      "dark": const Icon(CupertinoIcons.bandage_fill)
+      "default": Icon(CupertinoIcons.bandage),
+      "filled": Icon(CupertinoIcons.bandage_fill)
     },
     "bitcoin_circle": {
-      "light": const Icon(CupertinoIcons.bitcoin_circle),
-      "dark": const Icon(CupertinoIcons.bitcoin_circle_fill)
+      "default": Icon(CupertinoIcons.bitcoin_circle),
+      "filled": Icon(CupertinoIcons.bitcoin_circle_fill)
     },
     "book": {
-      "light": const Icon(CupertinoIcons.book),
-      "dark": const Icon(CupertinoIcons.book_fill)
+      "default": Icon(CupertinoIcons.book),
+      "filled": Icon(CupertinoIcons.book_fill)
     },
     "camera": {
-      "light": const Icon(CupertinoIcons.camera),
-      "dark": const Icon(CupertinoIcons.camera_fill)
+      "default": Icon(CupertinoIcons.camera),
+      "filled": Icon(CupertinoIcons.camera_fill)
     },
     "cart": {
-      "light": const Icon(CupertinoIcons.cart),
-      "dark": const Icon(CupertinoIcons.cart_fill)
+      "default": Icon(CupertinoIcons.cart),
+      "filled": Icon(CupertinoIcons.cart_fill)
     },
     "car": {
-      "light": const Icon(CupertinoIcons.car),
-      "dark": const Icon(CupertinoIcons.car_fill)
+      "default": Icon(CupertinoIcons.car),
+      "filled": Icon(CupertinoIcons.car_fill)
     },
     "cube_box": {
-      "light": const Icon(CupertinoIcons.cube_box),
-      "dark": const Icon(CupertinoIcons.cube_box_fill)
+      "default": Icon(CupertinoIcons.cube_box),
+      "filled": Icon(CupertinoIcons.cube_box_fill)
     },
     "laptop": {
-      "light": const Icon(CupertinoIcons.device_laptop),
-      "dark": const Icon(CupertinoIcons.device_laptop)
+      "default": Icon(CupertinoIcons.device_laptop),
+      "filled": Icon(CupertinoIcons.device_laptop)
     },
     "document": {
-      "light": const Icon(CupertinoIcons.doc),
-      "dark": const Icon(CupertinoIcons.doc_fill)
+      "default": Icon(CupertinoIcons.doc),
+      "filled": Icon(CupertinoIcons.doc_fill)
     },
     "music": {
-      "light": const Icon(CupertinoIcons.double_music_note),
-      "dark": const Icon(CupertinoIcons.double_music_note)
+      "default": Icon(CupertinoIcons.double_music_note),
+      "filled": Icon(CupertinoIcons.double_music_note)
     },
     "film": {
-      "light": const Icon(CupertinoIcons.film),
-      "dark": const Icon(CupertinoIcons.film_fill)
+      "default": Icon(CupertinoIcons.film),
+      "filled": Icon(CupertinoIcons.film_fill)
     },
     "gamecontroller": {
-      "light": const Icon(CupertinoIcons.gamecontroller),
-      "dark": const Icon(CupertinoIcons.gamecontroller_fill)
+      "default": Icon(CupertinoIcons.gamecontroller),
+      "filled": Icon(CupertinoIcons.gamecontroller_fill)
     },
     "gift": {
-      "light": const Icon(CupertinoIcons.gift),
-      "dark": const Icon(CupertinoIcons.gift_fill)
+      "default": Icon(CupertinoIcons.gift),
+      "filled": Icon(CupertinoIcons.gift_fill)
     },
     "group": {
-      "light": const Icon(CupertinoIcons.group),
-      "dark": const Icon(CupertinoIcons.group_solid)
+      "default": Icon(CupertinoIcons.group),
+      "filled": Icon(CupertinoIcons.group_solid)
     },
     "hammer": {
-      "light": const Icon(CupertinoIcons.hammer),
-      "dark": const Icon(CupertinoIcons.hammer_fill)
+      "default": Icon(CupertinoIcons.hammer),
+      "filled": Icon(CupertinoIcons.hammer_fill)
     },
     "house": {
-      "light": const Icon(CupertinoIcons.house),
-      "dark": const Icon(CupertinoIcons.house_fill)
+      "default": Icon(CupertinoIcons.house),
+      "filled": Icon(CupertinoIcons.house_fill)
     },
     "lab": {
-      "light": const Icon(CupertinoIcons.lab_flask),
-      "dark": const Icon(CupertinoIcons.lab_flask_solid)
+      "default": Icon(CupertinoIcons.lab_flask),
+      "filled": Icon(CupertinoIcons.lab_flask_solid)
     },
     "paw": {
-      "light": const Icon(CupertinoIcons.paw),
-      "dark": const Icon(CupertinoIcons.paw_solid)
+      "default": Icon(CupertinoIcons.paw),
+      "filled": Icon(CupertinoIcons.paw_solid)
     },
     "sport": {
-      "light": const Icon(CupertinoIcons.sportscourt),
-      "dark": const Icon(CupertinoIcons.sportscourt_fill)
+      "default": Icon(CupertinoIcons.sportscourt),
+      "filled": Icon(CupertinoIcons.sportscourt_fill)
     },
     "stopwatch": {
-      "light": const Icon(CupertinoIcons.stopwatch),
-      "dark": const Icon(CupertinoIcons.stopwatch_fill)
+      "default": Icon(CupertinoIcons.stopwatch),
+      "filled": Icon(CupertinoIcons.stopwatch_fill)
     },
     "tickets": {
-      "light": const Icon(CupertinoIcons.tickets),
-      "dark": const Icon(CupertinoIcons.tickets_fill)
+      "default": Icon(CupertinoIcons.tickets),
+      "filled": Icon(CupertinoIcons.tickets_fill)
     },
   };
 
-  Future<Icon> toIcon(String id) async{
-    final theme = await themeLocalDatasource.getCachedThemeData();
-    final icon = string2icon[id]?[theme];
-    if (icon!=null) return icon;
-    return string2icon["square_list"]![theme]!;
+  static Map<IconData, String> icon2string = _reverseMap();
+
+  static Icon toIcon(String id) {
+    return string2icon[id]?['default'] ?? DefaultValues.defaultListIcon;
   }
 
-  String toID(IconData id) {
-    //TODO implement from icon to id (might not be neccessary)
-    throw UnimplementedError();
+  static String toID(IconData icon) {
+    return icon2string[icon] ?? DefaultValues.defaultListIconId;
   }
 
+  static Map<IconData, String> _reverseMap() {
+    Map<IconData, String> icon2string = {};
+    string2icon.forEach((id, styles) {
+      styles.forEach((style, icon) {
+        icon2string[icon.icon!] = id;
+      });
+    });
+    return icon2string;
+  }
 }

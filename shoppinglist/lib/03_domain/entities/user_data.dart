@@ -9,11 +9,9 @@ class UserData {
   final List<String> friendRequests;
   final List<String> friendRequestsSent;
   final List<String> friends;
-  final List<ListPreview> listsPreview;
 
   UserData(
-      {required this.listsPreview,
-      required this.id,
+      {required this.id,
       required this.name,
       required this.imageId,
       required this.favourites,
@@ -23,7 +21,6 @@ class UserData {
 
   factory UserData.empty() {
     return UserData(
-        listsPreview: List.empty(),
         id: UniqueID(),
         name: "",
         imageId: "",
@@ -41,7 +38,6 @@ class UserData {
     List<String>? friendRequests,
     List<String>? friendRequestsSent,
     List<String>? friends,
-    List<ListPreview>? listsPreview,
   }) {
     return UserData(
       id: id ?? this.id,
@@ -51,7 +47,6 @@ class UserData {
       friendRequests: friendRequests ?? this.friendRequests,
       friendRequestsSent: friendRequestsSent ?? this.friendRequestsSent,
       friends: friends ?? this.friends,
-      listsPreview: listsPreview ?? this.listsPreview,
     );
   }
 }

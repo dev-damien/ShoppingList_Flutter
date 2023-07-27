@@ -10,15 +10,18 @@ class ListModel {
   final List<String> members;
   final String imageId; //todo: this might become another datatype
   final List<ItemModel> items;
+  final List<String> admins;
   final dynamic serverTimestamp;
 
-  ListModel(
-      {required this.id,
-      required this.title,
-      required this.members,
-      required this.imageId,
-      required this.items,
-      required this.serverTimestamp});
+  ListModel({
+    required this.id,
+    required this.title,
+    required this.members,
+    required this.imageId,
+    required this.items,
+    required this.serverTimestamp,
+    required this.admins,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -28,6 +31,7 @@ class ListModel {
       'imageId': imageId,
       'items': items.map((x) => x.toMap()).toList(),
       'serverTimestamp': serverTimestamp,
+      'admins': admins,
     };
   }
 
@@ -43,6 +47,7 @@ class ListModel {
         ),
       ),
       serverTimestamp: map['serverTimestamp'] as dynamic,
+      admins: List<String>.from((map['admins'] as List<String>)),
     );
   }
 
@@ -53,6 +58,7 @@ class ListModel {
     String? imageId,
     List<ItemModel>? items,
     dynamic serverTimestamp,
+    List<String>? admins,
   }) {
     return ListModel(
       id: id ?? this.id,
@@ -61,6 +67,7 @@ class ListModel {
       imageId: imageId ?? this.imageId,
       items: items ?? this.items,
       serverTimestamp: serverTimestamp ?? this.serverTimestamp,
+      admins: admins ?? this.admins,
     );
   }
 
@@ -81,6 +88,7 @@ class ListModel {
       members: members,
       imageId: imageId,
       items: itemsDomain,
+      admins: admins,
     );
   }
 
@@ -90,11 +98,13 @@ class ListModel {
       itemModels.add(ItemModel.fromDomain(item));
     }
     return ListModel(
-        id: list.id.value,
-        title: list.title,
-        members: list.members,
-        imageId: list.imageId,
-        items: itemModels,
-        serverTimestamp: FieldValue.serverTimestamp());
+      id: list.id.value,
+      title: list.title,
+      members: list.members,
+      imageId: list.imageId,
+      items: itemModels,
+      serverTimestamp: FieldValue.serverTimestamp(),
+      admins: list.admins,
+    );
   }
 }

@@ -1,24 +1,22 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/core/failures/auth_failures.dart';
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart';
-import 'package:shoppinglist/01_presentation/signup/widgets/signin_register_button.dart';
 
 class SignUpForm extends StatelessWidget {
   const SignUpForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    late String _email;
-    late String _password;
+    String? _emailInput;
+    String? _passwordInput;
+    String? _email;
+    String? _password;
 
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    //just a very simple validation that checks for the basic structure of the provided mail
-    //should be x@y.z with x,y,z beeing any strings
-    //will also match with some invalid inputs, but its for user convenience, not security
     String? validateEmail(String? input) {
       const emailRegex =
           r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";
@@ -44,8 +42,8 @@ class SignUpForm extends StatelessWidget {
       return null;
     }
 
-    String mapFailureMessage(AuthFailure auth_failure) {
-      switch (auth_failure.runtimeType) {
+    String mapFailureMessage(AuthFailure authFailure) {
+      switch (authFailure.runtimeType) {
         case ServerFailure:
           return "Something went wrong";
         case EmailAlreadyInUseFailure:
@@ -57,7 +55,23 @@ class SignUpForm extends StatelessWidget {
       }
     }
 
-    final themeData = Theme.of(context);
+    void _showCupertinoDialog(String title, String message) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final themeData = CupertinoTheme.of(context);
 
     return BlocConsumer<SignUpFormBloc, SignUpFormState>(
       listenWhen: (previous, current) =>
@@ -65,21 +79,25 @@ class SignUpForm extends StatelessWidget {
           current.authFailureOrSuccessOption,
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
-          () => {},
+          () {},
           (eitherFailureOrSuccess) => eitherFailureOrSuccess.fold(
-            (failure) => {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(mapFailureMessage(failure),
-                      style: themeData.textTheme.bodyLarge),
-                  backgroundColor: Colors.redAccent,
+            (failure) {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text('Error'),
+                  content: Text(mapFailureMessage(failure)),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
                 ),
-              )
+              );
             },
-            (success) => {
-              AutoRouter.of(context).replace(
-                const HomePageRoute(),
-              )
+            (success) {
+              AutoRouter.of(context).replace(const HomePageRoute());
             },
           ),
         );
@@ -98,7 +116,7 @@ class SignUpForm extends StatelessWidget {
               ),
               Text(
                 "Welcome",
-                style: themeData.textTheme.displayLarge!.copyWith(
+                style: themeData.textTheme.navTitleTextStyle.copyWith(
                   fontSize: 50,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 4,
@@ -109,7 +127,7 @@ class SignUpForm extends StatelessWidget {
               ),
               Text(
                 "Please register or login",
-                style: themeData.textTheme.displayLarge!.copyWith(
+                style: themeData.textTheme.textStyle.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 4,
@@ -118,65 +136,82 @@ class SignUpForm extends StatelessWidget {
               const SizedBox(
                 height: 80,
               ),
-              TextFormField(
-                cursorColor: themeData.colorScheme.onPrimary,
-                decoration: const InputDecoration(labelText: "E-Mail"),
-                validator: validateEmail,
+              CupertinoTextField(
+                decoration: BoxDecoration(
+                  border: Border.all(color: CupertinoColors.activeBlue),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                placeholder: 'E-Mail',
+                onChanged: (input) {
+                  _emailInput = input;
+                  validateEmail(input);
+                },
+                // validator: validateEmail,
               ),
               const SizedBox(
                 height: 20,
               ),
-              TextFormField(
-                cursorColor: themeData.colorScheme.onPrimary,
-                decoration: const InputDecoration(labelText: "Password"),
+              CupertinoTextField(
+                cursorColor: themeData.primaryColor,
+                decoration: BoxDecoration(
+                  border: Border.all(color: CupertinoColors.activeBlue),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                placeholder: 'Password',
                 obscureText: true,
-                validator: validatePassword,
+                onChanged: (input) {
+                  validatePassword(input);
+                  _passwordInput = input;
+                },
+                // validator: validatePassword,
               ),
               const SizedBox(
                 height: 40,
               ),
-              SignInRegisterButton(
-                buttonText: "Sign In",
-                callback: () {
-                  if (formKey.currentState!.validate()) {
+              CupertinoButton.filled(
+                child: Text("Sign In"),
+                onPressed: () {
+                  if (_email != null && _password != null) {
                     BlocProvider.of<SignUpFormBloc>(context).add(
-                        SignInWithEmailAndPasswordPressed(
-                            email: _email, password: _password));
-                  } else {
-                    BlocProvider.of<SignUpFormBloc>(context).add(
-                        SignInWithEmailAndPasswordPressed(
-                            email: null, password: null));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Invalid input",
-                            style: themeData.textTheme.bodyLarge),
-                        backgroundColor: Colors.redAccent,
+                      SignInWithEmailAndPasswordPressed(
+                        email: _email,
+                        password: _password,
                       ),
                     );
+                  } else {
+                    BlocProvider.of<SignUpFormBloc>(context).add(
+                      SignInWithEmailAndPasswordPressed(
+                        email: null,
+                        password: null,
+                      ),
+                    );
+                    String message = validateEmail(_emailInput) ?? validatePassword(_passwordInput)?? "Unexpected Error";
+                    _showCupertinoDialog("Information", message);
                   }
                 },
               ),
               const SizedBox(
                 height: 20,
               ),
-              SignInRegisterButton(
-                buttonText: "Register",
-                callback: () {
-                  if (formKey.currentState!.validate()) {
+              CupertinoButton.filled(
+                child: Text("Register"),
+                onPressed: () {
+                  if (_email != null && _password != null) {
                     BlocProvider.of<SignUpFormBloc>(context).add(
-                        RegisterWithEmailAndPasswordPressed(
-                            email: _email, password: _password));
-                  } else {
-                    BlocProvider.of<SignUpFormBloc>(context).add(
-                        RegisterWithEmailAndPasswordPressed(
-                            email: null, password: null));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Invalid input",
-                            style: themeData.textTheme.bodyLarge),
-                        backgroundColor: Colors.redAccent,
+                      RegisterWithEmailAndPasswordPressed(
+                        email: _email,
+                        password: _password,
                       ),
                     );
+                  } else {
+                    BlocProvider.of<SignUpFormBloc>(context).add(
+                      RegisterWithEmailAndPasswordPressed(
+                        email: null,
+                        password: null,
+                      ),
+                    );
+                    //String title = validateEmail(_email);
+                    _showCupertinoDialog("", "");
                   }
                 },
               ),
@@ -184,10 +219,8 @@ class SignUpForm extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                LinearProgressIndicator(
-                  color: themeData.colorScheme.secondary,
-                )
-              ]
+                const CupertinoActivityIndicator(),
+              ],
             ],
           ),
         );

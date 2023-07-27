@@ -6,7 +6,9 @@ import 'package:shoppinglist/core/failures/list_preview_failures.dart';
 class ListPreviewUsecases {
   final ListPreviewRepository listPreviewRepository;
 
-  ListPreviewUsecases({required this.listPreviewRepository});
+  ListPreviewUsecases({
+    required this.listPreviewRepository,
+  });
 
   Stream<Either<ListPreviewFailure, List<ListPreview>>> watchAll() {
     return listPreviewRepository.watchAll();
