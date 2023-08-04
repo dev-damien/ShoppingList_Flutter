@@ -16,20 +16,33 @@ class ObserverBloc extends Bloc<ObserverEvent, ObserverState> {
   StreamSubscription<Either<ListPreviewFailure, List<ListPreview>>>?
       _listPreviewStreamSub;
 
-  ObserverBloc({required this.listPreviewUsecases})
-      : super(ObserverInitial()) {
-    on<ObserveAllEvent>((event, emit) async {
-      emit(ObserverLoading());
-      await _listPreviewStreamSub?.cancel();
-      _listPreviewStreamSub = listPreviewUsecases.watchAll().listen(
-          (failureOrListPreviews) => add(ListPreviewsUpdatedEvent(
-              failureOrListPreviews: failureOrListPreviews)));
-    });
-    on<ListPreviewsUpdatedEvent>((event, emit) {
-      event.failureOrListPreviews.fold(
-          (failures) => emit(ObserverFailure(listPreviewFailure: failures)),
-          (listPreviews) => emit(ObserverSuccess(listPreviews: listPreviews)));
-    });
+  ObserverBloc({required this.listPreviewUsecases}) : super(ObserverInitial()) {
+    on<ObserveAllEvent>(
+      (event, emit) async {
+        emit(ObserverLoading());
+        await _listPreviewStreamSub?.cancel();
+        _listPreviewStreamSub = listPreviewUsecases.watchAll().listen(
+              (failureOrListPreviews) => add(
+                ListPreviewsUpdatedEvent(
+                    failureOrListPreviews: failureOrListPreviews),
+              ),
+            );
+      },
+    );
+    on<ListPreviewsUpdatedEvent>(
+      (event, emit) {
+        event.failureOrListPreviews.fold(
+          (failures) => emit(
+            ObserverFailure(
+              listPreviewFailure: failures,
+            ),
+          ),
+          (listPreviews) => emit(
+            ObserverSuccess(listPreviews: listPreviews),
+          ),
+        );
+      },
+    );
   }
 
   @override

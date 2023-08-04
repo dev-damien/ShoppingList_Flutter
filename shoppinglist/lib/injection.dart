@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
+import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
@@ -60,7 +61,7 @@ Future<void> init() async {
 
   //? ################# friends and requests #####################################################################
   //! state management
-  //sl.registerFactory(() => ObserverBloc(listPreviewUsecases: sl()));
+  sl.registerFactory(() => FriendsObserverBloc(friendUsecases: sl()));
 
   //! usecases
   sl.registerLazySingleton(() => FriendUsecases(friendRepository: sl()));
