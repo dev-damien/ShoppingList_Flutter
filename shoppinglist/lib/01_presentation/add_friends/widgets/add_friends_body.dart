@@ -28,7 +28,9 @@ class AddFriendsBody extends StatelessWidget {
             right: 10,
             top: 10,
           ),
-          child: CupertinoSearchTextField(placeholder: 'Search ID',),
+          child: CupertinoSearchTextField(
+            placeholder: 'Search ID',
+          ),
         ),
         SizedBox(
           height: 10,
