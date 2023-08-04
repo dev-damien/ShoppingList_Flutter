@@ -3,17 +3,17 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/qr_code.dart';
+import 'package:shoppinglist/01_presentation/add_friends/widgets/search_result.dart';
 
 class AddFriendsBody extends StatelessWidget {
-  User user;
+  final User user;
 
-  AddFriendsBody({
+  const AddFriendsBody({
     Key? key,
     required this.user,
   }) : super(key: key);
@@ -22,23 +22,27 @@ class AddFriendsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 10,
-        ),
         Padding(
           padding: const EdgeInsets.only(
             left: 10,
             right: 10,
+            top: 10,
           ),
-          child: CupertinoSearchTextField(),
+          child: CupertinoSearchTextField(placeholder: 'Search ID',),
         ),
-        QRCode(value: user.uid),
-        CupertinoButton.filled(
-          onPressed: () async {
-            scanQR();
-          },
-          child: Text("open scanner"),
+        SizedBox(
+          height: 10,
         ),
+        Text('No user found with this ID'),
+        SearchResult(),
+        //TODO use later when woring on qr code again
+        // QRCode(value: user.uid),
+        // CupertinoButton.filled(
+        //   onPressed: () async {
+        //     scanQR();
+        //   },
+        //   child: Text("open scanner"),
+        // ),
         //TODO add list displaying matching account(s)
       ],
     );
@@ -53,7 +57,7 @@ class AddFriendsBody extends StatelessWidget {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
               '#ff6666', 'Cancel', true, ScanMode.QR)
           .whenComplete(() => print('completed'));
-          //TODO do sth with qr code or return it
+      //TODO do sth with qr code or return it
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
