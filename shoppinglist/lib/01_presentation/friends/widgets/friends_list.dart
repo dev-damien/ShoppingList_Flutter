@@ -1,53 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shoppinglist/01_presentation/create_list/widgets/added_friend_card.dart';
-import 'package:shoppinglist/01_presentation/util/number_notification.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
-import 'package:shoppinglist/03_domain/entities/id.dart';
 
 import 'friend_card.dart';
 
 class FriendsList extends StatelessWidget {
-  List<Friend> friends = List.of(
-    [
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID"),
-        nickname: "Nick",
-        imageId: "imageId111",
-      ),
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID2"),
-        nickname: "Ken Thompson",
-        imageId: "imageId222",
-      ),
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID"),
-        nickname: "Nick",
-        imageId: "imageId111",
-      ),
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID2"),
-        nickname: "Ken Thompson",
-        imageId: "imageId222",
-      ),
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID2"),
-        nickname: "Ken Thompson",
-        imageId: "imageId222",
-      ),
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID"),
-        nickname: "Nick",
-        imageId: "imageId111",
-      ),
-      Friend(
-        id: UniqueID.fromUniqueString("uniqueID2"),
-        nickname: "Ken Thompson",
-        imageId: "imageId222",
-      ),
-    ],
-  );
+  final List<Friend> friends;
 
-  FriendsList({super.key});
+  const FriendsList({required this.friends, super.key});
 
   @override
   Widget build(BuildContext context) {

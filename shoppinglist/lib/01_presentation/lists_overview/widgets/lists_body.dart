@@ -23,7 +23,10 @@ class ListsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final observerBloc = sl<ObserverBloc>()..add(ObserveAllEvent());
+    final observerBloc = sl<ObserverBloc>()
+      ..add(
+        ObserveAllEvent(),
+      );
 
     return MultiBlocProvider(
       providers: [

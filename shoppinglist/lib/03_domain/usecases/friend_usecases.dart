@@ -11,8 +11,7 @@ class FriendUsecases {
   });
 
   Stream<Either<FriendFailure, List<Friend>>> watchAllFriends() {
-    //TODO implement
-    throw UnimplementedError("Not implemented");
+    return friendRepository.watchAllFriends();
   }
 
   Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests() {

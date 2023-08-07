@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/constants/default_values.dart';
 
 class ImageMapper {
-  static const Map<String, Map<String, Icon>> string2icon = {
+  static const Map<String, Map<String, Icon>> _string2icon = {
     "square_list": {
       "default": Icon(CupertinoIcons.square_list),
       "filled": Icon(CupertinoIcons.square_list_fill)
@@ -101,23 +101,23 @@ class ImageMapper {
     },
   };
 
-  static Map<IconData, String> icon2string = _reverseMap();
+  static Map<IconData, String> _icon2string = _reverseMap();
 
   static Icon toIcon(String id) {
-    return string2icon[id]?['default'] ?? DefaultValues.defaultListIcon;
+    return _string2icon[id]?['default'] ?? const Icon(CupertinoIcons.nosign);
   }
 
   static String toID(IconData icon) {
-    return icon2string[icon] ?? DefaultValues.defaultListIconId;
+    return _icon2string[icon] ?? 'Invalid IconData';
   }
 
   static Map<IconData, String> _reverseMap() {
-    Map<IconData, String> icon2string = {};
-    string2icon.forEach((id, styles) {
+    Map<IconData, String> _icon2string = {};
+    _string2icon.forEach((id, styles) {
       styles.forEach((style, icon) {
-        icon2string[icon.icon!] = id;
+        _icon2string[icon.icon!] = id;
       });
     });
-    return icon2string;
+    return _icon2string;
   }
 }

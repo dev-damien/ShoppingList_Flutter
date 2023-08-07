@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class FriendCard extends StatelessWidget {
   final Friend friend;
@@ -18,11 +19,11 @@ class FriendCard extends StatelessWidget {
         _showFriendActionSheet(context);
       },
       child: CupertinoListTile.notched(
-        leading: const SizedBox(
+        leading: SizedBox(
           width: double.infinity,
           height: double.infinity,
           //TODO set selected icon of friend
-          child: Icon(CupertinoIcons.person),
+          child: ImageMapper.toIcon(friend.imageId),
         ),
         title: Text(
           friend.nickname,

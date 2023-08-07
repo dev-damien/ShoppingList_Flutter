@@ -17,7 +17,7 @@ class FriendsObserverBloc
 
   FriendsObserverBloc({required this.friendUsecases})
       : super(FriendsObserverInitial()) {
-    on<FriendsObserverEvent>((event, emit) async {
+    on<ObserveAllFriendsEvent>((event, emit) async {
       emit(FriendsObserverLoading());
       await _friendStreamSub?.cancel();
       _friendStreamSub = friendUsecases.watchAllFriends().listen(
