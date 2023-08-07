@@ -7,7 +7,6 @@ class UserModel {
   final String id;
   final String name;
   final String imageId; //todo: this might become another datatype
-  final List<String> favourites;
   final List<String> friendRequests;
   final List<String> friendRequestsSent;
   final dynamic serverTimestamp;
@@ -16,7 +15,6 @@ class UserModel {
     required this.id,
     required this.name,
     required this.imageId,
-    required this.favourites,
     required this.friendRequests,
     required this.friendRequestsSent,
     required this.serverTimestamp,
@@ -27,7 +25,6 @@ class UserModel {
       'id': id,
       'name': name,
       'imageId': imageId,
-      'favourites': favourites,
       'friendRequests': friendRequests,
       'friendRequestsSent': friendRequestsSent,
       'serverTimestamp': serverTimestamp,
@@ -39,7 +36,6 @@ class UserModel {
       id: "",
       name: map['name'] as String,
       imageId: map['imageId'] as String,
-      favourites: List<String>.from((map['favourites'] as List<String>)),
       friendRequests:
           List<String>.from((map['friendRequests'] as List<String>)),
       friendRequestsSent:
@@ -52,7 +48,6 @@ class UserModel {
     String? id,
     String? name,
     String? imageId,
-    List<String>? favourites,
     List<String>? friendRequests,
     List<String>? friendRequestsSent,
     List<ListPreviewModel>? listsPreview,
@@ -62,7 +57,6 @@ class UserModel {
       id: id ?? this.id,
       name: name ?? this.name,
       imageId: imageId ?? this.imageId,
-      favourites: favourites ?? this.favourites,
       friendRequests: friendRequests ?? this.friendRequests,
       friendRequestsSent: friendRequestsSent ?? this.friendRequestsSent,
       serverTimestamp: serverTimestamp ?? this.serverTimestamp,
@@ -79,7 +73,6 @@ class UserModel {
       id: UniqueID.fromUniqueString(id),
       name: name,
       imageId: imageId,
-      favourites: favourites,
       friendRequests: friendRequests,
       friendRequestsSent: friendRequestsSent,
     );
@@ -90,7 +83,6 @@ class UserModel {
       id: user.id.value,
       name: user.name,
       imageId: user.imageId,
-      favourites: user.favourites,
       friendRequests: user.friendRequests,
       friendRequestsSent: user.friendRequestsSent,
       serverTimestamp: FieldValue.serverTimestamp(),
