@@ -1,110 +1,109 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shoppinglist/constants/default_values.dart';
 
 class ImageMapper {
-  static const Map<String, Map<String, Icon>> _string2icon = {
+  static const Map<String, Map<String, IconData>> _string2icon = {
     "square_list": {
-      "default": Icon(CupertinoIcons.square_list),
-      "filled": Icon(CupertinoIcons.square_list_fill)
+      "default": CupertinoIcons.square_list,
+      "filled": CupertinoIcons.square_list_fill,
     },
     "airplane": {
-      "default": Icon(CupertinoIcons.airplane),
-      "filled": Icon(CupertinoIcons.airplane)
+      "default": CupertinoIcons.airplane,
+      "filled": CupertinoIcons.airplane,
     },
     "bag": {
-      "default": Icon(CupertinoIcons.bag),
-      "filled": Icon(CupertinoIcons.bag_fill)
+      "default": CupertinoIcons.bag,
+      "filled": CupertinoIcons.bag_fill,
     },
     "bandage": {
-      "default": Icon(CupertinoIcons.bandage),
-      "filled": Icon(CupertinoIcons.bandage_fill)
+      "default": CupertinoIcons.bandage,
+      "filled": CupertinoIcons.bandage_fill,
     },
     "bitcoin_circle": {
-      "default": Icon(CupertinoIcons.bitcoin_circle),
-      "filled": Icon(CupertinoIcons.bitcoin_circle_fill)
+      "default": CupertinoIcons.bitcoin_circle,
+      "filled": CupertinoIcons.bitcoin_circle_fill,
     },
     "book": {
-      "default": Icon(CupertinoIcons.book),
-      "filled": Icon(CupertinoIcons.book_fill)
+      "default": CupertinoIcons.book,
+      "filled": CupertinoIcons.book_fill,
     },
     "camera": {
-      "default": Icon(CupertinoIcons.camera),
-      "filled": Icon(CupertinoIcons.camera_fill)
+      "default": CupertinoIcons.camera,
+      "filled": CupertinoIcons.camera_fill,
     },
     "cart": {
-      "default": Icon(CupertinoIcons.cart),
-      "filled": Icon(CupertinoIcons.cart_fill)
+      "default": CupertinoIcons.cart,
+      "filled": CupertinoIcons.cart_fill,
     },
     "car": {
-      "default": Icon(CupertinoIcons.car),
-      "filled": Icon(CupertinoIcons.car_fill)
+      "default": CupertinoIcons.car,
+      "filled": CupertinoIcons.car_fill,
     },
     "cube_box": {
-      "default": Icon(CupertinoIcons.cube_box),
-      "filled": Icon(CupertinoIcons.cube_box_fill)
+      "default": CupertinoIcons.cube_box,
+      "filled": CupertinoIcons.cube_box_fill,
     },
     "laptop": {
-      "default": Icon(CupertinoIcons.device_laptop),
-      "filled": Icon(CupertinoIcons.device_laptop)
+      "default": CupertinoIcons.device_laptop,
+      "filled": CupertinoIcons.device_laptop,
     },
     "document": {
-      "default": Icon(CupertinoIcons.doc),
-      "filled": Icon(CupertinoIcons.doc_fill)
+      "default": CupertinoIcons.doc,
+      "filled": CupertinoIcons.doc_fill,
     },
     "music": {
-      "default": Icon(CupertinoIcons.double_music_note),
-      "filled": Icon(CupertinoIcons.double_music_note)
+      "default": CupertinoIcons.double_music_note,
+      "filled": CupertinoIcons.double_music_note,
     },
     "film": {
-      "default": Icon(CupertinoIcons.film),
-      "filled": Icon(CupertinoIcons.film_fill)
+      "default": CupertinoIcons.film,
+      "filled": CupertinoIcons.film_fill,
     },
     "gamecontroller": {
-      "default": Icon(CupertinoIcons.gamecontroller),
-      "filled": Icon(CupertinoIcons.gamecontroller_fill)
+      "default": CupertinoIcons.gamecontroller,
+      "filled": CupertinoIcons.gamecontroller_fill,
     },
     "gift": {
-      "default": Icon(CupertinoIcons.gift),
-      "filled": Icon(CupertinoIcons.gift_fill)
+      "default": CupertinoIcons.gift,
+      "filled": CupertinoIcons.gift_fill,
     },
     "group": {
-      "default": Icon(CupertinoIcons.group),
-      "filled": Icon(CupertinoIcons.group_solid)
+      "default": CupertinoIcons.group,
+      "filled": CupertinoIcons.group_solid,
     },
     "hammer": {
-      "default": Icon(CupertinoIcons.hammer),
-      "filled": Icon(CupertinoIcons.hammer_fill)
+      "default": CupertinoIcons.hammer,
+      "filled": CupertinoIcons.hammer_fill,
     },
     "house": {
-      "default": Icon(CupertinoIcons.house),
-      "filled": Icon(CupertinoIcons.house_fill)
+      "default": CupertinoIcons.house,
+      "filled": CupertinoIcons.house_fill,
     },
     "lab": {
-      "default": Icon(CupertinoIcons.lab_flask),
-      "filled": Icon(CupertinoIcons.lab_flask_solid)
+      "default": CupertinoIcons.lab_flask,
+      "filled": CupertinoIcons.lab_flask_solid,
     },
     "paw": {
-      "default": Icon(CupertinoIcons.paw),
-      "filled": Icon(CupertinoIcons.paw_solid)
+      "default": CupertinoIcons.paw,
+      "filled": CupertinoIcons.paw_solid,
     },
     "sport": {
-      "default": Icon(CupertinoIcons.sportscourt),
-      "filled": Icon(CupertinoIcons.sportscourt_fill)
+      "default": CupertinoIcons.sportscourt,
+      "filled": CupertinoIcons.sportscourt_fill,
     },
     "stopwatch": {
-      "default": Icon(CupertinoIcons.stopwatch),
-      "filled": Icon(CupertinoIcons.stopwatch_fill)
+      "default": CupertinoIcons.stopwatch,
+      "filled": CupertinoIcons.stopwatch_fill,
     },
     "tickets": {
-      "default": Icon(CupertinoIcons.tickets),
-      "filled": Icon(CupertinoIcons.tickets_fill)
+      "default": CupertinoIcons.tickets,
+      "filled": CupertinoIcons.tickets_fill,
     },
   };
 
-  static Map<IconData, String> _icon2string = _reverseMap();
+  static final Map<IconData, String> _icon2string = _reverseMap();
 
-  static Icon toIcon(String id) {
-    return _string2icon[id]?['default'] ?? const Icon(CupertinoIcons.nosign);
+  static IconData toIconData(String id) {
+    return _string2icon[id]?['default'] ?? CupertinoIcons.nosign;
   }
 
   static String toID(IconData icon) {
@@ -115,7 +114,7 @@ class ImageMapper {
     Map<IconData, String> _icon2string = {};
     _string2icon.forEach((id, styles) {
       styles.forEach((style, icon) {
-        _icon2string[icon.icon!] = id;
+        _icon2string[icon] = id;
       });
     });
     return _icon2string;

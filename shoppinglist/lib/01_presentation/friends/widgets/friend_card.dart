@@ -23,7 +23,10 @@ class FriendCard extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           //TODO set selected icon of friend
-          child: ImageMapper.toIcon(friend.imageId),
+          child: Icon(
+            ImageMapper.toIconData(friend.imageId),
+            size: 30,
+          ),
         ),
         title: Text(
           friend.nickname,
