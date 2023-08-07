@@ -10,18 +10,17 @@ class UserModel {
   final List<String> favourites;
   final List<String> friendRequests;
   final List<String> friendRequestsSent;
-  final List<String> friends;
   final dynamic serverTimestamp;
 
-  UserModel(
-      {required this.id,
-      required this.name,
-      required this.imageId,
-      required this.favourites,
-      required this.friendRequests,
-      required this.friendRequestsSent,
-      required this.friends,
-      required this.serverTimestamp});
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.imageId,
+    required this.favourites,
+    required this.friendRequests,
+    required this.friendRequestsSent,
+    required this.serverTimestamp,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -31,7 +30,6 @@ class UserModel {
       'favourites': favourites,
       'friendRequests': friendRequests,
       'friendRequestsSent': friendRequestsSent,
-      'friends': friends,
       'serverTimestamp': serverTimestamp,
     };
   }
@@ -46,7 +44,6 @@ class UserModel {
           List<String>.from((map['friendRequests'] as List<String>)),
       friendRequestsSent:
           List<String>.from((map['friendRequestsSent'] as List<String>)),
-      friends: List<String>.from((map['friends'] as List<String>)),
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
@@ -58,7 +55,6 @@ class UserModel {
     List<String>? favourites,
     List<String>? friendRequests,
     List<String>? friendRequestsSent,
-    List<String>? friends,
     List<ListPreviewModel>? listsPreview,
     dynamic serverTimestamp,
   }) {
@@ -69,7 +65,6 @@ class UserModel {
       favourites: favourites ?? this.favourites,
       friendRequests: friendRequests ?? this.friendRequests,
       friendRequestsSent: friendRequestsSent ?? this.friendRequestsSent,
-      friends: friends ?? this.friends,
       serverTimestamp: serverTimestamp ?? this.serverTimestamp,
     );
   }
@@ -81,24 +76,24 @@ class UserModel {
 
   UserData toDomain() {
     return UserData(
-        id: UniqueID.fromUniqueString(id),
-        name: name,
-        imageId: imageId,
-        favourites: favourites,
-        friendRequests: friendRequests,
-        friendRequestsSent: friendRequestsSent,
-        friends: friends);
+      id: UniqueID.fromUniqueString(id),
+      name: name,
+      imageId: imageId,
+      favourites: favourites,
+      friendRequests: friendRequests,
+      friendRequestsSent: friendRequestsSent,
+    );
   }
 
   factory UserModel.fromDomain(UserData user) {
     return UserModel(
-        id: user.id.value,
-        name: user.name,
-        imageId: user.imageId,
-        favourites: user.favourites,
-        friendRequests: user.friendRequests,
-        friendRequestsSent: user.friendRequestsSent,
-        friends: user.friends,
-        serverTimestamp: FieldValue.serverTimestamp());
+      id: user.id.value,
+      name: user.name,
+      imageId: user.imageId,
+      favourites: user.favourites,
+      friendRequests: user.friendRequests,
+      friendRequestsSent: user.friendRequestsSent,
+      serverTimestamp: FieldValue.serverTimestamp(),
+    );
   }
 }

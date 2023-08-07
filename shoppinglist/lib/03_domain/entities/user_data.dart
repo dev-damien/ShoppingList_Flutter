@@ -1,5 +1,4 @@
 import 'package:shoppinglist/03_domain/entities/id.dart';
-import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 
 class UserData {
   final UniqueID id;
@@ -8,26 +7,25 @@ class UserData {
   final List<String> favourites;
   final List<String> friendRequests;
   final List<String> friendRequestsSent;
-  final List<String> friends;
 
-  UserData(
-      {required this.id,
-      required this.name,
-      required this.imageId,
-      required this.favourites,
-      required this.friendRequests,
-      required this.friendRequestsSent,
-      required this.friends});
+  UserData({
+    required this.id,
+    required this.name,
+    required this.imageId,
+    required this.favourites,
+    required this.friendRequests,
+    required this.friendRequestsSent,
+  });
 
   factory UserData.empty() {
     return UserData(
-        id: UniqueID(),
-        name: "",
-        imageId: "",
-        favourites: List<String>.empty(),
-        friendRequests: List<String>.empty(),
-        friendRequestsSent: List<String>.empty(),
-        friends: List<String>.empty());
+      id: UniqueID(),
+      name: "",
+      imageId: "",
+      favourites: List<String>.empty(),
+      friendRequests: List<String>.empty(),
+      friendRequestsSent: List<String>.empty(),
+    );
   }
 
   UserData copyWith({
@@ -46,7 +44,6 @@ class UserData {
       favourites: favourites ?? this.favourites,
       friendRequests: friendRequests ?? this.friendRequests,
       friendRequestsSent: friendRequestsSent ?? this.friendRequestsSent,
-      friends: friends ?? this.friends,
     );
   }
 }
