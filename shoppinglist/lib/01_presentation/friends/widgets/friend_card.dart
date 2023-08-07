@@ -31,6 +31,9 @@ class FriendCard extends StatelessWidget {
         title: Text(
           friend.nickname,
         ),
+        subtitle: Text(
+          friend.id.value,
+        ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Icon(
