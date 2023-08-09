@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TabIconWithNotification extends StatelessWidget {
@@ -24,7 +25,7 @@ class TabIconWithNotification extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: CupertinoColors.systemRed,
                   shape: BoxShape.circle,
                 ),
                 child: Text(
