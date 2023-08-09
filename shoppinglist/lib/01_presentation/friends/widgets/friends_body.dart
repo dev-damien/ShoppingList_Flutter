@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/friends/widgets/friends_list.dart';
 import 'package:shoppinglist/01_presentation/friends/widgets/friends_requests_button.dart.dart';

@@ -43,8 +43,7 @@ class FriendRepositoryImpl implements FriendRepository {
   }
 
   @override
-  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests() {
-    // TODO: implement watchAllFriendRequests
+  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests() async* {
     throw UnimplementedError();
   }
 
@@ -52,7 +51,7 @@ class FriendRepositoryImpl implements FriendRepository {
   Stream<Either<FriendFailure, List<Friend>>> watchAllFriends() async* {
     final userDoc = await firestore.userDocument();
 
-    // right side: listen on list_previews
+    // right side: listen on friends
     yield* userDoc.friendPreviewCollection
         .snapshots()
         .map((snapshot) => right<FriendFailure, List<Friend>>(snapshot.docs

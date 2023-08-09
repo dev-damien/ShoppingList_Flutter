@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
+import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart' as r;
@@ -30,7 +31,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               di.sl<AuthBloc>()..add(AuthCheckRequestedEvent()),
-        )
+        ),
+        BlocProvider(
+          create: (context) =>
+              di.sl<UserObserverBloc>()..add((ObserveUserEvent())),
+        ),
       ],
       child: CupertinoApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),

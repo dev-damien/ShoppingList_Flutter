@@ -6,7 +6,7 @@ abstract class UserRepository {
   Future<Either<UserFailure, Unit>> create(UserData user);
 
   //todo might be useless
-  Stream<Either<UserFailure, Unit>> watch();
+  Stream<Either<UserFailure, UserData>> watch();
 
   Future<Either<UserFailure, Unit>> update(UserData user);
 

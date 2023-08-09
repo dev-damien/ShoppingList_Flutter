@@ -28,9 +28,29 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<Either<UserFailure, Unit>> watch() {
-    // TODO: implement watchAll
-    throw UnimplementedError();
+  Stream<Either<UserFailure, UserData>> watch() async* {
+    final userDoc = await firestore.userDocument();
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> querySnapshots =
+        userDoc.snapshots() as Stream<DocumentSnapshot<Map<String, dynamic>>>;
+
+    yield* querySnapshots.map((doc) {
+      var res = UserModel.fromFirestore(doc).toDomain();
+      return res;
+    }).map((userData) {
+      return right<UserFailure, UserData>(userData);
+    }).handleError((e) {
+      // Handle different error cases
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    });
   }
 
   @override

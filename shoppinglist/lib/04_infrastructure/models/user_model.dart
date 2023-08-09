@@ -9,7 +9,7 @@ class UserModel {
   final String imageId; //todo: this might become another datatype
   final List<String> friendRequests;
   final List<String> friendRequestsSent;
-  final dynamic serverTimestamp;
+  //final dynamic serverTimestamp;
 
   UserModel({
     required this.id,
@@ -17,7 +17,7 @@ class UserModel {
     required this.imageId,
     required this.friendRequests,
     required this.friendRequestsSent,
-    required this.serverTimestamp,
+    //required this.serverTimestamp,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,21 +27,22 @@ class UserModel {
       'imageId': imageId,
       'friendRequests': friendRequests,
       'friendRequestsSent': friendRequestsSent,
-      'serverTimestamp': serverTimestamp,
+      //'serverTimestamp': serverTimestamp,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
+    var res = UserModel(
       id: "",
       name: map['name'] as String,
       imageId: map['imageId'] as String,
       friendRequests:
-          List<String>.from((map['friendRequests'] as List<String>)),
+          List<String>.from((map['friendRequests'])),
       friendRequestsSent:
-          List<String>.from((map['friendRequestsSent'] as List<String>)),
-      serverTimestamp: map['serverTimestamp'] as dynamic,
+          List<String>.from((map['friendRequestsSent'])),
+      //serverTimestamp: map['serverTimestamp'] as dynamic,
     );
+    return res;
   }
 
   UserModel copyWith({
@@ -51,7 +52,7 @@ class UserModel {
     List<String>? friendRequests,
     List<String>? friendRequestsSent,
     List<ListPreviewModel>? listsPreview,
-    dynamic serverTimestamp,
+    //dynamic serverTimestamp,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -59,13 +60,13 @@ class UserModel {
       imageId: imageId ?? this.imageId,
       friendRequests: friendRequests ?? this.friendRequests,
       friendRequestsSent: friendRequestsSent ?? this.friendRequestsSent,
-      serverTimestamp: serverTimestamp ?? this.serverTimestamp,
+      //serverTimestamp: serverTimestamp ?? this.serverTimestamp,
     );
   }
 
-  factory UserModel.fromFirestore(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return UserModel.fromMap(doc.data()).copyWith(id: doc.id);
+  factory UserModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    var res = UserModel.fromMap(doc.data()!).copyWith(id: doc.id);
+    return res;
   }
 
   UserData toDomain() {
@@ -85,7 +86,7 @@ class UserModel {
       imageId: user.imageId,
       friendRequests: user.friendRequests,
       friendRequestsSent: user.friendRequestsSent,
-      serverTimestamp: FieldValue.serverTimestamp(),
+      //serverTimestamp: FieldValue.serverTimestamp(),
     );
   }
 }

@@ -6,15 +6,19 @@ import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
+import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_preview_repository.dart';
+import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/friend_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/list_preview_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/auth_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
+import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
 import '04_infrastructure/local/theme_local_storage.dart';
 
@@ -45,6 +49,18 @@ Future<void> init() async {
         firebaseAuth: sl(),
         firestore: sl(),
       ));
+
+  //? ################ user ###############################################################################
+
+  //! state management
+  sl.registerFactory(() => UserObserverBloc(userUsecases: sl()));
+
+  //! usecases
+  sl.registerLazySingleton(() => UserUsecases(userRepository: sl()));
+
+  //! repos
+  sl.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(firestore: sl()));
 
   //? ################ lists ###############################################################################
 
