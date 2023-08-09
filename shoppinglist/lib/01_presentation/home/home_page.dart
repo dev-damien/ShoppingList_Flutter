@@ -44,7 +44,6 @@ class HomePage extends StatelessWidget {
           );
         }
         if (state is UserObserverSuccess) {
-          print(state.userData.friendRequests);
           return CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
               items: <BottomNavigationBarItem>[
