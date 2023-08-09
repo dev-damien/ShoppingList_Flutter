@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/account/account_page.dart';
 import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
-import 'package:shoppinglist/01_presentation/home/widgets/TabIconWithNotification.dart';
+import 'package:shoppinglist/01_presentation/home/widgets/tabIconWithNotification.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
