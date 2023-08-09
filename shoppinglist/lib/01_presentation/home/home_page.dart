@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/account/account_page.dart';
 import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
+import 'package:shoppinglist/01_presentation/home/widgets/TabIconWithNotification.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
 
@@ -13,19 +14,32 @@ class HomePage extends StatelessWidget {
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.square_list),
+            icon: TabIconWithNotification(
+              iconData: CupertinoIcons.square_list,
+              notificationCount: 0,
+            ),
             label: "Lists",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person_2),
+            //icon: Icon(CupertinoIcons.person_2),
+            icon: TabIconWithNotification(
+              iconData: CupertinoIcons.person_2,
+              notificationCount: 1,
+            ),
             label: "Friends",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings),
+            icon: TabIconWithNotification(
+              iconData: CupertinoIcons.settings,
+              notificationCount: 0,
+            ),
             label: "Settings",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.profile_circled),
+            icon: TabIconWithNotification(
+              iconData: CupertinoIcons.profile_circled,
+              notificationCount: 0,
+            ),
             label: "Account",
           ),
         ],
