@@ -8,6 +8,8 @@ import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart' as r;
 
+import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -35,6 +37,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               di.sl<UserObserverBloc>()..add((ObserveUserEvent())),
+        ),
+        BlocProvider<FriendRequestsObserverBloc>(
+          create: (context) => di.sl<FriendRequestsObserverBloc>()
+            ..add(
+              ObserveAllFriendRequestsEvent(),
+            ),
         ),
       ],
       child: CupertinoApp.router(
