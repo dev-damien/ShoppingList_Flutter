@@ -25,6 +25,10 @@ class FriendRequestCard extends StatelessWidget {
       title: Text(
         userData.name,
       ),
+      subtitle: Text(
+        userData.id.value,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: Row(
         children: [
           CupertinoButton(
@@ -33,11 +37,12 @@ class FriendRequestCard extends StatelessWidget {
                 Icon(
                   CupertinoIcons.clear_circled_solid,
                   color: CupertinoColors.destructiveRed,
-                  size: 30,
+                  size: 25,
                 ),
                 Text(
                   'Decline',
                   style: TextStyle(
+                    fontSize: 14,
                     color: CupertinoColors.destructiveRed,
                   ),
                 ),
@@ -54,11 +59,12 @@ class FriendRequestCard extends StatelessWidget {
                 Icon(
                   CupertinoIcons.check_mark_circled_solid,
                   color: CupertinoColors.activeGreen,
-                  size: 30,
+                  size: 25,
                 ),
                 Text(
                   'Accept',
                   style: TextStyle(
+                    fontSize: 14,
                     color: CupertinoColors.activeGreen,
                   ),
                 )
