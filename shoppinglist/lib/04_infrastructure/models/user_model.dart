@@ -34,12 +34,14 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> map) {
     var res = UserModel(
       id: "",
-      name: map['name'] as String,
-      imageId: map['imageId'] as String,
-      friendRequests:
-          List<String>.from((map['friendRequests'])),
-      friendRequestsSent:
-          List<String>.from((map['friendRequestsSent'])),
+      name: map['name'] as String? ?? "field did not exist",
+      imageId: map['imageId'] as String? ?? "field did not exists",
+      friendRequests: List<String>.from(
+        (map['friendRequests'] ?? []),
+      ),
+      friendRequestsSent: List<String>.from(
+        (map['friendRequestsSent'] ?? []),
+      ),
       //serverTimestamp: map['serverTimestamp'] as dynamic,
     );
     return res;
