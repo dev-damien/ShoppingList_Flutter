@@ -13,4 +13,6 @@ abstract class UserRepository {
   //todo or use UniqueID only
   //todo maybe remove entirely
   Future<Either<UserFailure, Unit>> delete(UserData user);
+
+  Future<Either<UserFailure, UserData>> getById(String id);
 }

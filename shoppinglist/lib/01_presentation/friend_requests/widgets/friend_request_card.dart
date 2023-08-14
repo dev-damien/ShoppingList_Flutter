@@ -1,25 +1,29 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class FriendRequestCard extends StatelessWidget {
-  final Friend friend;
+  final UserData userData;
 
   const FriendRequestCard({
     Key? key,
-    required this.friend,
+    required this.userData,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile.notched(
-      leading: const SizedBox(
+      leading: SizedBox(
         width: double.infinity,
         height: double.infinity,
         //TODO set selected icon of friend
-        child: Icon(CupertinoIcons.person),
+        child: Icon(
+          ImageMapper.toIconData(userData.imageId),
+          size: 30,
+        ),
       ),
       title: Text(
-        friend.nickname,
+        userData.name,
       ),
       trailing: Row(
         children: [
@@ -41,7 +45,7 @@ class FriendRequestCard extends StatelessWidget {
             ),
             onPressed: () {
               //TODO implement decline friend request
-              print('friend request of ${friend.nickname} declined');
+              print('friend request of ${userData.name} declined');
             },
           ),
           CupertinoButton(
@@ -62,7 +66,7 @@ class FriendRequestCard extends StatelessWidget {
             ),
             onPressed: () {
               //TODO implement accept friend request
-              print('friend request of ${friend.nickname} accepted');
+              print('friend request of ${userData.name} accepted');
             },
           ),
         ],

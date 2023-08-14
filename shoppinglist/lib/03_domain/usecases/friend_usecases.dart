@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/core/failures/friend_failures.dart';
+import 'package:shoppinglist/core/failures/user_failures.dart';
 
 class FriendUsecases {
   final FriendRepository friendRepository;
@@ -14,7 +16,7 @@ class FriendUsecases {
     return friendRepository.watchAllFriends();
   }
 
-  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests() {
+  Stream<Either<UserFailure, List<String>>> watchAllFriendRequests() {
     return friendRepository.watchAllFriendRequests();
   }
 

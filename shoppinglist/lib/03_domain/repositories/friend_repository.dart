@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/core/failures/friend_failures.dart';
+import 'package:shoppinglist/core/failures/user_failures.dart';
 
 abstract class FriendRepository {
   Stream<Either<FriendFailure, List<Friend>>> watchAllFriends();
 
-  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests();
+  Stream<Either<UserFailure, List<String>>> watchAllFriendRequests();
 
   Future<Either<FriendFailure, Unit>> addRequest(String userId);
 

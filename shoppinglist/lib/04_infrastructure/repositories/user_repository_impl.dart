@@ -72,4 +72,37 @@ class UserRepositoryImpl implements UserRepository {
     //     }
     //   }
   }
+
+  @override
+  Future<Either<UserFailure, UserData>> getById(String id) async {
+    try {
+      print("userrepo -> get id $id"); // TODO remove
+      final userDoc = FirebaseFirestore.instance.collection("users").doc(id);
+
+      final docSnapshot = await userDoc.get();
+
+      if (docSnapshot.exists) {
+        // user with id exists
+        print("userrepo -> user doc: ${userDoc}"); // TODO remove
+        UserData userData = UserModel.fromFirestore(docSnapshot).toDomain();
+        print("userrepo -> userData: $userData");
+        return right<UserFailure, UserData>(userData);
+      } else {
+        // user with id does not exist
+        return left(UserNotFount());
+      }
+    } catch (e) {
+      // Handle different error cases
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
+  }
 }

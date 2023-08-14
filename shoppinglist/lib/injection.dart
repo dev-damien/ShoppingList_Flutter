@@ -20,6 +20,7 @@ import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_im
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
+import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 import '04_infrastructure/local/theme_local_storage.dart';
 
 final sl = GetIt.I; //service locator
@@ -78,13 +79,19 @@ Future<void> init() async {
   //? ################# friends and requests #####################################################################
   //! state management
   sl.registerFactory(() => FriendsObserverBloc(friendUsecases: sl()));
+  sl.registerFactory(() => FriendRequestsObserverBloc(
+        friendUsecases: sl(),
+        userUsecases: sl(),
+      ));
 
   //! usecases
   sl.registerLazySingleton(() => FriendUsecases(friendRepository: sl()));
 
   //! repos
-  sl.registerLazySingleton<FriendRepository>(
-      () => FriendRepositoryImpl(firestore: sl()));
+  sl.registerLazySingleton<FriendRepository>(() => FriendRepositoryImpl(
+        firestore: sl(),
+        userRepository: sl(),
+      ));
 
   //! ################# external: firebase and firestore #####################################################################
   //! auth
