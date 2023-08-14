@@ -5,6 +5,7 @@ import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
 import 'package:shoppinglist/01_presentation/home/widgets/tabIconWithNotification.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
+import 'package:shoppinglist/02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/core/failures/user_failures.dart';
 
@@ -26,15 +27,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserObserverBloc, UserObserverState>(
+    return BlocBuilder<FriendRequestsObserverBloc, FriendRequestsObserverState>(
       builder: (context, state) {
-        if (state is UserObserverInitial) {
+        if (state is FriendRequestsObserverInitial) {
           return Container();
         }
-        if (state is UserObserverLoading) {
+        if (state is FriendRequestsObserverLoading) {
           return const CupertinoActivityIndicator();
         }
-        if (state is UserObserverFailure) {
+        if (state is FriendRequestsObserverFailure) {
           return Center(
             child: Text(
               mapFailureMessage(
@@ -43,7 +44,7 @@ class HomePage extends StatelessWidget {
             ),
           );
         }
-        if (state is UserObserverSuccess) {
+        if (state is FriendRequestsObserverSuccess) {
           return CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
               items: <BottomNavigationBarItem>[
@@ -57,7 +58,7 @@ class HomePage extends StatelessWidget {
                 BottomNavigationBarItem(
                   icon: TabIconWithNotification(
                     iconData: CupertinoIcons.person_2,
-                    notificationCount: state.userData.friendRequests.length,
+                    notificationCount: state.friendRequests.length,
                   ),
                   label: "Friends",
                 ),
