@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shoppinglist/02_application/add_friends/searchForm/friend_search_form_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
@@ -82,6 +83,9 @@ Future<void> init() async {
   sl.registerFactory(() => FriendRequestsObserverBloc(
         friendUsecases: sl(),
         userUsecases: sl(),
+      ));
+  sl.registerFactory(() => FriendSearchFormBloc(
+        friendUsecases: sl(),
       ));
 
   //! usecases

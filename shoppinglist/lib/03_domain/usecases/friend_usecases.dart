@@ -55,4 +55,9 @@ class FriendUsecases {
     //TODO implement
     throw UnimplementedError("Not implemented");
   }
+
+  Future<Either<FriendFailure, List<UserData>>> searchUsers(String searchString) {
+    //TODO implement function
+    throw UnimplementedError();
+  }
 }
