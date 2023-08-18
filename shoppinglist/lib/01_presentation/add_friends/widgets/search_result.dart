@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class SearchResult extends StatelessWidget {
-  const SearchResult({super.key});
+  final UserData user;
+  const SearchResult({
+    required this.user,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +18,12 @@ class SearchResult extends StatelessWidget {
         CupertinoListTile.notched(
           leadingSize: double.parse('42.0'),
           leading: Icon(
-            CupertinoIcons.profile_circled,
+            ImageMapper.toIconData(user.imageId),
             size: 40,
           ),
-          //TODO use real username
-          title: Text('todoRealUserName'),
+          title: Text(user.name),
+          subtitle: Text(user.id.value),
           trailing: CupertinoButton(
-            //TODO use real icon
             child: Icon(
               CupertinoIcons.add_circled_solid,
               size: 30,

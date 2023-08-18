@@ -15,4 +15,6 @@ abstract class UserRepository {
   Future<Either<UserFailure, Unit>> delete(UserData user);
 
   Future<Either<UserFailure, UserData>> getById(String id);
+
+  Future<Either<UserFailure, List<UserData>>> getByName(String id);
 }

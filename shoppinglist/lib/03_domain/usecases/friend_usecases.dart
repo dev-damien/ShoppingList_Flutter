@@ -2,14 +2,17 @@ import 'package:dartz/dartz.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
+import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/core/failures/friend_failures.dart';
 import 'package:shoppinglist/core/failures/user_failures.dart';
 
 class FriendUsecases {
   final FriendRepository friendRepository;
+  final UserRepository userRepository;
 
   FriendUsecases({
     required this.friendRepository,
+    required this.userRepository,
   });
 
   Stream<Either<FriendFailure, List<Friend>>> watchAllFriends() {
@@ -56,8 +59,34 @@ class FriendUsecases {
     throw UnimplementedError("Not implemented");
   }
 
-  Future<Either<FriendFailure, List<UserData>>> searchUsers(String searchString) {
-    //TODO implement function
-    throw UnimplementedError();
+  Future<Either<FriendFailure, List<UserData>>> searchUsers(
+      String searchString) async {
+    final matchedId = await userRepository.getById(searchString);
+    final matchedName = await userRepository.getByName(searchString);
+    List<UserData> result = List.empty(growable: true);
+
+    matchedId.fold(
+      (failure) {
+        // no user with this id found
+      },
+      (user) {
+        // user with id found
+        result.add(user);
+      },
+    );
+    matchedName.fold(
+      (failure) {
+        // error occured
+      },
+      (users) {
+        // list of users where name matches search string
+        print(users); //TODO remove debug print
+        result.addAll(users);
+      },
+    );
+
+    print(
+        'search: input=$searchString result=${result.map((e) => e.name)}'); //TODO remove debug print
+    return right<FriendFailure, List<UserData>>(result);
   }
 }

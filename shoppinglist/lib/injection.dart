@@ -31,7 +31,10 @@ Future<void> init() async {
 
   //! datasource
   sl.registerLazySingleton<ThemeLocalDatasource>(
-      () => ThemeLocalDatasourceImpl(sharedPreferences: sl()));
+    () => ThemeLocalDatasourceImpl(
+      sharedPreferences: sl(),
+    ),
+  );
 
   //! extern
   final sharedPrefernces = await SharedPreferences.getInstance();
@@ -39,12 +42,23 @@ Future<void> init() async {
 
   //? ################# auth ###############################################################################
   //! state management
-  sl.registerFactory(() => SignUpFormBloc(authUsecases: sl()));
-  sl.registerFactory(() => AuthBloc(authUsecases: sl()));
+  sl.registerFactory(
+    () => SignUpFormBloc(
+      authUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => AuthBloc(
+      authUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton<AuthUsecases>(
-      () => AuthUsecases(authRepository: sl()));
+    () => AuthUsecases(
+      authRepository: sl(),
+    ),
+  );
 
   //! repos
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(
@@ -55,31 +69,56 @@ Future<void> init() async {
   //? ################ user ###############################################################################
 
   //! state management
-  sl.registerFactory(() => UserObserverBloc(userUsecases: sl()));
+  sl.registerFactory(
+    () => UserObserverBloc(
+      userUsecases: sl(),
+    ),
+  );
 
   //! usecases
-  sl.registerLazySingleton(() => UserUsecases(userRepository: sl()));
+  sl.registerLazySingleton(
+    () => UserUsecases(
+      userRepository: sl(),
+    ),
+  );
 
   //! repos
   sl.registerLazySingleton<UserRepository>(
-      () => UserRepositoryImpl(firestore: sl()));
+    () => UserRepositoryImpl(
+      firestore: sl(),
+    ),
+  );
 
   //? ################ lists ###############################################################################
 
   //! state management
-  sl.registerFactory(() => ObserverBloc(listPreviewUsecases: sl()));
+  sl.registerFactory(
+    () => ObserverBloc(
+      listPreviewUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton(
-      () => ListPreviewUsecases(listPreviewRepository: sl()));
+    () => ListPreviewUsecases(
+      listPreviewRepository: sl(),
+    ),
+  );
 
   //! repos
   sl.registerLazySingleton<ListPreviewRepository>(
-      () => ListPreviewRepositoryImpl(firestore: sl()));
+    () => ListPreviewRepositoryImpl(
+      firestore: sl(),
+    ),
+  );
 
   //? ################# friends and requests #####################################################################
   //! state management
-  sl.registerFactory(() => FriendsObserverBloc(friendUsecases: sl()));
+  sl.registerFactory(
+    () => FriendsObserverBloc(
+      friendUsecases: sl(),
+    ),
+  );
   sl.registerFactory(() => FriendRequestsObserverBloc(
         friendUsecases: sl(),
         userUsecases: sl(),
@@ -89,7 +128,12 @@ Future<void> init() async {
       ));
 
   //! usecases
-  sl.registerLazySingleton(() => FriendUsecases(friendRepository: sl()));
+  sl.registerLazySingleton(
+    () => FriendUsecases(
+      friendRepository: sl(),
+      userRepository: sl(),
+    ),
+  );
 
   //! repos
   sl.registerLazySingleton<FriendRepository>(() => FriendRepositoryImpl(
@@ -100,9 +144,13 @@ Future<void> init() async {
   //! ################# external: firebase and firestore #####################################################################
   //! auth
   final firebaseAuth = FirebaseAuth.instance;
-  sl.registerLazySingleton(() => firebaseAuth);
+  sl.registerLazySingleton(
+    () => firebaseAuth,
+  );
 
   //! firestore
   final firestore = FirebaseFirestore.instance;
-  sl.registerLazySingleton(() => firestore);
+  sl.registerLazySingleton(
+    () => firestore,
+  );
 }

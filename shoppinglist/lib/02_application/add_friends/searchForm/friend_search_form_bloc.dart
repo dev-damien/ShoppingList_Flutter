@@ -33,6 +33,8 @@ class FriendSearchFormBloc
           print('search friend success'); //TODO remove debug print
           emit(
             state.copyWith(
+              wasSearched: true,
+              matchedUsers: searchResults,
               isSearching: false,
               showErrorMessages: false,
             ),

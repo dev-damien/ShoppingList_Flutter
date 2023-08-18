@@ -11,6 +11,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/qr_code.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/search_result.dart';
 import 'package:shoppinglist/02_application/add_friends/searchForm/friend_search_form_bloc.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/injection.dart';
 
 class AddFriendsBody extends StatelessWidget {
@@ -23,30 +24,46 @@ class AddFriendsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchBloc = sl<FriendSearchFormBloc>();
+
     return BlocProvider(
-      create: (context) => sl<FriendSearchFormBloc>(),
-      child: BlocConsumer<FriendSearchFormBloc, FriendSearchFormState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+      create: (context) => searchBloc,
+      child: BlocBuilder<FriendSearchFormBloc, FriendSearchFormState>(
         builder: (context, state) {
+          print(
+              'state: isSearching=${state.isSearching}, numberOfMatches=${state.matchedUsers.length}'); //TODO remove debug print
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 10,
+                padding: const EdgeInsets.all(
+                  10,
                 ),
                 child: CupertinoSearchTextField(
-                  placeholder: 'Search ID',
+                  placeholder: 'Search ID or name',
+                  onSubmitted: (value) {
+                    searchBloc.add(
+                      SearchUserEvent(searchString: value),
+                    );
+                  },
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text('No user found with this ID'),
-              SearchResult(),
+              if (state.isSearching)
+                Center(
+                  child: CupertinoActivityIndicator(),
+                )
+              else if (state.matchedUsers.isEmpty && state.wasSearched)
+                Text('No users found with this ID or name')
+              else
+                Column(
+                  children: List.generate(
+                    state.matchedUsers
+                        .length, // The number of times you want to repeat the widgets
+                    (index) => SearchResult(
+                        user: state.matchedUsers
+                            .elementAt(index)), // Your widget to be added
+                  ),
+                )
+
               //TODO use later when woring on qr code again
               // QRCode(value: user.uid),
               // CupertinoButton.filled(

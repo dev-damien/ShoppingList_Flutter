@@ -46,51 +46,25 @@ class FriendRequestsObserverBloc
             );
           },
           (friendRequests) async {
-            print("friend requests recieved, fold right"); // TODO remove
-
-            print("before mapping"); // TODO remove
             // get the data for all requester ids, such as name and profile picture
             final futures = friendRequests.map((requesterId) async {
               return await userUsecases.getUserById(requesterId);
             });
 
-            print("after mapping"); // TODO remove
-
-            print("before await all futures"); // TODO remove
             // Wait for all futures to complete
             final values = await Future.wait(futures);
-            print("after await all futures"); // TODO remove
 
-            print("before for loop"); // TODO remove
             // add only successfull UserData to list
             for (var userDataOrFailure in values) {
               userDataOrFailure.fold(
                 (failure) {
-                  print(failure.runtimeType);
+                  print('friend request lead to error: ${failure.runtimeType}');
                 },
                 (userData) {
                   return friendRequestsWithUserData.add(userData);
                 },
               );
             }
-            print("after for loop"); // TODO remove
-
-            // for (var requesterId in friendRequests) {
-            //   final userDataOrFailure =
-            //       await userUsecases.getUserById(requesterId);
-
-            //   userDataOrFailure.fold(
-            //     (failure) => null,
-            //     (userData) => friendRequestsWithUserData.add(userData),
-            //   );
-            // }
-
-            friendRequestsWithUserData.forEach((element) {
-              print(
-                  "data: id=${element.id}, name=${element.name}"); // TODO remove
-            });
-
-            print("emit success"); // TODO remove
           },
         );
         emit(
