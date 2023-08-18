@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoppinglist/02_application/add_friends/searchForm/friend_search_form_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
+import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
@@ -119,13 +120,22 @@ Future<void> init() async {
       friendUsecases: sl(),
     ),
   );
-  sl.registerFactory(() => FriendRequestsObserverBloc(
-        friendUsecases: sl(),
-        userUsecases: sl(),
-      ));
-  sl.registerFactory(() => FriendSearchFormBloc(
-        friendUsecases: sl(),
-      ));
+  sl.registerFactory(
+    () => FriendRequestsObserverBloc(
+      friendUsecases: sl(),
+      userUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => FriendSearchFormBloc(
+      friendUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => FriendControllerBloc(
+      friendUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton(
