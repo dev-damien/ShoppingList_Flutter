@@ -80,13 +80,12 @@ class FriendUsecases {
       },
       (users) {
         // list of users where name matches search string
-        print(users); //TODO remove debug print
         result.addAll(users);
       },
     );
 
     print(
-        'search: input=$searchString result=${result.map((e) => e.name)}'); //TODO remove debug print
+        'friend usecase -> searchUsers: input=$searchString result=${result.map((e) => e.name)}'); //TODO remove debug print
     return right<FriendFailure, List<UserData>>(result);
   }
 }

@@ -13,14 +13,12 @@ class FriendSearchFormBloc
   FriendSearchFormBloc({required this.friendUsecases})
       : super(FriendSearchFormState.initial()) {
     on<SearchUserEvent>((event, emit) async {
-      print('search user event received'); //TODO remove debug print
       emit(state.copyWith(isSearching: true));
 
       final searchResultsOrFailure =
           await friendUsecases.searchUsers(event.searchString);
       searchResultsOrFailure.fold(
         (failure) {
-          print('search friend failure occured'); //TODO remove debug print
           emit(
             state.copyWith(
               isSearching: false,
@@ -30,7 +28,6 @@ class FriendSearchFormBloc
           );
         },
         (searchResults) {
-          print('search friend success'); //TODO remove debug print
           emit(
             state.copyWith(
               wasSearched: true,

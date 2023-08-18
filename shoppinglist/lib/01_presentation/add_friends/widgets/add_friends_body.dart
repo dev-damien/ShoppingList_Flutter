@@ -30,8 +30,6 @@ class AddFriendsBody extends StatelessWidget {
       create: (context) => searchBloc,
       child: BlocBuilder<FriendSearchFormBloc, FriendSearchFormState>(
         builder: (context, state) {
-          print(
-              'state: isSearching=${state.isSearching}, numberOfMatches=${state.matchedUsers.length}'); //TODO remove debug print
           return Column(
             children: [
               Padding(
@@ -56,11 +54,10 @@ class AddFriendsBody extends StatelessWidget {
               else
                 Column(
                   children: List.generate(
-                    state.matchedUsers
-                        .length, // The number of times you want to repeat the widgets
+                    state.matchedUsers.length,
                     (index) => SearchResult(
-                        user: state.matchedUsers
-                            .elementAt(index)), // Your widget to be added
+                      user: state.matchedUsers.elementAt(index),
+                    ),
                   ),
                 )
 
