@@ -20,8 +20,8 @@ class UserData {
       id: UniqueID(),
       name: "",
       imageId: "",
-      friendRequests: List<String>.empty(),
-      friendRequestsSent: List<String>.empty(),
+      friendRequests: [],
+      friendRequestsSent: [],
     );
   }
 

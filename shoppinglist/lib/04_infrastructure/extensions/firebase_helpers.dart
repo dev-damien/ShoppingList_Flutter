@@ -4,7 +4,7 @@ import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/injection.dart';
 
 extension FirestoreExt on FirebaseFirestore {
-  Future<DocumentReference> userDocument() async {
+  Future<DocumentReference<Map<String, dynamic>>> userDocument() async {
     final userOption = sl<AuthRepository>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
 

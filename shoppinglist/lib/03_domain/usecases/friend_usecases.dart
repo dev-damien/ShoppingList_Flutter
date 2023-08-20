@@ -26,8 +26,7 @@ class FriendUsecases {
   Future<Either<FriendFailure, Unit>> addRequest(
     String userId,
   ) {
-    //TODO implement
-    throw UnimplementedError("Not implemented");
+    return friendRepository.addRequest(userId);
   }
 
   Future<Either<FriendFailure, Unit>> acceptRequest(

@@ -14,7 +14,11 @@ class UserUsecases {
     return userRepository.watch();
   }
 
-  Future<Either<UserFailure, UserData>> getUserById(String id) async{
+  Future<Either<UserFailure, UserData>> getUserById(String id) async {
     return await userRepository.getById(id);
+  }
+
+  Future<Either<UserFailure, UserData>> getCurrentUserData() async {
+    return await userRepository.getCurrentUserData();
   }
 }

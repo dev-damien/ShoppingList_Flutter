@@ -22,6 +22,7 @@ import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_im
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
+import '02_application/friend_requests/controller/friend_request_controller_bloc.dart';
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 import '04_infrastructure/local/theme_local_storage.dart';
 
@@ -128,6 +129,11 @@ Future<void> init() async {
   );
   sl.registerFactory(
     () => FriendSearchFormBloc(
+      friendUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => FriendRequestControllerBloc(
       friendUsecases: sl(),
     ),
   );

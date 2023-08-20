@@ -22,10 +22,46 @@ class FriendRepositoryImpl implements FriendRepository {
   }
 
   @override
-  Future<Either<FriendFailure, Unit>> addRequest(String userId) {
-    
-    // TODO: implement addRequest
-    throw UnimplementedError();
+  Future<Either<FriendFailure, Unit>> addRequest(String targetUserId) async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      // Retrieve the current friendRequestsSent array
+      final friendRequestsSent = await userDoc.get().then((docSnapshot) {
+        return List<String>.from(
+            docSnapshot.data()?['friendRequestsSent'] ?? []);
+      });
+
+      if (friendRequestsSent.contains(targetUserId)) {
+        return left(AlreadyRequested());
+      }
+
+      // Add the new targetUserId to the current array
+      friendRequestsSent.add(targetUserId);
+
+      // Update the document with the modified array
+      userDoc.update({'friendRequestsSent': friendRequestsSent});
+      final targetUserDoc = firestore.collection("users").doc(targetUserId);
+
+      // Retrieve the current friendRequests array of the target user
+      final currentTargetUserRequests = targetUserDoc.get().then((docSnapshot) {
+        return List<String>.from(docSnapshot.data()?['friendRequests'] ?? []);
+      });
+
+      // Add the userDoc.id to the target user's array
+      final updatedTargetUserRequests =
+          await currentTargetUserRequests.then((currentRequests) {
+        currentRequests.add(userDoc.id);
+        return currentRequests;
+      });
+
+      // Update the target user's document with the modified array
+      targetUserDoc.update({'friendRequests': updatedTargetUserRequests});
+
+      return right(unit);
+    } catch (e) {
+      return left(UnexpectedFailure());
+    }
   }
 
   @override

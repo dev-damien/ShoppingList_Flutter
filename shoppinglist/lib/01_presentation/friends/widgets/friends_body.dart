@@ -28,53 +28,41 @@ class FriendsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final friendsObserverBloc = sl<FriendsObserverBloc>()
-      ..add(
-        ObserveAllFriendsEvent(),
-      );
-
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => friendsObserverBloc,
-        ),
-      ],
-      child: BlocBuilder<FriendsObserverBloc, FriendsObserverState>(
-        builder: (context, state) {
-          if (state is FriendsObserverInitial) {
-            return Container();
-          }
-          if (state is FriendsObserverLoading) {
-            return const CupertinoActivityIndicator();
-          }
-          if (state is FriendsObserverFailure) {
-            return Center(
-              child: Text(
-                mapFailureMessage(
-                  state.friendFailure,
+    return BlocBuilder<FriendsObserverBloc, FriendsObserverState>(
+      builder: (context, state) {
+        if (state is FriendsObserverInitial) {
+          return Container();
+        }
+        if (state is FriendsObserverLoading) {
+          return const CupertinoActivityIndicator();
+        }
+        if (state is FriendsObserverFailure) {
+          return Center(
+            child: Text(
+              mapFailureMessage(
+                state.friendFailure,
+              ),
+            ),
+          );
+        }
+        if (state is FriendsObserverSuccess) {
+          return Column(
+            children: [
+              FriendsRequestsButton(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                  right: 15,
+                ),
+                child: FriendsList(
+                  friends: state.friends,
                 ),
               ),
-            );
-          }
-          if (state is FriendsObserverSuccess) {
-            return Column(
-              children: [
-                FriendsRequestsButton(),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                  ),
-                  child: FriendsList(
-                    friends: state.friends,
-                  ),
-                ),
-              ],
-            );
-          }
-          return Container();
-        },
-      ),
+            ],
+          );
+        }
+        return Container();
+      },
     );
   }
 }

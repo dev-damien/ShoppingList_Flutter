@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
+import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
+import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
@@ -44,6 +46,15 @@ class MyApp extends StatelessWidget {
               ObserveAllFriendRequestsEvent(),
             ),
         ),
+        BlocProvider(
+          create: (context) => di.sl<FriendControllerBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<FriendsObserverBloc>()
+            ..add(
+              ObserveAllFriendsEvent(),
+            ),
+        )
       ],
       child: CupertinoApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),
