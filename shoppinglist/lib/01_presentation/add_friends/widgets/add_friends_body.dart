@@ -45,8 +45,10 @@ class AddFriendsBody extends StatelessWidget {
                 ),
               ),
               if (state.isSearching)
-                Center(
-                  child: CupertinoActivityIndicator(),
+                Container(
+                  child: Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
                 )
               else if (state.matchedUsers.isEmpty && state.wasSearched)
                 Text('No users found with this ID or name')

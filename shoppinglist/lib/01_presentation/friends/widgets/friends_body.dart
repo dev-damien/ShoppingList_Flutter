@@ -34,7 +34,7 @@ class FriendsBody extends StatelessWidget {
           return Container();
         }
         if (state is FriendsObserverLoading) {
-          return const CupertinoActivityIndicator();
+          return const Center(child: CupertinoActivityIndicator());
         }
         if (state is FriendsObserverFailure) {
           return Center(
@@ -46,6 +46,19 @@ class FriendsBody extends StatelessWidget {
           );
         }
         if (state is FriendsObserverSuccess) {
+          if (state.friends.isEmpty) {
+            // user has no friends
+            return Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                left: 10,
+                right: 10,
+              ),
+              child: const Center(
+                child: Text('You have no friends added yet'),
+              ),
+            );
+          }
           return Column(
             children: [
               FriendsRequestsButton(),

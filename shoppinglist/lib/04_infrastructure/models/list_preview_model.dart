@@ -30,9 +30,9 @@ class ListPreviewModel with EquatableMixin{
   factory ListPreviewModel.fromMap(Map<String, dynamic> map) {
     return ListPreviewModel(
       id: "", //is set later because its not part of the map
-      title: map['title'] as String,
-      imageId: map['image_id'] as String,
-      isFavorite: map['is_favorite'] as bool,
+      title: (map['title'] ?? "new list") as String,
+      imageId: (map['image_id'] ?? "no image") as String,
+      isFavorite: (map['is_favorite'] ?? false) as bool,
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
