@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/usecases/friend_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
+import 'package:shoppinglist/core/failures/friend_failures.dart';
 import 'package:shoppinglist/core/failures/user_failures.dart';
 
 part 'friend_requests_observer_event.dart';
@@ -15,7 +16,7 @@ class FriendRequestsObserverBloc
     extends Bloc<FriendRequestsObserverEvent, FriendRequestsObserverState> {
   final FriendUsecases friendUsecases;
   final UserUsecases userUsecases;
-  StreamSubscription<Either<UserFailure, List<String>>>? _userStreamSub;
+  StreamSubscription<Either<FriendFailure, List<String>>>? _userStreamSub;
 
   FriendRequestsObserverBloc({
     required this.friendUsecases,
@@ -38,10 +39,10 @@ class FriendRequestsObserverBloc
       (event, emit) async {
         List<UserData> friendRequestsWithUserData = [];
         await event.failureOrFriendRequests.fold(
-          (failures) {
+          (failure) {
             emit(
               FriendRequestsObserverFailure(
-                userFailure: failures,
+                friendFailure: failure,
               ),
             );
           },

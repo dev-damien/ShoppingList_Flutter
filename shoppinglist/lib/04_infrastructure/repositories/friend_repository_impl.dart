@@ -84,8 +84,7 @@ class FriendRepositoryImpl implements FriendRepository {
   }
 
   @override
-  Stream<Either<user_failures.UserFailure, List<String>>>
-      watchAllFriendRequests() async* {
+  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests() async* {
     final userDoc = await firestore.userDocument();
     final Stream<DocumentSnapshot<Map<String, dynamic>>> querySnapshots =
         userDoc.snapshots() as Stream<DocumentSnapshot<Map<String, dynamic>>>;
@@ -94,8 +93,7 @@ class FriendRepositoryImpl implements FriendRepository {
       var res = UserModel.fromFirestore(doc).toDomain();
       return res;
     }).map((userData) {
-      return right<user_failures.UserFailure, List<String>>(
-          userData.friendRequests);
+      return right<FriendFailure, List<String>>(userData.friendRequests);
     }).handleError((e) {
       // Handle different error cases
       if (e is FirebaseException) {
@@ -123,6 +121,33 @@ class FriendRepositoryImpl implements FriendRepository {
             .toList()))
         .handleError((e) {
       //error handling left side
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    });
+  }
+
+  @override
+  Stream<Either<FriendFailure, List<String>>>
+      watchAllFriendRequestsSent() async* {
+    final userDoc = await firestore.userDocument();
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> querySnapshots =
+        userDoc.snapshots();
+
+    yield* querySnapshots.map((doc) {
+      var res = UserModel.fromFirestore(doc).toDomain();
+      return res;
+    }).map((userData) {
+      return right<FriendFailure, List<String>>(userData.friendRequestsSent);
+    }).handleError((e) {
+      // Handle different error cases
       if (e is FirebaseException) {
         if (e.code.contains("permission-denied") ||
             e.code.contains("PERMISSION_DENIED")) {

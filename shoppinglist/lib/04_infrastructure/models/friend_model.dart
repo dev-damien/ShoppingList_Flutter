@@ -29,8 +29,8 @@ class FriendModel with EquatableMixin {
   factory FriendModel.fromMap(Map<String, dynamic> map) {
     return FriendModel(
       id: "", //is set later because its not part of the map
-      nickname: map['nickname'] as String,
-      imageId: map['image_id'] as String,
+      nickname: (map['nickname'] ?? "") as String,
+      imageId: (map['imageId'] ?? "no image set") as String,
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }

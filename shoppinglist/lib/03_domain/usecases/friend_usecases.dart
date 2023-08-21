@@ -19,8 +19,12 @@ class FriendUsecases {
     return friendRepository.watchAllFriends();
   }
 
-  Stream<Either<UserFailure, List<String>>> watchAllFriendRequests() {
+  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests() {
     return friendRepository.watchAllFriendRequests();
+  }
+
+  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequestsSent() {
+    return friendRepository.watchAllFriendRequestsSent();
   }
 
   Future<Either<FriendFailure, Unit>> addRequest(

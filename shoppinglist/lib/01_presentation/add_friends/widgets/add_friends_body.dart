@@ -11,7 +11,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/qr_code.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/search_result.dart';
 import 'package:shoppinglist/02_application/add_friends/searchForm/friend_search_form_bloc.dart';
-import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/injection.dart';
 
 class AddFriendsBody extends StatelessWidget {

@@ -6,13 +6,12 @@ import 'package:shoppinglist/01_presentation/home/widgets/tabIconWithNotificatio
 import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
 import 'package:shoppinglist/02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
-import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
-import 'package:shoppinglist/core/failures/user_failures.dart';
+import 'package:shoppinglist/core/failures/friend_failures.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  String mapFailureMessage(UserFailure failure) {
+  String mapFailureMessage(FriendFailure failure) {
     switch (failure.runtimeType) {
       case InsufficientPermissions:
         return "Your permissions are insufficient.";
@@ -39,7 +38,7 @@ class HomePage extends StatelessWidget {
           return Center(
             child: Text(
               mapFailureMessage(
-                state.userFailure,
+                state.friendFailure,
               ),
             ),
           );

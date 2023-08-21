@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
             ..add(
               ObserveAllFriendsEvent(),
             ),
-        )
+        ),
       ],
       child: CupertinoApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),

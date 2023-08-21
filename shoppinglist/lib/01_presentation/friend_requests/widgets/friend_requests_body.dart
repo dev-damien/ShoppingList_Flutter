@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/friend_requests/widgets/friend_requests_list.dart';
 import 'package:shoppinglist/02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
-import 'package:shoppinglist/core/failures/user_failures.dart';
-import 'package:shoppinglist/injection.dart';
+import 'package:shoppinglist/core/failures/friend_failures.dart';
 
 class FriendRequestsBody extends StatelessWidget {
   const FriendRequestsBody({
     super.key,
   });
 
-  String mapFailureMessage(UserFailure failure) {
+  String mapFailureMessage(FriendFailure failure) {
     switch (failure.runtimeType) {
       case InsufficientPermissions:
         return "Your permissions are insufficient.";
@@ -39,7 +38,7 @@ class FriendRequestsBody extends StatelessWidget {
           return Center(
             child: Text(
               mapFailureMessage(
-                state.userFailure,
+                state.friendFailure,
               ),
             ),
           );

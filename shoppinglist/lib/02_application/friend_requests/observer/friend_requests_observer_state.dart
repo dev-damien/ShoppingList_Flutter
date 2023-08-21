@@ -8,8 +8,8 @@ class FriendRequestsObserverInitial extends FriendRequestsObserverState {}
 class FriendRequestsObserverLoading extends FriendRequestsObserverState {}
 
 class FriendRequestsObserverFailure extends FriendRequestsObserverState {
-  final UserFailure userFailure;
-  FriendRequestsObserverFailure({required this.userFailure});
+  final FriendFailure friendFailure;
+  FriendRequestsObserverFailure({required this.friendFailure});
 }
 
 class FriendRequestsObserverSuccess extends FriendRequestsObserverState {
