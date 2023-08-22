@@ -47,8 +47,19 @@ class FriendRequestsBody extends StatelessWidget {
           final friendRequests = state.friendRequests;
           if (friendRequests.isEmpty) {
             // user has no requests
-            return const Center(
-              child: Text('You have no friend requests'),
+            return Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                right: 10,
+                left: 10,
+              ),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  'You have no friend requests.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
             );
           }
           // user has at least one valid request

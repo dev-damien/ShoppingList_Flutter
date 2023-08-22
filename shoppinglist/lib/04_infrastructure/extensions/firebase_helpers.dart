@@ -16,5 +16,5 @@ extension DocumentReferenceExt on DocumentReference {
   CollectionReference<Map<String, dynamic>> get listPreviewCollection =>
       collection("lists_preview");
   CollectionReference<Map<String, dynamic>> get friendPreviewCollection =>
-      collection("friends_preview");
+      collection("friends");
 }

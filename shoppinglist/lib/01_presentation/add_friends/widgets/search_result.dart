@@ -160,7 +160,9 @@ class SearchResult extends StatelessWidget {
                           }
                         }
                         // friends or requests not loaded
-                        return Container();
+                        return const Center(
+                          child: CupertinoActivityIndicator(),
+                        );
                       },
                     ),
                   ),

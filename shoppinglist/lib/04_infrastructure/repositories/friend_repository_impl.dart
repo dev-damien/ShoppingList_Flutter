@@ -21,6 +21,7 @@ class FriendRepositoryImpl implements FriendRepository {
     throw UnimplementedError();
   }
 
+
   @override
   Future<Either<FriendFailure, Unit>> addRequest(String targetUserId) async {
     try {

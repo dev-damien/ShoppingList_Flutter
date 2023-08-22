@@ -46,30 +46,35 @@ class FriendsBody extends StatelessWidget {
           );
         }
         if (state is FriendsObserverSuccess) {
-          if (state.friends.isEmpty) {
-            // user has no friends
-            return Padding(
-              padding: const EdgeInsets.only(
-                top: 20,
-                left: 10,
-                right: 10,
-              ),
-              child: const Center(
-                child: Text('You have no friends added yet'),
-              ),
-            );
-          }
           return Column(
             children: [
               FriendsRequestsButton(),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                  right: 15,
-                ),
-                child: FriendsList(
-                  friends: state.friends,
-                ),
+              Builder(
+                builder: (_) {
+                  if (state.friends.isEmpty) {
+                    // user has no friends
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: Text(
+                        'You have no friends added yet. Click on the Icon in the top right corner to add one.',
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                    ),
+                    child: FriendsList(
+                      friends: state.friends,
+                    ),
+                  );
+                },
               ),
             ],
           );
