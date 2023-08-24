@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:shoppinglist/01_presentation/add_friends/widgets/add_friends_body.dart';
-import 'package:shoppinglist/02_application/friend_requests/controller/friend_request_controller_bloc.dart';
 import 'package:shoppinglist/injection.dart';
 
 class AddFriendsPage extends StatelessWidget {

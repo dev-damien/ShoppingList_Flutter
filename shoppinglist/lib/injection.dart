@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoppinglist/02_application/add_friends/searchForm/friend_search_form_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
+import 'package:shoppinglist/02_application/friend_requests/controller_respond/friend_request_respond_bloc.dart';
+import 'package:shoppinglist/02_application/friend_requests/controller_send/friend_request_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
@@ -22,7 +24,6 @@ import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_im
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
-import '02_application/friend_requests/controller/friend_request_controller_bloc.dart';
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 import '04_infrastructure/local/theme_local_storage.dart';
 
@@ -139,6 +140,11 @@ Future<void> init() async {
   );
   sl.registerFactory(
     () => FriendControllerBloc(
+      friendUsecases: sl(),
+    ),
+  );
+    sl.registerFactory(
+    () => FriendRequestRespondBloc(
       friendUsecases: sl(),
     ),
   );

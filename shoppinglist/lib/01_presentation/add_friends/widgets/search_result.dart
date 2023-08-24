@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoppinglist/02_application/friend_requests/controller/friend_request_controller_bloc.dart';
+import 'package:shoppinglist/02_application/friend_requests/controller_send/friend_request_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';

@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/03_domain/entities/id.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/04_infrastructure/extensions/firebase_helpers.dart';
 import 'package:shoppinglist/04_infrastructure/models/friend_model.dart';
 import 'package:shoppinglist/04_infrastructure/models/user_model.dart';
-import 'package:shoppinglist/core/failures/user_failures.dart' as user_failures;
 import 'package:shoppinglist/core/failures/friend_failures.dart';
 
 class FriendRepositoryImpl implements FriendRepository {
@@ -16,11 +17,94 @@ class FriendRepositoryImpl implements FriendRepository {
   FriendRepositoryImpl({required this.firestore, required this.userRepository});
 
   @override
-  Future<Either<FriendFailure, Unit>> acceptRequest(String userId) {
-    // TODO: implement acceptRequest
-    throw UnimplementedError();
-  }
+  Future<Either<FriendFailure, Unit>> acceptRequest(String targetUserId) async {
+    try {
+      //* 1. remove requester id from friendRequests array
+      final userDoc = await firestore.userDocument();
 
+      // Retrieve the current friendRequests array
+      final friendRequests = await userDoc.get().then((docSnapshot) {
+        return List<String>.from(docSnapshot.data()?['friendRequests'] ?? []);
+      });
+
+      // remove the new targetUserId to the current array
+      friendRequests.remove(targetUserId);
+
+      // Update the document with the modified array
+      userDoc.update({'friendRequests': friendRequests});
+
+      //* 2. remove own id from friendRequestsSent array of requester
+      final targetUserDoc = firestore.collection("users").doc(targetUserId);
+
+      // Retrieve the current friendRequestsSent array of the target user
+      final currentTargetUserRequestsSent =
+          targetUserDoc.get().then((docSnapshot) {
+        return List<String>.from(
+            docSnapshot.data()?['friendRequestsSent'] ?? []);
+      });
+
+      // remove own id from list
+      final updatedTargetUserRequestsSent =
+          await currentTargetUserRequestsSent.then((currentRequests) {
+        currentRequests.remove(userDoc.id);
+        return currentRequests;
+      });
+
+      // Update the target user's document with the modified array
+      targetUserDoc
+          .update({'friendRequestsSent': updatedTargetUserRequestsSent});
+
+      //* 3. add friend document to user and target user
+      // add friend to own document
+      final userDataOrFailure = await userRepository.getById(targetUserId);
+      userDataOrFailure.fold(
+        (failure) {
+          return left(failure);
+        },
+        (friendDataOther) {
+          create(
+            userDoc.id,
+            Friend(
+              id: UniqueID.fromUniqueString(friendDataOther.id.value),
+              nickname: friendDataOther.name,
+              imageId: friendDataOther.imageId,
+            ),
+          );
+        },
+      );
+
+      // add self as friend to other user
+      final userDataOrFailureOwn = await userRepository.getById(userDoc.id);
+      userDataOrFailureOwn.fold(
+        (failure) {
+          return left(failure);
+        },
+        (friendDataOwn) {
+          create(
+            targetUserId,
+            Friend(
+              id: UniqueID.fromUniqueString(friendDataOwn.id.value),
+              nickname: friendDataOwn.name,
+              imageId: friendDataOwn.imageId,
+            ),
+          );
+        },
+      );
+
+      return right(unit);
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
+  }
 
   @override
   Future<Either<FriendFailure, Unit>> addRequest(String targetUserId) async {
@@ -61,14 +145,95 @@ class FriendRepositoryImpl implements FriendRepository {
 
       return right(unit);
     } catch (e) {
-      return left(UnexpectedFailure());
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
     }
   }
 
   @override
-  Future<Either<FriendFailure, Unit>> declineRequest(String userId) {
-    // TODO: implement declineRequest
-    throw UnimplementedError();
+  Future<Either<FriendFailure, Unit>> declineRequest(
+      String targetUserId) async {
+    try {
+      //* remove requester id from friendRequests array
+      final userDoc = await firestore.userDocument();
+
+      // Retrieve the current friendRequests array
+      final friendRequests = await userDoc.get().then((docSnapshot) {
+        return List<String>.from(docSnapshot.data()?['friendRequests'] ?? []);
+      });
+
+      // remove the new targetUserId to the current array
+      friendRequests.remove(targetUserId);
+
+      // Update the document with the modified array
+      userDoc.update({'friendRequests': friendRequests});
+
+      //* remove own id from friendRequestsSent array of requester
+      final targetUserDoc = firestore.collection("users").doc(targetUserId);
+
+      // Retrieve the current friendRequestsSent array of the target user
+      final currentTargetUserRequestsSent =
+          targetUserDoc.get().then((docSnapshot) {
+        return List<String>.from(
+            docSnapshot.data()?['friendRequestsSent'] ?? []);
+      });
+
+      // remove own id from list
+      final updatedTargetUserRequestsSent =
+          await currentTargetUserRequestsSent.then((currentRequests) {
+        currentRequests.remove(userDoc.id);
+        return currentRequests;
+      });
+
+      // Update the target user's document with the modified array
+      targetUserDoc
+          .update({'friendRequestsSent': updatedTargetUserRequestsSent});
+
+      return right(unit);
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<FriendFailure, Unit>> create(
+      String userIdDocGetsCreatedHere, Friend friend) async {
+    try {
+      final userDoc =
+          firestore.collection('users').doc(userIdDocGetsCreatedHere);
+      userDoc.collection('friends').doc(friend.id.value).set(
+            FriendModel.fromDomain(friend).toMap(),
+          );
+      return right(unit);
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override

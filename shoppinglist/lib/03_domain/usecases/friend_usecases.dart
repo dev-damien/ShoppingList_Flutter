@@ -36,22 +36,20 @@ class FriendUsecases {
   Future<Either<FriendFailure, Unit>> acceptRequest(
     String userId,
   ) {
-    //TODO implement
-    throw UnimplementedError("Not implemented");
+    return friendRepository.acceptRequest(userId);
   }
 
   Future<Either<FriendFailure, Unit>> declineRequest(
     String userId,
   ) {
-    //TODO implement
-    throw UnimplementedError("Not implemented");
+    return friendRepository.acceptRequest(userId);
   }
 
   Future<Either<FriendFailure, Unit>> setNickname(
     String userId,
     String nickname,
   ) {
-    //TODO implement
+    //TODO implement, maybe using update methode of repo, not multiple methods in repo, same with other methods
     throw UnimplementedError("Not implemented");
   }
 

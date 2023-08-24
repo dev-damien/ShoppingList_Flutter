@@ -19,6 +19,10 @@ abstract class FriendRepository {
     String userId,
   );
 
+  Future<Either<FriendFailure, Unit>> create(
+    String userIdDocGetsAddedHere, Friend friend
+  );
+
   Future<Either<FriendFailure, Unit>> setNickname(
     String userId,
     String nickname,

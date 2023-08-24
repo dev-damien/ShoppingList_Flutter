@@ -4,7 +4,12 @@ import 'package:shoppinglist/03_domain/entities/user_data.dart';
 
 class FriendRequestsList extends StatelessWidget {
   final List<UserData> friendRequests;
-  const FriendRequestsList({super.key, required this.friendRequests});
+  final BuildContext pageContext;
+  const FriendRequestsList({
+    super.key,
+    required this.friendRequests,
+    required this.pageContext,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,7 @@ class FriendRequestsList extends StatelessWidget {
                 final requesterData = friendRequests[index];
                 return FriendRequestCard(
                   userData: requesterData,
+                  pageContext: pageContext,
                 );
               },
             ),
