@@ -244,9 +244,25 @@ class FriendRepositoryImpl implements FriendRepository {
 
   @override
   Future<Either<FriendFailure, Unit>> setNickname(
-      String userId, String nickname) {
-    // TODO: implement setNickname
-    throw UnimplementedError();
+      String friendId, String nickname) async {
+    try {
+      final userDoc = await firestore.userDocument();
+      userDoc.collection('friends').doc(friendId).update({
+        'nickname': nickname,
+      });
+      return right(unit);
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override
@@ -325,5 +341,27 @@ class FriendRepositoryImpl implements FriendRepository {
         return left(UnexpectedFailure());
       }
     });
+  }
+
+  @override
+  Future<Either<FriendFailure, Unit>> delete(
+      String userIdDocGetsDeletedHere, String friendId) async {
+    try {
+      final userDoc =
+          firestore.collection('users').doc(userIdDocGetsDeletedHere);
+      await userDoc.collection('friends').doc(friendId).delete();
+      return right(unit);
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 }

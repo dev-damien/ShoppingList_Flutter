@@ -8,36 +8,20 @@ abstract class FriendControllerEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RequestFriendEvent extends FriendControllerEvent {
-  final String targetUserId;
-
-  const RequestFriendEvent({
-    required this.targetUserId,
-  });
-}
-
-class AddFriendEvent extends FriendControllerEvent {
+class UpdateFriendNicknameEvent extends FriendControllerEvent {
   final Friend friend;
+  final String nickname;
 
-  const AddFriendEvent({
+  const UpdateFriendNicknameEvent({
     required this.friend,
-  });
-}
-
-class UpdateFriendEvent extends FriendControllerEvent {
-  final Friend friend;
-  final bool done;
-
-  const UpdateFriendEvent({
-    required this.friend,
-    required this.done,
+    required this.nickname,
   });
 }
 
 class RemoveFriendEvent extends FriendControllerEvent {
-  final String friendId;
+  final Friend friend;
 
   const RemoveFriendEvent({
-    required this.friendId,
+    required this.friend,
   });
 }

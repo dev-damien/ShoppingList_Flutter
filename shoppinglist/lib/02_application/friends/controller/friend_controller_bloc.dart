@@ -14,17 +14,27 @@ class FriendControllerBloc
 
   FriendControllerBloc({required this.friendUsecases})
       : super(FriendControllerInitial()) {
-    on<RequestFriendEvent>((event, emit) {
-      
+    on<UpdateFriendNicknameEvent>((event, emit) async {
+      emit(
+        FriendControllerInProgress(
+          friend: event.friend,
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 2)); //? only for visual purpose. can be removed
+      final failureOrSuccess = await friendUsecases
+          .updateNickname(event.friend.copyWith(nickname: event.nickname));
+      failureOrSuccess.fold(
+          (failure) => emit(FriendControllerFailure(
+              friend: event.friend, friendFailure: failure)),
+          (r) => emit(FriendControllerSuccess(friend: event.friend)));
     });
-    on<AddFriendEvent>((event, emit) {
-      // TODO: implement event handler
-    });
-    on<UpdateFriendEvent>((event, emit) {
-      // TODO: implement event handler
-    });
-    on<RemoveFriendEvent>((event, emit) {
-      // TODO: implement event handler
+    on<RemoveFriendEvent>((event, emit) async {
+      emit(FriendControllerInProgress(friend: event.friend));
+      final failureOrSuccess = await friendUsecases.unfriendUser(event.friend);
+      failureOrSuccess.fold(
+          (failure) => emit(FriendControllerFailure(
+              friendFailure: failure, friend: event.friend)),
+          (r) => emit(FriendControllerSuccess(friend: event.friend)));
     });
   }
 }

@@ -9,26 +9,26 @@ abstract class FriendControllerState extends Equatable {
 
 class FriendControllerInitial extends FriendControllerState {}
 
-class FriendControllerLoading extends FriendControllerState {
-  final String targetUserId;
-  const FriendControllerLoading({
-    required this.targetUserId,
+class FriendControllerInProgress extends FriendControllerState {
+  final Friend friend;
+  const FriendControllerInProgress({
+    required this.friend,
   });
 }
 
 class FriendControllerFailure extends FriendControllerState {
-  final String targetUserId;
+  final Friend friend;
   final FriendFailure friendFailure;
   const FriendControllerFailure({
-    required this.targetUserId,
+    required this.friend,
     required this.friendFailure,
   });
 }
 
 class FriendControllerSuccess extends FriendControllerState {
-  final List<Friend> friends;
+  final Friend friend;
 
   const FriendControllerSuccess({
-    required this.friends,
+    required this.friend,
   });
 }

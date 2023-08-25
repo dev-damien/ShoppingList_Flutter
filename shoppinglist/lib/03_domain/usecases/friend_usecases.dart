@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/core/failures/friend_failures.dart';
-import 'package:shoppinglist/core/failures/user_failures.dart';
 
 class FriendUsecases {
   final FriendRepository friendRepository;
@@ -45,12 +45,8 @@ class FriendUsecases {
     return friendRepository.acceptRequest(userId);
   }
 
-  Future<Either<FriendFailure, Unit>> setNickname(
-    String userId,
-    String nickname,
-  ) {
-    //TODO implement, maybe using update methode of repo, not multiple methods in repo, same with other methods
-    throw UnimplementedError("Not implemented");
+  Future<Either<FriendFailure, Unit>> updateNickname(Friend friend) {
+    return friendRepository.setNickname(friend.id.value, friend.nickname);
   }
 
   Future<Either<FriendFailure, Unit>> resetNickname(
@@ -58,6 +54,39 @@ class FriendUsecases {
   ) {
     //TODO implement
     throw UnimplementedError("Not implemented");
+  }
+
+  Future<Either<FriendFailure, Unit>> unfriendUser(
+    Friend friend,
+  ) async {
+    final failureOrSuccess = await userRepository.getCurrentUserData();
+    UserData thisUser;
+    await failureOrSuccess.fold(
+      (failure) async {
+        print(
+            'friend_usecases failure: (${failure.runtimeType})'); //TODO remove debug print
+        return left(failure);
+      },
+      (user) async {
+        thisUser = user;
+        final failureOrSuccess =
+            await friendRepository.delete(thisUser.id.value, friend.id.value);
+        final failureOrSuccess2 =
+            await friendRepository.delete(friend.id.value, thisUser.id.value);
+        failureOrSuccess.fold(
+          (failure) => left(failure),
+          (success) {
+            failureOrSuccess2.fold(
+              (failure) => left(failure),
+              (success) {
+                return right(unit);
+              },
+            );
+          },
+        );
+      },
+    );
+    return left(UnexpectedFailure());
   }
 
   Future<Either<FriendFailure, List<UserData>>> searchUsers(
