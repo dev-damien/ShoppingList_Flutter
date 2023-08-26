@@ -9,12 +9,10 @@ import 'package:shoppinglist/injection.dart';
 
 class FriendRequestCard extends StatelessWidget {
   final UserData userData;
-  final BuildContext pageContext;
 
   const FriendRequestCard({
     Key? key,
     required this.userData,
-    required this.pageContext,
   }) : super(key: key);
 
   String mapFailureMessage(FriendFailure failure) {
@@ -69,6 +67,7 @@ class FriendRequestCard extends StatelessWidget {
             }
             if (state is FriendRequestRespondFailure) {
               _showAlertDialogRespondError(
+                context,
                 state.type,
                 state.failure,
               );
@@ -76,6 +75,7 @@ class FriendRequestCard extends StatelessWidget {
                 child: CupertinoButton(
                   onPressed: () {
                     _showAlertDialogRespondError(
+                      context,
                       state.type,
                       state.failure,
                     );
@@ -99,7 +99,7 @@ class FriendRequestCard extends StatelessWidget {
               }
 
               _showAlertDialogRespondSuccess(
-                pageContext,
+                context,
                 type,
               );
 
@@ -166,6 +166,7 @@ class FriendRequestCard extends StatelessWidget {
   }
 
   void _showAlertDialogRespondError(
+    BuildContext context,
     FriendRequestResponse type,
     FriendFailure failure,
   ) {
@@ -178,7 +179,7 @@ class FriendRequestCard extends StatelessWidget {
                 : "with";
 
     showCupertinoModalPopup<void>(
-      context: pageContext,
+      context: context,
       builder: (BuildContext parentContext) => CupertinoAlertDialog(
         title: const Text('Ups. An Error occured.'),
         content: Text(

@@ -5,10 +5,8 @@ import 'package:shoppinglist/02_application/friend_requests/observer/friend_requ
 import 'package:shoppinglist/core/failures/friend_failures.dart';
 
 class FriendRequestsBody extends StatelessWidget {
-  final BuildContext pageContext;
   const FriendRequestsBody({
     super.key,
-    required this.pageContext,
   });
 
   String mapFailureMessage(FriendFailure failure) {
@@ -67,7 +65,6 @@ class FriendRequestsBody extends StatelessWidget {
           // user has at least one valid request
           return FriendRequestsList(
             friendRequests: friendRequests,
-            pageContext: pageContext,
           );
         }
         return Container();

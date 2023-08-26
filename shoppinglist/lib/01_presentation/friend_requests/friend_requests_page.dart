@@ -17,7 +17,7 @@ class FriendRequestsPage extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-        child: FriendRequestsBody(pageContext: context,),
+        child: FriendRequestsBody(),
       ),
     );
   }

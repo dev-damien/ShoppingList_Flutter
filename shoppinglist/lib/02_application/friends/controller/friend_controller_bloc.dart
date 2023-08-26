@@ -20,7 +20,9 @@ class FriendControllerBloc
           friend: event.friend,
         ),
       );
-      await Future.delayed(const Duration(seconds: 2)); //? only for visual purpose. can be removed
+      //? only for visual purpose. can be removed
+      await Future.delayed(const Duration(seconds: 2));
+
       final failureOrSuccess = await friendUsecases
           .updateNickname(event.friend.copyWith(nickname: event.nickname));
       failureOrSuccess.fold(
@@ -30,6 +32,9 @@ class FriendControllerBloc
     });
     on<RemoveFriendEvent>((event, emit) async {
       emit(FriendControllerInProgress(friend: event.friend));
+      //? only for visual purpose. can be removed
+      await Future.delayed(const Duration(seconds: 2));
+
       final failureOrSuccess = await friendUsecases.unfriendUser(event.friend);
       failureOrSuccess.fold(
           (failure) => emit(FriendControllerFailure(

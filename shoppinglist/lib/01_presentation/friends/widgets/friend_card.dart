@@ -72,6 +72,7 @@ class FriendCard extends StatelessWidget {
             isDestructiveAction: true,
             onPressed: () {
               Navigator.pop(context);
+              _showRemoveFriendDialog(context);
             },
             child: const Text('Remove as friend'),
           ),
@@ -128,6 +129,53 @@ class FriendCard extends StatelessWidget {
           },
         );
       },
+    );
+  }
+
+  void _showRemoveFriendDialog(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) =>
+          BlocConsumer<FriendControllerBloc, FriendControllerState>(
+        listener: (context, state) {
+          if (state is FriendControllerSuccess) {
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is FriendControllerInProgress ||
+              state is FriendControllerSuccess;
+          return CupertinoAlertDialog(
+            title: isLoading
+                ? const Text('Removing friend ...')
+                : Text(
+                    'Do you want to remove ${friend.nickname} as your friend?'),
+            content: isLoading
+                ? const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                : const Text('You will still stay together in all lists'),
+            actions: isLoading
+                ? []
+                : <CupertinoDialogAction>[
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        BlocProvider.of<FriendControllerBloc>(context)
+                            .add(RemoveFriendEvent(friend: friend));
+                      },
+                      isDestructiveAction: true,
+                      child: const Text('Remove'),
+                    ),
+                  ],
+          );
+        },
+      ),
     );
   }
 }

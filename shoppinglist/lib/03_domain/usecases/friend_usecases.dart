@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
@@ -42,7 +41,7 @@ class FriendUsecases {
   Future<Either<FriendFailure, Unit>> declineRequest(
     String userId,
   ) {
-    return friendRepository.acceptRequest(userId);
+    return friendRepository.declineRequest(userId);
   }
 
   Future<Either<FriendFailure, Unit>> updateNickname(Friend friend) {
@@ -61,11 +60,9 @@ class FriendUsecases {
   ) async {
     final failureOrSuccess = await userRepository.getCurrentUserData();
     UserData thisUser;
-    await failureOrSuccess.fold(
+    return await failureOrSuccess.fold(
       (failure) async {
-        print(
-            'friend_usecases failure: (${failure.runtimeType})'); //TODO remove debug print
-        return left(failure);
+        return left(UnexpectedFailure());
       },
       (user) async {
         thisUser = user;
@@ -73,11 +70,15 @@ class FriendUsecases {
             await friendRepository.delete(thisUser.id.value, friend.id.value);
         final failureOrSuccess2 =
             await friendRepository.delete(friend.id.value, thisUser.id.value);
-        failureOrSuccess.fold(
-          (failure) => left(failure),
-          (success) {
-            failureOrSuccess2.fold(
-              (failure) => left(failure),
+        return failureOrSuccess.fold(
+          (failure) {
+            return left(failure);
+          },
+          (success) async {
+            return await failureOrSuccess2.fold(
+              (failure) {
+                return left(failure);
+              },
               (success) {
                 return right(unit);
               },
@@ -86,7 +87,6 @@ class FriendUsecases {
         );
       },
     );
-    return left(UnexpectedFailure());
   }
 
   Future<Either<FriendFailure, List<UserData>>> searchUsers(
