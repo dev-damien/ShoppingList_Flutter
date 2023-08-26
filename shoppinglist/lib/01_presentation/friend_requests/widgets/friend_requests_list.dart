@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/friend_requests/widgets/friend_request_card.dart';
-import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
 
 class FriendRequestsList extends StatelessWidget {
-  List<Friend> friendRequests;
-  FriendRequestsList({super.key, required this.friendRequests});
+  final List<UserData> friendRequests;
+  const FriendRequestsList({
+    super.key,
+    required this.friendRequests,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,9 @@ class FriendRequestsList extends StatelessWidget {
             children: List.generate(
               friendRequests.length,
               (index) {
-                final friend = friendRequests[index];
+                final requesterData = friendRequests[index];
                 return FriendRequestCard(
-                  friend: friend,
+                  userData: requesterData,
                 );
               },
             ),

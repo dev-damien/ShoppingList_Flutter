@@ -6,11 +6,17 @@ abstract class UserRepository {
   Future<Either<UserFailure, Unit>> create(UserData user);
 
   //todo might be useless
-  Stream<Either<UserFailure, Unit>> watch();
+  Stream<Either<UserFailure, UserData>> watch();
 
   Future<Either<UserFailure, Unit>> update(UserData user);
 
   //todo or use UniqueID only
   //todo maybe remove entirely
   Future<Either<UserFailure, Unit>> delete(UserData user);
+
+  Future<Either<UserFailure, UserData>> getById(String id);
+
+  Future<Either<UserFailure, List<UserData>>> getByName(String id);
+
+  Future<Either<UserFailure, UserData>> getCurrentUserData();
 }

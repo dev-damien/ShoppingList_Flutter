@@ -23,7 +23,10 @@ class ListsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final observerBloc = sl<ObserverBloc>()..add(ObserveAllEvent());
+    final observerBloc = sl<ObserverBloc>()
+      ..add(
+        ObserveAllEvent(),
+      );
 
     return MultiBlocProvider(
       providers: [
@@ -49,6 +52,24 @@ class ListsBody extends StatelessWidget {
             );
           }
           if (state is ObserverSuccess) {
+            if (state.listPreviews.isEmpty) {
+              // user has no lists
+              return Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  left: 10,
+                  right: 10,
+                ),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'You have no lists yet. Click on the "+" in the top right corner to create your first one.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+            // user has list(s)
             return ListsList(listPreviews: state.listPreviews);
           }
           return Container();

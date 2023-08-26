@@ -7,6 +7,8 @@ abstract class FriendRepository {
 
   Stream<Either<FriendFailure, List<String>>> watchAllFriendRequests();
 
+  Stream<Either<FriendFailure, List<String>>> watchAllFriendRequestsSent();
+
   Future<Either<FriendFailure, Unit>> addRequest(String userId);
 
   Future<Either<FriendFailure, Unit>> acceptRequest(
@@ -15,6 +17,13 @@ abstract class FriendRepository {
 
   Future<Either<FriendFailure, Unit>> declineRequest(
     String userId,
+  );
+
+  Future<Either<FriendFailure, Unit>> create(
+      String userIdDocGetsAddedHere, Friend friend);
+
+  Future<Either<FriendFailure, Unit>> delete(
+    String userIdDocGetsDeletedHere, String friendId,
   );
 
   Future<Either<FriendFailure, Unit>> setNickname(

@@ -28,9 +28,30 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<Either<UserFailure, Unit>> watch() {
-    // TODO: implement watchAll
-    throw UnimplementedError();
+  Stream<Either<UserFailure, UserData>> watch() async* {
+    print("userrepo -> watch()"); // TODO remove
+    final userDoc = await firestore.userDocument();
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> querySnapshots =
+        userDoc.snapshots() as Stream<DocumentSnapshot<Map<String, dynamic>>>;
+
+    yield* querySnapshots.map((doc) {
+      var res = UserModel.fromFirestore(doc).toDomain();
+      return res;
+    }).map((userData) {
+      return right<UserFailure, UserData>(userData);
+    }).handleError((e) {
+      // Handle different error cases
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    });
   }
 
   @override
@@ -51,5 +72,97 @@ class UserRepositoryImpl implements UserRepository {
     //       return left(UnexpectedFailure());
     //     }
     //   }
+  }
+
+  @override
+  Future<Either<UserFailure, UserData>> getById(String id) async {
+    try {
+      print("userrepo -> get user by id $id"); // TODO remove
+      final userDoc = FirebaseFirestore.instance.collection("users").doc(id);
+
+      final docSnapshot = await userDoc.get();
+
+      if (docSnapshot.exists) {
+        // user with id exists
+        UserData userData = UserModel.fromFirestore(docSnapshot).toDomain();
+        return right<UserFailure, UserData>(userData);
+      } else {
+        // user with id does not exist
+        return left(UserNotFount());
+      }
+    } catch (e) {
+      // Handle different error cases
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<UserFailure, List<UserData>>> getByName(String name) async {
+    try {
+      print("userrepo -> get user by name $name"); // TODO remove
+      final query = FirebaseFirestore.instance
+          .collection("users")
+          .where('name', isEqualTo: name);
+
+      final matches = await query.get();
+
+      final List<UserData> result = matches.docs.map(
+        (docSnapshot) {
+          UserData userData = UserModel.fromFirestore(docSnapshot).toDomain();
+          return userData;
+        },
+      ).toList();
+
+      return right<UserFailure, List<UserData>>(result);
+    } catch (e) {
+      // Handle different error cases
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
+  }
+  
+  @override
+  Future<Either<UserFailure, UserData>> getCurrentUserData() async{
+    try{
+    final userDoc = await firestore.userDocument();
+    final userSnapshot = await userDoc.get();
+    if (userSnapshot.exists) {
+        // user with id exists
+        UserData userData = UserModel.fromFirestore(userSnapshot).toDomain();
+        return right<UserFailure, UserData>(userData);
+      } else {
+        // user with id does not exist
+        return left(UserNotFount());
+      }
+    } catch (e) {
+      // Handle different error cases
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 }

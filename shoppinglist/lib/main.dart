@@ -3,9 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
+import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
+import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
+import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart' as r;
+
+import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +35,26 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               di.sl<AuthBloc>()..add(AuthCheckRequestedEvent()),
-        )
+        ),
+        BlocProvider(
+          create: (context) =>
+              di.sl<UserObserverBloc>()..add((ObserveUserEvent())),
+        ),
+        BlocProvider<FriendRequestsObserverBloc>(
+          create: (context) => di.sl<FriendRequestsObserverBloc>()
+            ..add(
+              ObserveAllFriendRequestsEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<FriendControllerBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<FriendsObserverBloc>()
+            ..add(
+              ObserveAllFriendsEvent(),
+            ),
+        ),
       ],
       child: CupertinoApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),

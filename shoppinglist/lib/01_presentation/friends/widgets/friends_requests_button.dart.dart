@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/friend_requests/friend_requests_page.dart';
-import 'package:shoppinglist/01_presentation/util/number_notification.dart';
 
 class FriendsRequestsButton extends StatelessWidget {
-  const FriendsRequestsButton({super.key});
+  const FriendsRequestsButton({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +19,12 @@ class FriendsRequestsButton extends StatelessWidget {
           ),
         );
       },
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('Friend Requests'),
           SizedBox(
             width: 10,
-          ),
-          //TODO set to real number of requests
-          NumberNotification(
-            number: 4,
           ),
         ],
       ),
