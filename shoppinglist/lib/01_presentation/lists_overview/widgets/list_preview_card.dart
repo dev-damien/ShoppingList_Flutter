@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/01_presentation/list_detail/list_detail_page.dart';
 import 'package:shoppinglist/03_domain/entities/list_preview.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class ListPreviewCard extends StatelessWidget {
   final ListPreview listPreview;
@@ -13,14 +14,13 @@ class ListPreviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile.notched(
-      leading: const SizedBox(
+      leading: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        //TODO set depending on selected image by user
         child: Padding(
           padding: EdgeInsets.zero,
           child: Icon(
-            CupertinoIcons.square_list_fill,
+            ImageMapper.toIconData(listPreview.imageId),
             size: 35,
           ),
         ),

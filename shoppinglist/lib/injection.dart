@@ -10,6 +10,7 @@ import 'package:shoppinglist/02_application/friend_requests/controller_send/frie
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
+import 'package:shoppinglist/02_application/lists/addingMode/list_add_items_mode_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
@@ -108,6 +109,9 @@ Future<void> init() async {
     () => ListObserverBloc(
       listUsecases: sl(),
     ),
+  );
+  sl.registerFactory(
+    () => ListAddItemsModeBloc(),
   );
 
   //! usecases

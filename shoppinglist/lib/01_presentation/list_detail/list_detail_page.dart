@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoppinglist/01_presentation/home/home_page.dart';
 import 'package:shoppinglist/01_presentation/list_detail/widgets/list_detail_body.dart';
-import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
+import 'package:shoppinglist/02_application/lists/addingMode/list_add_items_mode_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
 import 'package:shoppinglist/core/failures/list_failures.dart';
@@ -32,13 +31,22 @@ class ListDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    final listObserverBloc = sl<ListObserverBloc>()
-      ..add(ObserveListEvent(
-        listId: listId.value,
-      ));
+    final listAddItemsModeBloc = sl<ListAddItemsModeBloc>();
 
-    return BlocProvider(
-      create: (context) => listObserverBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => listAddItemsModeBloc,
+        ),
+        BlocProvider(
+          create: (context) => sl<ListObserverBloc>()
+            ..add(
+              ObserveListEvent(
+                listId: listId.value,
+              ),
+            ),
+        ),
+      ],
       child: BlocConsumer<ListObserverBloc, ListObserverState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -46,7 +54,9 @@ class ListDetailPage extends StatelessWidget {
             return Container();
           }
           if (state is ListObserverLoading) {
-            return const CupertinoActivityIndicator();
+            return const Center(
+              child: CupertinoActivityIndicator(),
+            );
           }
           if (state is ListObserverFailure) {
             return CupertinoPageScaffold(
@@ -111,47 +121,62 @@ class ListDetailPage extends StatelessWidget {
             );
           }
           if (state is ListObserverSuccess) {
-            return CupertinoPageScaffold(
-              backgroundColor:
-                  !isDark ? CupertinoColors.secondarySystemBackground : null,
-              navigationBar: CupertinoNavigationBar(
-                leading: CupertinoNavigationBarBackButton(
-                  onPressed: () => Navigator.pop(context),
-                  previousPageTitle: 'Lists',
-                ),
-                middle: Text(
-                  state.listData.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-                trailing: FittedBox(
-                  child: Row(
-                    children: [
-                      CupertinoButton(
-                        padding: EdgeInsets.zero,
-                        child: Icon(CupertinoIcons.add),
-                        onPressed: () {
-                          //TODO implement add new items, switch to add items mode and add done button in right corner
-                          print("switch to addItems mode");
-                        },
-                      ),
-                      CupertinoButton(
-                        padding: EdgeInsets.zero,
-                        child: Icon(CupertinoIcons.ellipsis),
-                        onPressed: () {
-                          //TODO implement options for list (edit, leave, delete)
-                          print("show options for list");
-                        },
-                      ),
-                    ],
+            return BlocConsumer<ListAddItemsModeBloc, ListAddItemsModeState>(
+              listener: (context, mode) {},
+              builder: (context, mode) {
+                return CupertinoPageScaffold(
+                  backgroundColor: !isDark
+                      ? CupertinoColors.secondarySystemBackground
+                      : null,
+                  navigationBar: CupertinoNavigationBar(
+                    leading: CupertinoNavigationBarBackButton(
+                      onPressed: () => Navigator.pop(context),
+                      previousPageTitle: 'Lists',
+                    ),
+                    middle: Text(
+                      state.listData.title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                    trailing: FittedBox(
+                      child: mode is ListAddItemsModeDeactivated
+                          ? Row(
+                              children: [
+                                CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  child: Icon(CupertinoIcons.add),
+                                  onPressed: () {
+                                    listAddItemsModeBloc
+                                        .add(ActivateAddItemsModeEvent());
+                                  },
+                                ),
+                                CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  child: Icon(CupertinoIcons.ellipsis),
+                                  onPressed: () {
+                                    // TODO open settings menu for list
+                                  },
+                                ),
+                              ],
+                            )
+                          : CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              child: const Text('Done'),
+                              onPressed: () {
+                                listAddItemsModeBloc
+                                    .add(DeactivateAddItemsModeEvent());
+                              },
+                            ),
+                    ),
                   ),
-                ),
-              ),
-              child: SafeArea(
-                child: ListDetailBody(
-                  listData: state.listData,
-                ),
-              ),
+                  child: SafeArea(
+                    child: ListDetailBody(
+                      isAddingMode: mode is ListAddItemsModeActivated,
+                      listData: state.listData,
+                    ),
+                  ),
+                );
+              },
             );
           }
           return Container();
