@@ -10,18 +10,22 @@ import 'package:shoppinglist/02_application/friend_requests/controller_send/frie
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
+import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_preview_repository.dart';
+import 'package:shoppinglist/03_domain/repositories/list_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/friend_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/list_preview_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/list_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/auth_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
+import 'package:shoppinglist/04_infrastructure/repositories/list_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
@@ -100,6 +104,11 @@ Future<void> init() async {
       listPreviewUsecases: sl(),
     ),
   );
+  sl.registerFactory(
+    () => ListObserverBloc(
+      listUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton(
@@ -107,10 +116,20 @@ Future<void> init() async {
       listPreviewRepository: sl(),
     ),
   );
+  sl.registerLazySingleton(
+    () => ListUsecases(
+      listRepository: sl(),
+    ),
+  );
 
   //! repos
   sl.registerLazySingleton<ListPreviewRepository>(
     () => ListPreviewRepositoryImpl(
+      firestore: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ListRepository>(
+    () => ListRepositoryImpl(
       firestore: sl(),
     ),
   );
@@ -143,7 +162,7 @@ Future<void> init() async {
       friendUsecases: sl(),
     ),
   );
-    sl.registerFactory(
+  sl.registerFactory(
     () => FriendRequestRespondBloc(
       friendUsecases: sl(),
     ),

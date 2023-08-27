@@ -3,7 +3,7 @@ import 'package:shoppinglist/core/failures/list_failures.dart';
 import 'package:shoppinglist/03_domain/entities/list.dart';
 
 abstract class ListRepository {
-  Stream<Either<ListFailure, List<ListData>>> watchAll();
+  Stream<Either<ListFailure, ListData>> watch(String listId);
 
   Future<Either<ListFailure, Unit>> create(ListData list);
 

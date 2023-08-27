@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
+import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;

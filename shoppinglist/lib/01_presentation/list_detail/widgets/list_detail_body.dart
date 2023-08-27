@@ -4,18 +4,19 @@ import 'package:shoppinglist/01_presentation/list_detail/widgets/items_list.dart
 import 'package:shoppinglist/03_domain/entities/list.dart';
 
 class ListDetailBody extends StatelessWidget {
-  ListData listData;
+  final ListData listData;
 
-  ListDetailBody({super.key, required this.listData});
+  const ListDetailBody({super.key, required this.listData});
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ItemsList(
-            items: listData.items,
-          ),
+          // ItemsList(
+          //   //TODO get real items
+          //   items: [],
+          // ),
           //TODO only if state is AddItemsState
           AddItemCard(),
         ],
