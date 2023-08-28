@@ -9,6 +9,7 @@ import 'package:shoppinglist/02_application/friend_requests/controller_respond/f
 import 'package:shoppinglist/02_application/friend_requests/controller_send/friend_request_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
+import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
 import 'package:shoppinglist/02_application/lists/addingMode/list_add_items_mode_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
@@ -192,11 +193,11 @@ Future<void> init() async {
   //? ################# friends and requests #####################################################################
 
   //! state management
-  // sl.registerFactory(
-  //   () => UserObserverBloc(
-  //     userUsecases: sl(),
-  //   ),
-  // );
+  sl.registerFactory(
+    () => ItemsObserverBloc(
+      itemUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton(
