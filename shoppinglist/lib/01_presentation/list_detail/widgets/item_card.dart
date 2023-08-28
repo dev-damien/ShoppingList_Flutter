@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:shoppinglist/02_application/items/controller/items_controller_bloc.dart';
 
 import 'package:shoppinglist/03_domain/entities/item.dart';
 
 class ItemCard extends StatelessWidget {
   final Item item;
+  final String listId;
 
   const ItemCard({
     Key? key,
     required this.item,
+    required this.listId,
   }) : super(key: key);
 
   @override
@@ -36,8 +40,11 @@ class ItemCard extends StatelessWidget {
             // A SlidableAction can have an icon and/or a label.
             SlidableAction(
               onPressed: (context) {
-                //TODO implement delete
-                print("${item.title} -> delete by slide");
+                print(
+                    "${item.title} -> delete by slide"); //TODO remove debug print
+                final controllerBloc = context.read<ItemsControllerBloc>();
+                controllerBloc
+                    .add(DeleteItemEvent(listId: listId, item: item));
               },
               backgroundColor: CupertinoColors.destructiveRed,
               foregroundColor: CupertinoColors.white,

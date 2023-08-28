@@ -80,6 +80,7 @@ class _ItemsListState extends State<ItemsList> {
               (index) {
                 final item = state.items[index];
                 return ItemCard(
+                  listId: widget.listId,
                   item: item,
                 );
               },
