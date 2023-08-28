@@ -8,17 +8,21 @@ abstract class ItemsControllerEvent extends Equatable {
 }
 
 class DeleteItemEvent extends ItemsControllerEvent {
+  final String listId;
   final Item item;
 
   const DeleteItemEvent({
+    required this.listId,
     required this.item,
   });
 }
 
 class UpdateItemEvent extends ItemsControllerEvent {
+  final String listId;
   final Item item;
 
   const UpdateItemEvent({
+    required this.listId,
     required this.item,
   });
 }
