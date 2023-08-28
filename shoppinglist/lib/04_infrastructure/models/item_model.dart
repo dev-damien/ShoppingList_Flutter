@@ -24,7 +24,6 @@ class ItemModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'title': title,
       'quantity': quantity,
       'addedBy': addedBy,

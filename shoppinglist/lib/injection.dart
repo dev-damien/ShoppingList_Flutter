@@ -15,16 +15,19 @@ import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.da
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
+import 'package:shoppinglist/03_domain/repositories/item_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_preview_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/friend_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/item_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/list_preview_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/list_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/auth_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_impl.dart';
+import 'package:shoppinglist/04_infrastructure/repositories/item_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
@@ -185,6 +188,29 @@ Future<void> init() async {
         firestore: sl(),
         userRepository: sl(),
       ));
+
+  //? ################# friends and requests #####################################################################
+
+  //! state management
+  // sl.registerFactory(
+  //   () => UserObserverBloc(
+  //     userUsecases: sl(),
+  //   ),
+  // );
+
+  //! usecases
+  sl.registerLazySingleton(
+    () => ItemUsecases(
+      itemRepository: sl(),
+    ),
+  );
+
+  //! repos
+  sl.registerLazySingleton<ItemRepository>(
+    () => ItemRepositoryImpl(
+      firestore: sl(),
+    ),
+  );
 
   //! ################# external: firebase and firestore #####################################################################
   //! auth

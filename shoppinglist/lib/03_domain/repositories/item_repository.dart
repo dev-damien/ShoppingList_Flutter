@@ -4,12 +4,11 @@ import 'package:shoppinglist/03_domain/entities/item.dart';
 
 //TODO rethink methods
 abstract class ItemRepository {
-  Stream<Either<ItemFailure, List<Item>>> watchAll();
+  Stream<Either<ItemFailure, List<Item>>> watchAll(String listId);
 
-  Future<Either<ItemFailure, Unit>> create(Item item);
+  Future<Either<ItemFailure, Unit>> create(String listId, Item item);
 
-  Future<Either<ItemFailure, Unit>> update(Item item);
+  Future<Either<ItemFailure, Unit>> update(String listId, Item item);
 
-  Future<Either<ItemFailure, Unit>> delete(
-      Item item); //todo or use UniqueID only
+  Future<Either<ItemFailure, Unit>> delete(String listId, Item item);
 }
