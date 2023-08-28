@@ -29,8 +29,8 @@ class ListPreviewCard extends StatelessWidget {
         listPreview.title,
       ),
       trailing: listPreview.isFavorite
-          ? const Icon(CupertinoIcons.star)
-          : const Icon(CupertinoIcons.star_fill),
+          ? const Icon(CupertinoIcons.star_fill)
+          : const Icon(CupertinoIcons.star),
       onTap: () {
         Navigator.push(
           context,
