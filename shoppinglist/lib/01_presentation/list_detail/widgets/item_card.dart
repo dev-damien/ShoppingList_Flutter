@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+
 import 'package:shoppinglist/03_domain/entities/item.dart';
 
 class ItemCard extends StatelessWidget {
@@ -88,17 +90,32 @@ class ItemCard extends StatelessWidget {
             child: Center(
               child: Text(
                 item.quantity.toString(),
+                style: const TextStyle(fontSize: 22),
               ),
             ),
           ),
           title: Text(
+            maxLines: 3,
             item.title,
           ),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('by ' + item.addedBy),
-              Text(item.addedTime),
+              Expanded(
+                child: Text(
+                  'by ${item.addedBy}',
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Text(
+                item.addedTime == null
+                    ? 'unknown'
+                    : DateFormat('dd.MM.yyyy HH:mm').format(
+                        item.addedTime!.toDate(),
+                      ),
+                overflow:
+                    TextOverflow.ellipsis, // Apply ellipsis for the time text
+              ),
             ],
           ),
           trailing: CupertinoButton(

@@ -6,3 +6,19 @@ abstract class ItemsControllerEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class DeleteItemEvent extends ItemsControllerEvent {
+  final Item item;
+
+  const DeleteItemEvent({
+    required this.item,
+  });
+}
+
+class UpdateItemEvent extends ItemsControllerEvent {
+  final Item item;
+
+  const UpdateItemEvent({
+    required this.item,
+  });
+}

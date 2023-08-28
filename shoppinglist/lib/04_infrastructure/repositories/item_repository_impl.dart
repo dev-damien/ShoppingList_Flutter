@@ -78,14 +78,16 @@ class ItemRepositoryImpl implements ItemRepository {
 
   @override
   Stream<Either<ItemFailure, List<Item>>> watchAll(String listId) async* {
-    final listDoc = firestore.collection('lists').doc(listId);
+    final listDoc = await firestore.collection('lists').doc(listId);
 
     yield* listDoc
         .collection('items')
         .snapshots()
-        .map((snapshot) => right<ItemFailure, List<Item>>(snapshot.docs
-            .map((doc) => ItemModel.fromFirestore(doc).toDomain())
-            .toList()))
+        .map((snapshot) =>
+            right<ItemFailure, List<Item>>(snapshot.docs.map((doc) {
+              print('new items snapshot yielded'); //TODO remove debug print
+              return ItemModel.fromFirestore(doc).toDomain();
+            }).toList()))
         .handleError((e) {
       //error handling left side
       if (e is FirebaseException) {

@@ -27,15 +27,22 @@ class ItemsObserverBloc extends Bloc<ItemsObserverEvent, ItemsObserverState> {
           );
     });
     on<ItemsUpdatedEvent>((event, emit) {
+      emit(ItemsObserverLoading());
       event.failureOrItems.fold(
-        (failure) => emit(
-          ItemsObserverFailure(
-            itemFailure: failure,
-          ),
-        ),
-        (items) => emit(
-          ItemsObserverSuccess(items: items),
-        ),
+        (failure) {
+          print('item bloc -> update failure'); //TODO remove debug print
+          emit(
+            ItemsObserverFailure(
+              itemFailure: failure,
+            ),
+          );
+        },
+        (items) {
+          print('item bloc -> update success'); //TODO remove debug print
+          emit(
+            ItemsObserverSuccess(items: items),
+          );
+        },
       );
     });
   }

@@ -1,26 +1,80 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/list_detail/widgets/item_card.dart';
-import 'package:shoppinglist/03_domain/entities/item.dart';
+import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
+import 'package:shoppinglist/core/failures/item_failures.dart';
 
 class ItemsList extends StatelessWidget {
-  List<Item> items;
+  final String listId;
+  const ItemsList({super.key, required this.listId});
 
-  ItemsList({super.key, required this.items});
+  String mapFailureMessage(ItemFailure failure) {
+    switch (failure.runtimeType) {
+      case InsufficientPermissions:
+        return "Your permissions are insufficient.";
+      case UnexpectedFailure:
+        return "An unexpected error occured. Try to restart the application.";
+      case UnexpectedFailureFirebase:
+        return "An unexpected error occured. This should not happen.";
+      default:
+        return "Something went wrong";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoListSection(
-      topMargin: 0,
-      margin: EdgeInsets.all(0),
-      children: List.generate(
-        items.length,
-        (index) {
-          final item = items[index];
-          return ItemCard(
-            item: item,
+    BlocProvider.of<ItemsObserverBloc>(context)
+        .add(ObserveAllItemsEvent(listId: listId));
+    return BlocConsumer<ItemsObserverBloc, ItemsObserverState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        if (state is ItemsObserverInitial) {
+          return Container();
+        }
+        if (state is ItemsObserverLoading) {
+          return const Center(
+            child: CupertinoActivityIndicator(),
           );
-        },
-      ),
+        }
+        if (state is ItemsObserverFailure) {
+          return Center(
+            child: Text(
+              mapFailureMessage(state.itemFailure),
+            ),
+          );
+        }
+        if (state is ItemsObserverSuccess) {
+          if (state.items.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.only(
+                top: 20,
+                left: 10,
+                right: 10,
+              ),
+              child: Text(
+                'This list is empty. Add an item by clicking on the \'+\' symbol in the top right corner.',
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+          return CupertinoListSection(
+            topMargin: 0,
+            margin: const EdgeInsets.all(0),
+            children: List.generate(
+              state.items.length,
+              (index) {
+                final item = state.items[index];
+                return ItemCard(
+                  item: item,
+                );
+              },
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }

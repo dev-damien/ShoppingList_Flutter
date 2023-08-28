@@ -23,11 +23,9 @@ class ListDetailBody extends StatelessWidget {
               : SizedBox(
                   height: 0,
                 ),
-          // ItemsList(
-          //   //TODO get real items
-          //   items: [],
-          // ),
-          //TODO only if state is AddItemsState
+          ItemsList(
+            listId: listData.id.value,
+          ),
         ],
       ),
     );

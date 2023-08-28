@@ -7,9 +7,9 @@ class ItemModel {
   final String title;
   final int quantity;
   final String addedBy;
-  final String addedTime;
+  final Timestamp? addedTime;
   final String boughtBy;
-  final String boughtTime;
+  final Timestamp? boughtTime;
   final dynamic serverTimestamp;
 
   ItemModel(
@@ -38,11 +38,11 @@ class ItemModel {
     return ItemModel(
       id: "", //will be set at another point
       title: (map['title'] ?? "unknown") as String,
-      quantity: (map['quantity'] ?? "-1") as int,
+      quantity: (map['quantity'] ?? 0) as int,
       addedBy: (map['addedBy'] ?? "unknown") as String,
-      addedTime: (map['addedTime'] ?? "unknown") as String,
+      addedTime: map['addedTime'],
       boughtBy: (map['boughtBy'] ?? "unknown") as String,
-      boughtTime: (map['boughtTime'] ?? "unknown") as String,
+      boughtTime: map['boughtTime'],
       serverTimestamp: (map['serverTimestamp'] ?? "unknown") as dynamic,
     );
   }
@@ -52,9 +52,9 @@ class ItemModel {
     String? title,
     int? quantity,
     String? addedBy,
-    String? addedTime,
+    Timestamp? addedTime,
     String? boughtBy,
-    String? boughtTime,
+    Timestamp? boughtTime,
     dynamic serverTimestamp,
   }) {
     return ItemModel(

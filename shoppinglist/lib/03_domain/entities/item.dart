@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
 
 class Item {
@@ -5,9 +6,9 @@ class Item {
   final String title;
   final int quantity;
   final String addedBy;
-  final String addedTime;
+  final Timestamp? addedTime;
   final String boughtBy;
-  final String boughtTime;
+  final Timestamp? boughtTime;
 
   Item(
       {required this.id,
@@ -20,13 +21,14 @@ class Item {
 
   factory Item.empty() {
     return Item(
-        id: UniqueID(),
-        title: "",
-        quantity: 0,
-        addedBy: "",
-        addedTime: "",
-        boughtBy: "",
-        boughtTime: "");
+      id: UniqueID(),
+      title: "",
+      quantity: 0,
+      addedBy: "",
+      addedTime: null,
+      boughtBy: "",
+      boughtTime: null,
+    );
   }
 
   Item copyWith({
@@ -34,9 +36,9 @@ class Item {
     String? title,
     int? quantity,
     String? addedBy,
-    String? addedTime,
+    Timestamp? addedTime,
     String? boughtBy,
-    String? boughtTime,
+    Timestamp? boughtTime,
   }) {
     return Item(
       id: id ?? this.id,
