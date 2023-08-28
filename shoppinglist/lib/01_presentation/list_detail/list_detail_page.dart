@@ -8,41 +8,38 @@ import 'package:shoppinglist/03_domain/entities/id.dart';
 import 'package:shoppinglist/core/failures/list_failures.dart';
 import 'package:shoppinglist/injection.dart';
 
-class ListDetailPage extends StatelessWidget {
+class ListDetailPage extends StatefulWidget {
   final UniqueID listId;
 
-  const ListDetailPage({super.key, required this.listId});
+  const ListDetailPage({Key? key, required this.listId}) : super(key: key);
 
-  String mapFailureMessage(ListFailure failure) {
-    switch (failure.runtimeType) {
-      case InsufficientPermissions:
-        return "Your permissions are insufficient.";
-      case UnexpectedFailure:
-        return "An unexpected error occured. Try to restart the application.";
-      case UnexpectedFailureFirebase:
-        return "An unexpected error occured. This should not happen.";
-      case ListDoesNotExist:
-        return "This list does not exist in the database.";
-      default:
-        return "Something went wrong";
-    }
+  @override
+  _ListDetailPageState createState() => _ListDetailPageState();
+}
+
+class _ListDetailPageState extends State<ListDetailPage> {
+  late final ListAddItemsModeBloc _listAddItemsModeBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _listAddItemsModeBloc = sl<ListAddItemsModeBloc>();
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-    final listAddItemsModeBloc = sl<ListAddItemsModeBloc>();
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => listAddItemsModeBloc,
+        BlocProvider.value(
+          value: _listAddItemsModeBloc,
         ),
         BlocProvider(
           create: (context) => sl<ListObserverBloc>()
             ..add(
               ObserveListEvent(
-                listId: listId.value,
+                listId: widget.listId.value,
               ),
             ),
         ),
@@ -146,7 +143,7 @@ class ListDetailPage extends StatelessWidget {
                                   padding: EdgeInsets.zero,
                                   child: Icon(CupertinoIcons.add),
                                   onPressed: () {
-                                    listAddItemsModeBloc
+                                    _listAddItemsModeBloc
                                         .add(ActivateAddItemsModeEvent());
                                   },
                                 ),
@@ -163,7 +160,7 @@ class ListDetailPage extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               child: const Text('Done'),
                               onPressed: () {
-                                listAddItemsModeBloc
+                                _listAddItemsModeBloc
                                     .add(DeactivateAddItemsModeEvent());
                               },
                             ),
@@ -183,5 +180,11 @@ class ListDetailPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _listAddItemsModeBloc.close();
+    super.dispose();
   }
 }

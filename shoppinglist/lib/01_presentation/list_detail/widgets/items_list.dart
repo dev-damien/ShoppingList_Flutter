@@ -4,9 +4,17 @@ import 'package:shoppinglist/01_presentation/list_detail/widgets/item_card.dart'
 import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
 import 'package:shoppinglist/core/failures/item_failures.dart';
 
-class ItemsList extends StatelessWidget {
+class ItemsList extends StatefulWidget {
   final String listId;
-  const ItemsList({super.key, required this.listId});
+
+  const ItemsList({Key? key, required this.listId}) : super(key: key);
+
+  @override
+  _ItemsListState createState() => _ItemsListState();
+}
+
+class _ItemsListState extends State<ItemsList> {
+  late final ItemsObserverBloc _itemsObserverBloc;
 
   String mapFailureMessage(ItemFailure failure) {
     switch (failure.runtimeType) {
@@ -22,9 +30,14 @@ class ItemsList extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _itemsObserverBloc = BlocProvider.of<ItemsObserverBloc>(context);
+    _itemsObserverBloc.add(ObserveAllItemsEvent(listId: widget.listId));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ItemsObserverBloc>(context)
-        .add(ObserveAllItemsEvent(listId: listId));
     return BlocConsumer<ItemsObserverBloc, ItemsObserverState>(
       listener: (context, state) {
         // TODO: implement listener
@@ -76,5 +89,11 @@ class ItemsList extends StatelessWidget {
         return Container();
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _itemsObserverBloc.close();
+    super.dispose();
   }
 }
