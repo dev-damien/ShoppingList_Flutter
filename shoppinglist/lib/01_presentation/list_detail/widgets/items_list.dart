@@ -93,7 +93,6 @@ class _ItemsListState extends State<ItemsList> {
 
   @override
   void dispose() {
-    _itemsObserverBloc.close();
     super.dispose();
   }
 }
