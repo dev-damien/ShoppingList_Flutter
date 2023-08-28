@@ -29,7 +29,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Stream<Either<UserFailure, UserData>> watch() async* {
-    print("userrepo -> watch()"); // TODO remove
+    print("userrepo -> watch()");
     final userDoc = await firestore.userDocument();
     final Stream<DocumentSnapshot<Map<String, dynamic>>> querySnapshots =
         userDoc.snapshots() as Stream<DocumentSnapshot<Map<String, dynamic>>>;
@@ -77,7 +77,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<UserFailure, UserData>> getById(String id) async {
     try {
-      print("userrepo -> get user by id $id"); // TODO remove
+      print("userrepo -> get user by id $id");
       final userDoc = FirebaseFirestore.instance.collection("users").doc(id);
 
       final docSnapshot = await userDoc.get();
@@ -108,7 +108,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<UserFailure, List<UserData>>> getByName(String name) async {
     try {
-      print("userrepo -> get user by name $name"); // TODO remove
+      print("userrepo -> get user by name $name");
       final query = FirebaseFirestore.instance
           .collection("users")
           .where('name', isEqualTo: name);
@@ -137,13 +137,13 @@ class UserRepositoryImpl implements UserRepository {
       }
     }
   }
-  
+
   @override
-  Future<Either<UserFailure, UserData>> getCurrentUserData() async{
-    try{
-    final userDoc = await firestore.userDocument();
-    final userSnapshot = await userDoc.get();
-    if (userSnapshot.exists) {
+  Future<Either<UserFailure, UserData>> getCurrentUserData() async {
+    try {
+      final userDoc = await firestore.userDocument();
+      final userSnapshot = await userDoc.get();
+      if (userSnapshot.exists) {
         // user with id exists
         UserData userData = UserModel.fromFirestore(userSnapshot).toDomain();
         return right<UserFailure, UserData>(userData);

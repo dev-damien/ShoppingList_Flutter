@@ -20,7 +20,6 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        //TODO remove print and open option menu
         print("long press down on ${item.title}");
       },
       child: Slidable(
@@ -41,7 +40,7 @@ class ItemCard extends StatelessWidget {
             SlidableAction(
               onPressed: (context) {
                 print(
-                    "${item.title} -> delete by slide"); //TODO remove debug print
+                    "${item.title} -> delete by slide");
                 final controllerBloc = context.read<ItemsControllerBloc>();
                 controllerBloc
                     .add(DeleteItemEvent(listId: listId, item: item));

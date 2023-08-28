@@ -38,7 +38,7 @@ class ListRepositoryImpl implements ListRepository {
   @override
   Stream<Either<ListFailure, ListData>> watch(String listId) async* {
     try {
-      print("list repo -> watch($listId)"); // TODO remove
+      print("list repo -> watch($listId)");
       final listDoc = firestore.collection('lists').doc(listId);
       final Stream<DocumentSnapshot<Map<String, dynamic>>> querySnapshots =
           listDoc.snapshots();
@@ -46,8 +46,6 @@ class ListRepositoryImpl implements ListRepository {
       yield* querySnapshots.map((doc) {
         if (!doc.exists) return left<ListFailure, ListData>(ListDoesNotExist());
         var listData = ListModel.fromFirestore(doc).toDomain();
-        print(
-            'yield listdata: title=${listData.title}'); //TODO remove debug print
         return right<ListFailure, ListData>(listData);
       }).handleError((e) async* {
         // Handle different error case
@@ -62,8 +60,6 @@ class ListRepositoryImpl implements ListRepository {
           yield left<ListFailure, ListData>(UnexpectedFailure());
         }
       });
-    } catch (e) {
-      print('wtf'); //TODO remove debug print
-    }
+    } catch (e) {}
   }
 }

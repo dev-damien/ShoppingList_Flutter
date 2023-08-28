@@ -72,17 +72,11 @@ class SearchResult extends StatelessWidget {
                       builder: (context, requestState) {
                         if (userState is UserObserverSuccess &&
                             friendsState is FriendsObserverSuccess) {
-                          print(
-                              '${user.name}: user and friends loaded'); //TODO remove debug print
                           // friends and requests are loaded
                           if (requestState is FriendRequestControllerInitial ||
                               requestState is FriendRequestControllerSuccess) {
-                            print(
-                                '${user.name}: initial or success'); //TODO remove debug print
                             if (userState.userData.friendRequests
                                 .contains(user.id.value)) {
-                              print(
-                                  '${user.name}: target requested user'); //TODO remove debug print
                               // show button to accept request
                               return CupertinoButton(
                                 child: Icon(
@@ -97,8 +91,6 @@ class SearchResult extends StatelessWidget {
                               );
                             } else if (userState.userData.friendRequestsSent
                                 .contains(user.id.value)) {
-                              print(
-                                  '${user.name}: already requested'); //TODO remove debug print
                               // target user has already been requested
                               return CupertinoButton(
                                 child: Icon(
@@ -116,8 +108,6 @@ class SearchResult extends StatelessWidget {
                                 .map((friend) => friend.id.value)
                                 .toList()
                                 .contains(user.id.value)) {
-                              print(
-                                  '${user.name}: already friends'); //TODO remove debug print
                               // target user is already friend of user
                               return CupertinoButton(
                                 child: Icon(
@@ -131,11 +121,7 @@ class SearchResult extends StatelessWidget {
                                 padding: EdgeInsets.only(right: 0),
                               );
                             }
-                            print(friendsState.friends
-                                .map((friend) => friend.id.value)
-                                .toList()); //TODO remove debug print
-                            print(
-                                '${user.name}: no requests in any way'); //TODO remove debug print
+
                             return CupertinoButton(
                               child: Icon(
                                 CupertinoIcons.add_circled_solid,
@@ -218,24 +204,14 @@ class SearchResult extends StatelessWidget {
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: Text('The user ${user.name} requested to be friends with you'),
-        content: const Text('Do you want to be friends with this user?'),
+        content: const Text(
+            'Go to your friend-requests page to accept or decline this his/her request.'),
         actions: <CupertinoDialogAction>[
           CupertinoDialogAction(
-            isDestructiveAction: true,
             onPressed: () {
-              //TODO decline request
-              print('decline request'); //TODO remove debug print
               Navigator.pop(context);
             },
-            child: const Text('Decline'),
-          ),
-          CupertinoDialogAction(
-            onPressed: () {
-              //TODO accept user as friend
-              print('accept request'); //TODO remove debug print
-              Navigator.pop(context);
-            },
-            child: const Text('Accept'),
+            child: const Text('Ok'),
           ),
         ],
       ),

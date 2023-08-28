@@ -85,7 +85,6 @@ class ItemRepositoryImpl implements ItemRepository {
         .snapshots()
         .map((snapshot) =>
             right<ItemFailure, List<Item>>(snapshot.docs.map((doc) {
-              print('new items snapshot yielded'); //TODO remove debug print
               return ItemModel.fromFirestore(doc).toDomain();
             }).toList()))
         .handleError((e) {

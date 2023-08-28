@@ -30,7 +30,6 @@ class ItemsObserverBloc extends Bloc<ItemsObserverEvent, ItemsObserverState> {
       emit(ItemsObserverLoading());
       event.failureOrItems.fold(
         (failure) {
-          print('item bloc -> update failure'); //TODO remove debug print
           emit(
             ItemsObserverFailure(
               itemFailure: failure,
@@ -38,7 +37,6 @@ class ItemsObserverBloc extends Bloc<ItemsObserverEvent, ItemsObserverState> {
           );
         },
         (items) {
-          print('item bloc -> update success'); //TODO remove debug print
           emit(
             ItemsObserverSuccess(items: items),
           );

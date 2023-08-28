@@ -200,7 +200,6 @@ class FriendRequestCard extends StatelessWidget {
     BuildContext parentContext,
     FriendRequestResponse type,
   ) {
-    print('success dialog?'); //TODO remove debug print
     String title;
     String description;
     if (type == FriendRequestResponse.accept) {
