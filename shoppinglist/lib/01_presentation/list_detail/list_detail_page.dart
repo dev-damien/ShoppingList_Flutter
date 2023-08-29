@@ -5,7 +5,6 @@ import 'package:shoppinglist/01_presentation/list_detail/widgets/list_detail_bod
 import 'package:shoppinglist/02_application/lists/addingMode/list_add_items_mode_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
-import 'package:shoppinglist/core/failures/list_failures.dart';
 import 'package:shoppinglist/injection.dart';
 
 class ListDetailPage extends StatefulWidget {

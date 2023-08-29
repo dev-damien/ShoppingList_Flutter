@@ -9,6 +9,7 @@ import 'package:shoppinglist/02_application/friend_requests/controller_respond/f
 import 'package:shoppinglist/02_application/friend_requests/controller_send/friend_request_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
+import 'package:shoppinglist/02_application/items/add_form/add_item_form_bloc.dart';
 import 'package:shoppinglist/02_application/items/controller/items_controller_bloc.dart';
 import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
@@ -201,6 +202,11 @@ Future<void> init() async {
   );
   sl.registerFactory(
     () => ItemsControllerBloc(
+      itemUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => AddItemFormBloc(
       itemUsecases: sl(),
     ),
   );

@@ -19,8 +19,11 @@ class ListDetailBody extends StatelessWidget {
       child: Column(
         children: [
           isAddingMode
-              ? AddItemCard()
-              : SizedBox(
+              ? AddItemCard(
+                  listId: listData.id.value,
+                  item: null,
+                )
+              : const SizedBox(
                   height: 0,
                 ),
           ItemsList(

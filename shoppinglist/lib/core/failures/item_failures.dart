@@ -12,3 +12,5 @@ class UnexpectedFailure extends ItemFailure {}
 class UnexpectedFailureFirebase extends ItemFailure {}
 
 class ItemDoesNotExist extends ItemFailure {}
+
+class EmptyTitleNotAllowed extends ItemFailure {}
