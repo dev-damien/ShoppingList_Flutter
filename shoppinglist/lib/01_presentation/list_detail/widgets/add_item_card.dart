@@ -44,7 +44,7 @@ class _AddItemCardState extends State<AddItemCard> {
   Widget build(BuildContext context) {
     // Move focus to title input field
     _titleFocusNode.requestFocus();
-    
+
     return BlocProvider.value(
       value: _addItemFormBloc,
       child: BlocConsumer<AddItemFormBloc, AddItemFormState>(
