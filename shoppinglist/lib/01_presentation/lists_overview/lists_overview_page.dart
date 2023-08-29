@@ -22,7 +22,11 @@ class ListsOverviewPage extends StatelessWidget {
               context,
               CupertinoPageRoute<Widget>(
                 builder: (BuildContext context) {
-                  return const CreateListPage();
+                  // create a new list -> pass nothing to widget
+                  return CreateListPage(
+                    isFavorite: null,
+                    listData: null,
+                  );
                 },
               ),
             );

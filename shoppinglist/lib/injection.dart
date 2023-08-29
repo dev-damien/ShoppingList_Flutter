@@ -13,7 +13,8 @@ import 'package:shoppinglist/02_application/items/add_form/add_item_form_bloc.da
 import 'package:shoppinglist/02_application/items/controller/items_controller_bloc.dart';
 import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
-import 'package:shoppinglist/02_application/lists/addingMode/list_add_items_mode_bloc.dart';
+import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mode_bloc.dart';
+import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
@@ -119,6 +120,11 @@ Future<void> init() async {
   sl.registerFactory(
     () => ListAddItemsModeBloc(),
   );
+  sl.registerFactory(
+    () => ListFormBloc(
+      listUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton(
@@ -129,6 +135,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => ListUsecases(
       listRepository: sl(),
+      listPreviewRepository: sl(),
     ),
   );
 

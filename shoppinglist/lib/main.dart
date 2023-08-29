@@ -7,7 +7,6 @@ import 'package:shoppinglist/02_application/friends/controller/friend_controller
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/items/controller/items_controller_bloc.dart';
 import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
-import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;

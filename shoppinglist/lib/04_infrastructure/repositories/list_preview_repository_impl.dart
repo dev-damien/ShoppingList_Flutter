@@ -12,21 +12,67 @@ class ListPreviewRepositoryImpl implements ListPreviewRepository {
   ListPreviewRepositoryImpl({required this.firestore});
 
   @override
-  Future<Either<ListPreviewFailure, Unit>> create(ListPreview list) {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<Either<ListPreviewFailure, Unit>> create(
+      String userId, ListPreview listPreview) async {
+    try {
+      final userDoc = firestore.collection('users').doc(userId);
+      final listPreviewModel = ListPreviewModel.fromDomain(listPreview);
+
+      await userDoc
+          .collection('lists_preview')
+          .doc(listPreviewModel.id)
+          .set(listPreviewModel.toMap());
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code.contains("PERMISSION_DENIED")) {
+        return left(InsufficientPermissions());
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override
-  Future<Either<ListPreviewFailure, Unit>> delete(ListPreview list) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Either<ListPreviewFailure, Unit>> delete(
+      String userId, ListPreview list) async {
+    try {
+      final userDoc = firestore.collection('users').doc(userId);
+      final listPreviewModel = ListPreviewModel.fromDomain(list);
+
+      await userDoc.listPreviewCollection.doc(listPreviewModel.id).delete();
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code.contains("PERMISSION_DENIED")) {
+        // NOT_FOUND
+        return left(InsufficientPermissions());
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override
-  Future<Either<ListPreviewFailure, Unit>> update(ListPreview list) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<Either<ListPreviewFailure, Unit>> update(
+      String userId, ListPreview listPreview) async {
+    try {
+      final userDoc = firestore.collection('users').doc(userId);
+      final listPreviewModel = ListPreviewModel.fromDomain(listPreview);
+
+      await userDoc.listPreviewCollection
+          .doc(listPreviewModel.id)
+          .update(listPreviewModel.toMap());
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code.contains("PERMISSION_DENIED")) {
+        // NOT_FOUND
+        return left(InsufficientPermissions());
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override

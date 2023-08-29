@@ -14,15 +14,18 @@ class ListPreviewUsecases {
     return listPreviewRepository.watchAll();
   }
 
-  Future<Either<ListPreviewFailure, Unit>> create(ListPreview list) {
-    return listPreviewRepository.create(list);
+  Future<Either<ListPreviewFailure, Unit>> create(
+      String userId, ListPreview list) {
+    return listPreviewRepository.create(userId, list);
   }
 
-  Future<Either<ListPreviewFailure, Unit>> update(ListPreview list) {
-    return listPreviewRepository.update(list);
+  Future<Either<ListPreviewFailure, Unit>> update(
+      String userId, ListPreview list) {
+    return listPreviewRepository.update(userId, list);
   }
 
-  Future<Either<ListPreviewFailure, Unit>> delete(ListPreview list) {
-    return listPreviewRepository.delete(list);
+  Future<Either<ListPreviewFailure, Unit>> delete(
+      String userId, ListPreview list) {
+    return listPreviewRepository.delete(userId, list);
   }
 }
