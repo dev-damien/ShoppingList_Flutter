@@ -37,7 +37,7 @@ class ListModel {
       title: (map['title'] ?? 'unknown') as String,
       members: List<String>.from((map['members'] ?? [])),
       imageId: (map['imageId'] ?? 'unknown') as String,
-      serverTimestamp: (map['serverTimestamp'] ?? 'unknown') as dynamic,
+      serverTimestamp: map['serverTimestamp'] as dynamic,
       admins: List<String>.from((map['admins'] ?? [])),
     );
   }

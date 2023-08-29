@@ -43,7 +43,7 @@ class ItemModel {
       addedTime: map['addedTime'],
       boughtBy: (map['boughtBy'] ?? "unknown") as String,
       boughtTime: map['boughtTime'],
-      serverTimestamp: (map['serverTimestamp'] ?? "unknown") as dynamic,
+      serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
 

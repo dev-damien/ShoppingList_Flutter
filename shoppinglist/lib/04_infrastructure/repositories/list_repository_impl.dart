@@ -3,12 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:shoppinglist/03_domain/entities/list.dart';
-import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_repository.dart';
 import 'package:shoppinglist/04_infrastructure/models/list_model.dart';
-import 'package:shoppinglist/core/errors/errors.dart';
 import 'package:shoppinglist/core/failures/list_failures.dart';
-import 'package:shoppinglist/injection.dart';
 
 class ListRepositoryImpl implements ListRepository {
   final FirebaseFirestore firestore;
@@ -18,9 +15,23 @@ class ListRepositoryImpl implements ListRepository {
   });
 
   @override
-  Future<Either<ListFailure, Unit>> create(ListData list) {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<Either<ListFailure, Unit>> create(ListData list) async {
+    try {
+      final listModel = ListModel.fromDomain(list);
+
+      await firestore
+          .collection('lists')
+          .doc(listModel.id)
+          .set(listModel.toMap());
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code.contains("PERMISSION_DENIED")) {
+        return left(InsufficientPermissions());
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override
