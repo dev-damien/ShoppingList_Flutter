@@ -183,7 +183,7 @@ class _EditItemDialogState extends State<EditItemDialog> {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text('Edit Item'),
+      title: const Text('Edit Item'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -204,13 +204,12 @@ class _EditItemDialogState extends State<EditItemDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         CupertinoDialogAction(
           onPressed: () {
             String editedTitle = _titleController.text;
             int editedQuantity = int.tryParse(_quantityController.text) ?? 0;
-
             sl<ItemsControllerBloc>().add(UpdateItemEvent(
               listId: widget.listId,
               item: widget.item.copyWith(
@@ -218,8 +217,6 @@ class _EditItemDialogState extends State<EditItemDialog> {
                 quantity: editedQuantity,
               ),
             ));
-            // Call a callback or dispatch an event to handle the edited data
-            // For example: onEditItem(editedTitle, editedQuantity);
             Navigator.pop(context);
           },
           child: const Text('Save'),
@@ -229,7 +226,6 @@ class _EditItemDialogState extends State<EditItemDialog> {
   }
 }
 
-// Method to open the dialog
 void openEditItemDialog(BuildContext context, String initialTitle,
     int initialQuantity, String listId, Item item) {
   showCupertinoDialog(
