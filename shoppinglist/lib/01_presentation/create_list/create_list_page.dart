@@ -9,9 +9,8 @@ import 'package:shoppinglist/injection.dart';
 class CreateListPage extends StatelessWidget {
   final ListData? listData;
   final bool? isFavorite;
-  final listNameController = TextEditingController();
 
-  CreateListPage({
+  const CreateListPage({
     super.key,
     required this.listData,
     required this.isFavorite,
@@ -57,16 +56,15 @@ class CreateListPage extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 child: const Text("Done"),
                 onPressed: () {
-                  print(listNameController.text); //TODO remove debug print
+                  print(
+                      'title=${state.listData.title}, isFav=${state.isFavorite}'); //TODO remove debug print
                 },
               ),
             ),
             child: SafeArea(
               child: Stack(
                 children: [
-                  CreateListBody(
-                    listNameController: listNameController,
-                  ),
+                  CreateListBody(),
                   SafeInProgressOverlay(isSaving: state.isSaving),
                 ],
               ),

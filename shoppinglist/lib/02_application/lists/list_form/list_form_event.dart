@@ -20,6 +20,18 @@ class InitializeListEditPage extends ListFormEvent {
 
 class ToggleIsFavoriteEvent extends ListFormEvent {}
 
+class DataChangedEvent extends ListFormEvent {
+  final String? title;
+  final String? imageId;
+  final List<Friend>? members;
+
+  const DataChangedEvent({
+    this.title,
+    this.imageId,
+    this.members,
+  });
+}
+
 class SafePressedEvent extends ListFormEvent {
   final String? title;
   final bool? isFavorite;

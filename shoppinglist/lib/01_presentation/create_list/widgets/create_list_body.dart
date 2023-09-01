@@ -3,25 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/added_friends_list.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/selected_icon.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
-import 'package:shoppinglist/injection.dart';
 
 class CreateListBody extends StatelessWidget {
-  final TextEditingController listNameController;
-
   const CreateListBody({
     super.key,
-    required this.listNameController,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ListFormBloc, ListFormState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
-        print(
-            'build create list body-> state: isFav=${state.isFavorite}'); //TODO remove debug print
         return ListView(
           children: [
             Row(
@@ -84,10 +77,14 @@ class CreateListBody extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: CupertinoTextField(
-                controller: listNameController,
                 placeholder: "Enter listname ...",
                 keyboardType: TextInputType.text,
                 maxLength: 20,
+                onChanged: (value) {
+                  // send event that title value has changed
+                  BlocProvider.of<ListFormBloc>(context)
+                      .add(DataChangedEvent(title: value));
+                },
               ),
             ),
             const SizedBox(

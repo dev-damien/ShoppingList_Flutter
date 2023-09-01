@@ -22,6 +22,20 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
     on<ToggleIsFavoriteEvent>((event, emit) {
       emit(state.copyWith(isFavorite: !state.isFavorite));
     });
+    on<DataChangedEvent>((event, emit) {
+      ListData editedListData = state.listData;
+      if (event.title != null) {
+        editedListData = editedListData.copyWith(title: event.title);
+      }
+      if (event.members != null) {
+        editedListData = editedListData.copyWith(
+            members: event.members!.map((e) => e.id.value).toList());
+      }
+      if (event.imageId != null) {
+        editedListData = editedListData.copyWith(imageId: event.imageId);
+      }
+      emit(state.copyWith(listData: editedListData));
+    });
     on<SafePressedEvent>((event, emit) async {
       Either<ListFailure, Unit>? failureOrSuccess;
 
