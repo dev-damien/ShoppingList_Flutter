@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/list.dart';
 import 'package:shoppinglist/03_domain/usecases/list_usecases.dart';
+import 'package:shoppinglist/constants/default_values.dart';
 import 'package:shoppinglist/core/failures/list_failures.dart';
 
 part 'list_form_event.dart';
@@ -16,7 +17,10 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
       if (event.listData != null) {
         emit(state.copyWith(listData: event.listData, isEditing: true));
       } else {
-        emit(state);
+        print('not nulllllll');
+        emit(state.copyWith(
+            listData: state.listData
+                .copyWith(imageId: DefaultValues.defaultListIconId)));
       }
     });
     on<ToggleIsFavoriteEvent>((event, emit) {

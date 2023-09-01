@@ -57,7 +57,7 @@ class CreateListPage extends StatelessWidget {
                 child: const Text("Done"),
                 onPressed: () {
                   print(
-                      'title=${state.listData.title}, isFav=${state.isFavorite}'); //TODO remove debug print
+                      'title=${state.listData.title}, isFav=${state.isFavorite}, imageId=${state.listData.imageId}'); //TODO remove debug print
                 },
               ),
             ),

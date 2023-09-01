@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class ImageMapper {
-  static const Map<String, Map<String, IconData>> _string2icon = {
+  static const Map<String, Map<String, IconData>> string2iconDataList = {
     "square_list": {
       "default": CupertinoIcons.square_list,
       "filled": CupertinoIcons.square_list_fill,
@@ -100,23 +100,23 @@ class ImageMapper {
     },
   };
 
-  static final Map<IconData, String> _icon2string = _reverseMap();
+  static final Map<IconData, String> iconData2stringList = _reverseMap();
 
   static IconData toIconData(String id) {
-    return _string2icon[id]?['default'] ?? CupertinoIcons.nosign;
+    return string2iconDataList[id]?['default'] ?? CupertinoIcons.nosign;
   }
 
   static String toID(IconData icon) {
-    return _icon2string[icon] ?? 'Invalid IconData';
+    return iconData2stringList[icon] ?? 'Invalid IconData';
   }
 
   static Map<IconData, String> _reverseMap() {
-    Map<IconData, String> _icon2string = {};
-    _string2icon.forEach((id, styles) {
+    Map<IconData, String> iconData2stringList = {};
+    string2iconDataList.forEach((id, styles) {
       styles.forEach((style, icon) {
-        _icon2string[icon] = id;
+        iconData2stringList[icon] = id;
       });
     });
-    return _icon2string;
+    return iconData2stringList;
   }
 }

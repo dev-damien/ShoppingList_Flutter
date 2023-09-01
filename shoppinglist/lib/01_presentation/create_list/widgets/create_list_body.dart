@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/added_friends_list.dart';
-import 'package:shoppinglist/01_presentation/create_list/widgets/selected_icon.dart';
+import 'package:shoppinglist/01_presentation/util/icon_selection_page.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class CreateListBody extends StatelessWidget {
   const CreateListBody({
@@ -12,8 +13,7 @@ class CreateListBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ListFormBloc, ListFormState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return ListView(
           children: [
@@ -22,13 +22,16 @@ class CreateListBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  width: 35,
+                  width: 50,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(
+                Padding(
+                  padding: const EdgeInsets.only(
                     top: 25,
                   ),
-                  child: SelectedIcon(),
+                  child: Icon(
+                    ImageMapper.toIconData(state.listData.imageId),
+                    size: 100,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -62,7 +65,10 @@ class CreateListBody extends StatelessWidget {
                   Text("Change list image"),
                 ],
               ),
-              onPressed: () {},
+              onPressed: () {
+                _showIconSelectionDialog(context);
+                print('change icon button clicked');
+              },
             ),
             const Padding(
               padding: EdgeInsets.only(left: 15, right: 15),
@@ -128,5 +134,21 @@ class CreateListBody extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _showIconSelectionDialog(BuildContext context) async {
+    final Map<String, IconData> iconDataMap = ImageMapper.string2iconDataList
+        .map((key, value) => MapEntry(key, value['default']!));
+    final selectedIcon = await showCupertinoDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return IconSelectionPage(iconDataMap: iconDataMap);
+      },
+    );
+
+    if (selectedIcon != null) {
+      BlocProvider.of<ListFormBloc>(context)
+          .add(DataChangedEvent(imageId: selectedIcon));
+    }
   }
 }
