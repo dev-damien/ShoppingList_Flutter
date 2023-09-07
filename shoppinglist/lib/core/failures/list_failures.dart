@@ -12,3 +12,5 @@ class UnexpectedFailure extends ListFailure {}
 class UnexpectedFailureFirebase extends ListFailure {}
 
 class ListDoesNotExist extends ListFailure {}
+
+class NoValueForTitleProvided extends ListFailure {}

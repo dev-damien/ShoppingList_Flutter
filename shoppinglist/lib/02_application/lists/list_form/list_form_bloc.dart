@@ -1,26 +1,77 @@
+import 'dart:core';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/list.dart';
+import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/usecases/list_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
 import 'package:shoppinglist/constants/default_values.dart';
+import 'package:shoppinglist/core/errors/errors.dart';
 import 'package:shoppinglist/core/failures/list_failures.dart';
+import 'package:shoppinglist/injection.dart';
 
 part 'list_form_event.dart';
 part 'list_form_state.dart';
 
 class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
   final ListUsecases listUsecases;
-  ListFormBloc({required this.listUsecases}) : super(ListFormState.initial()) {
-    on<InitializeListEditPage>((event, emit) {
+  final UserUsecases userUsecases;
+
+  ListFormBloc({required this.listUsecases, required this.userUsecases})
+      : super(ListFormState.initial()) {
+    on<InitializeListEditPage>((event, emit) async {
+      final friends = event.friends ?? [];
       if (event.listData != null) {
-        emit(state.copyWith(listData: event.listData, isEditing: true));
+        final notFriendMembersIds = event.listData!.members
+            .where(
+                (member) => !(friends.map((e) => e.id.value)).contains(member))
+            .toList();
+        final List<Friend> notFriendMembersData = [];
+        notFriendMembersIds.map(
+          (id) async => await userUsecases.getUserById(id)
+            ..fold(
+              (failure) {},
+              (userData) {
+                notFriendMembersData.add(Friend(
+                  id: userData.id,
+                  nickname: userData.name,
+                  imageId: userData.imageId,
+                ));
+              },
+            ),
+        );
+        final friendMembersIds = event.listData!.members
+            .where(
+                (member) => (friends.map((e) => e.id.value)).contains(member))
+            .toList();
+        final friendMembersData = friendMembersIds
+            .map(
+              (friendId) => event.friends!
+                  .where((friend) => friend.id.value == friendId)
+                  .toList()
+                  .first,
+            )
+            .toList();
+
+        final allMembersData = notFriendMembersData + friendMembersData;
+
+        emit(
+          state.copyWith(
+            listData: event.listData,
+            isEditing: true,
+            members: allMembersData,
+          ),
+        );
       } else {
-        print('not nulllllll');
-        emit(state.copyWith(
-            listData: state.listData
-                .copyWith(imageId: DefaultValues.defaultListIconId)));
+        emit(
+          ListFormState.initial().copyWith(
+            listData: ListData.empty()
+                .copyWith(imageId: DefaultValues.defaultListIconId),
+          ),
+        );
       }
     });
     on<ToggleIsFavoriteEvent>((event, emit) {
@@ -31,23 +82,50 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
       if (event.title != null) {
         editedListData = editedListData.copyWith(title: event.title);
       }
-      if (event.members != null) {
-        editedListData = editedListData.copyWith(
-            members: event.members!.map((e) => e.id.value).toList());
-      }
       if (event.imageId != null) {
         editedListData = editedListData.copyWith(imageId: event.imageId);
       }
       emit(state.copyWith(listData: editedListData));
     });
+    on<AddMemberEvent>((event, emit) {
+      final editedMembersIds = state.listData.members..add(event.user.id.value);
+      final editedMembers = state.members..add(event.user);
+
+      emit(state.copyWith(
+        listData: state.listData.copyWith(members: editedMembersIds),
+        members: editedMembers,
+      ));
+    });
+    on<RemoveMemberEvent>((event, emit) {
+      final editedMembersIds = state.listData.members
+        ..remove(event.user.id.value);
+      final editedMembers = state.members..remove(event.user);
+
+      emit(state.copyWith(
+        listData: state.listData.copyWith(members: editedMembersIds),
+        members: editedMembers,
+      ));
+    });
     on<SafePressedEvent>((event, emit) async {
       Either<ListFailure, Unit>? failureOrSuccess;
 
-      emit(state.copyWith(isSaving: true, failureOrSuccessOption: none()));
+      if (state.listData.title.isEmpty) {
+        emit(state.copyWith(
+            showErrorMessages: true,
+            failureOrSuccessOption: optionOf(left(NoValueForTitleProvided()))));
+      } else {
+        emit(state.copyWith(isSaving: true, failureOrSuccessOption: none()));
 
-      if (event.title != null) {
-        final ListData editedList =
-            state.listData.copyWith(title: event.title, imageId: event.imageId);
+        final userOption = sl<AuthRepository>().getSignedInUser();
+        final user = userOption.getOrElse(() => throw NotAuthenticatedError());
+
+        final ListData editedList = state.listData.copyWith(
+          title: event.title,
+          imageId: event.imageId,
+          members: state.listData.members
+            ..add(user.id.value), // add creator to members
+          admins: [user.id.value], // add creator as admin
+        );
 
         if (state.isEditing) {
           failureOrSuccess =
@@ -56,12 +134,15 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
           failureOrSuccess =
               await listUsecases.create(editedList, state.isFavorite);
         }
-      }
 
-      emit(state.copyWith(
+        emit(state.copyWith(
           isSaving: false,
           showErrorMessages: true,
-          failureOrSuccessOption: optionOf(failureOrSuccess)));
+          failureOrSuccessOption: optionOf(failureOrSuccess),
+          listData:
+              null, // reset listdata for correct behaviour in the initialize method at next call
+        ));
+      }
     });
   }
 }

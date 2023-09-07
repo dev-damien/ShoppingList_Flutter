@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/added_friends_list.dart';
+import 'package:shoppinglist/01_presentation/create_list/widgets/manage_members_page.dart';
 import 'package:shoppinglist/01_presentation/util/icon_selection_page.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
+import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/core/failures/list_failures.dart';
 import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class CreateListBody extends StatelessWidget {
@@ -67,7 +70,6 @@ class CreateListBody extends StatelessWidget {
               ),
               onPressed: () {
                 _showIconSelectionDialog(context);
-                print('change icon button clicked');
               },
             ),
             const Padding(
@@ -93,27 +95,50 @@ class CreateListBody extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            Builder(builder: (context) {
+              if (state.listData.title.isEmpty && state.showErrorMessages) {
+                return const Padding(
+                  padding: EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                  ),
+                  child: Text(
+                    'Listname is required',
+                    style: TextStyle(
+                      color: CupertinoColors.destructiveRed,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox(
+                height: 20,
+              );
+            }),
+
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: CupertinoButton(
-                onPressed: () {},
-                child: Text("Add friends to your list"),
+                onPressed: () {
+                  _showManageFriendsDialog(context);
+                },
+                child: const Text("Add or remove users"),
               ),
             ),
-            //todo if no frinds in group
-            const Center(
-              child: Text(
-                "There are currently no friends added",
-              ),
-            ),
-            //TODO if friends added, display here in scrollable list
-            Padding(
-              padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
-              child: AddedFriendsList(),
-            ),
+            Builder(builder: (context) {
+              if (state.listData.members.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "There are no other users in this list",
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
+                  child: AddedFriendsList(),
+                );
+              }
+            }),
+
             const SizedBox(
               height: 30,
             ),
@@ -139,16 +164,25 @@ class CreateListBody extends StatelessWidget {
   void _showIconSelectionDialog(BuildContext context) async {
     final Map<String, IconData> iconDataMap = ImageMapper.string2iconDataList
         .map((key, value) => MapEntry(key, value['default']!));
-    final selectedIcon = await showCupertinoDialog<String>(
+    await showCupertinoDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return IconSelectionPage(iconDataMap: iconDataMap);
       },
-    );
+    ).then((value) {
+      if (value != null) {
+        BlocProvider.of<ListFormBloc>(context)
+            .add(DataChangedEvent(imageId: value));
+      }
+    });
+  }
 
-    if (selectedIcon != null) {
-      BlocProvider.of<ListFormBloc>(context)
-          .add(DataChangedEvent(imageId: selectedIcon));
-    }
+  void _showManageFriendsDialog(BuildContext context) async {
+    await showCupertinoDialog<List<String>>(
+      context: context,
+      builder: (BuildContext context) {
+        return const ManageMembersPage();
+      },
+    );
   }
 }

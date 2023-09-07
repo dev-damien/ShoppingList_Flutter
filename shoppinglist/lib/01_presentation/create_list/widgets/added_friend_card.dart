@@ -4,10 +4,12 @@ import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class AddedFriendCard extends StatelessWidget {
   final Friend friend;
+  final bool isMember;
 
   const AddedFriendCard({
     Key? key,
     required this.friend,
+    required this.isMember,
   }) : super(key: key);
 
   @override

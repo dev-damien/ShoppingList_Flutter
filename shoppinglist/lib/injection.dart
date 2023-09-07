@@ -123,6 +123,7 @@ Future<void> init() async {
   sl.registerFactory(
     () => ListFormBloc(
       listUsecases: sl(),
+      userUsecases: sl(),
     ),
   );
 
