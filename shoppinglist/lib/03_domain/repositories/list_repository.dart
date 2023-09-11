@@ -10,5 +10,5 @@ abstract class ListRepository {
   Future<Either<ListFailure, Unit>> update(ListData list);
 
   Future<Either<ListFailure, Unit>> delete(
-      ListData list); //todo or use UniqueID only
+      String listId); 
 }

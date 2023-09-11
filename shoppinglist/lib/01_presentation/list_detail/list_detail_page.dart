@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/list_detail/widgets/list_detail_body.dart';
 import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mode_bloc.dart';
+import 'package:shoppinglist/02_application/lists/controller/list_controller_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
+import 'package:shoppinglist/03_domain/entities/list.dart';
 import 'package:shoppinglist/injection.dart';
 
 class ListDetailPage extends StatefulWidget {
@@ -140,7 +142,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
                               children: [
                                 CupertinoButton(
                                   padding: EdgeInsets.zero,
-                                  child: Icon(CupertinoIcons.add),
+                                  child: const Icon(CupertinoIcons.add),
                                   onPressed: () {
                                     _listAddItemsModeBloc
                                         .add(ActivateAddItemsModeEvent());
@@ -148,9 +150,10 @@ class _ListDetailPageState extends State<ListDetailPage> {
                                 ),
                                 CupertinoButton(
                                   padding: EdgeInsets.zero,
-                                  child: Icon(CupertinoIcons.ellipsis),
+                                  child: const Icon(CupertinoIcons.ellipsis),
                                   onPressed: () {
-                                    // TODO open settings menu for list
+                                    _showListActionSheet(
+                                        context, state.listData);
                                   },
                                 ),
                               ],
@@ -185,5 +188,85 @@ class _ListDetailPageState extends State<ListDetailPage> {
   void dispose() {
     _listAddItemsModeBloc.close();
     super.dispose();
+  }
+
+  void _showListActionSheet(BuildContext context, ListData listData) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Text('Options for ${listData.title}'),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+              //TODO open edit list page with list data
+            },
+            child: const Text('Edit list'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+              //TODO leave list
+            },
+            child: const Text('Leave list'),
+          ),
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+              _showDeleteListDialog(context, listData);
+            },
+            child: const Text('Delete List'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //TODO delete list
+  void _showDeleteListDialog(BuildContext context, ListData listData) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) =>
+          BlocConsumer<ListControllerBloc, ListControllerState>(
+        listener: (context, state) {
+          if (state is ListControllerSuccess) {
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is ListControllerInProgress;
+          return CupertinoAlertDialog(
+            title: isLoading
+                ? Text('Deleting list ${listData.title}')
+                : Text('Do you want to delete the list ${listData.title}'),
+            content: isLoading
+                ? const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                : const Text(
+                    'This action will delete all items in this list for all members.'),
+            actions: isLoading
+                ? []
+                : <CupertinoDialogAction>[
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        BlocProvider.of<ListControllerBloc>(context)
+                            .add(DeleteListEvent(listId: listData.id.value));
+                      },
+                      isDestructiveAction: true,
+                      child: const Text('Delete'),
+                    ),
+                  ],
+          );
+        },
+      ),
+    );
   }
 }

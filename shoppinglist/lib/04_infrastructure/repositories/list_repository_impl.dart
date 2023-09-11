@@ -34,16 +34,54 @@ class ListRepositoryImpl implements ListRepository {
     }
   }
 
+  // TODO maybe check for admin rights before deleting list
   @override
-  Future<Either<ListFailure, Unit>> delete(ListData list) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Either<ListFailure, Unit>> delete(String listId) async {
+    try {
+      //final userDoc = await firestore.userDocument();
+      final listDoc = await firestore.collection('lists').doc(listId).get();
+
+      //* remove list previews for all members
+      for (String memberId in listDoc.get('members')!) {
+        await firestore
+            .collection('users')
+            .doc(memberId)
+            .collection('lists_preview')
+            .doc(listId)
+            .delete();
+      }
+
+      //* remove main list entry in lists collection
+      await firestore.collection('lists').doc(listId).delete();
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code.contains("PERMISSION_DENIED")) {
+        return left(InsufficientPermissions());
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override
-  Future<Either<ListFailure, Unit>> update(ListData list) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<Either<ListFailure, Unit>> update(ListData list) async {
+    try {
+      final listModel = ListModel.fromDomain(list);
+
+      await firestore
+          .collection('lists')
+          .doc(listModel.id)
+          .update(listModel.toMap());
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code.contains("PERMISSION_DENIED")) {
+        return left(InsufficientPermissions());
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 
   @override

@@ -57,7 +57,7 @@ class ListUsecases {
     return listRepository.update(list);
   }
 
-  Future<Either<ListFailure, Unit>> delete(ListData list) {
-    return listRepository.delete(list);
+  Future<Either<ListFailure, Unit>> delete(String listId) {
+    return listRepository.delete(listId);
   }
 }
