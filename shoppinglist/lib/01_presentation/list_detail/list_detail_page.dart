@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppinglist/01_presentation/create_list/create_list_page.dart';
 import 'package:shoppinglist/01_presentation/list_detail/widgets/list_detail_body.dart';
+import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mode_bloc.dart';
 import 'package:shoppinglist/02_application/lists/controller/list_controller_bloc.dart';
+import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
+import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
 import 'package:shoppinglist/03_domain/entities/list.dart';
 import 'package:shoppinglist/injection.dart';
@@ -25,6 +29,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
   void initState() {
     super.initState();
     _listAddItemsModeBloc = sl<ListAddItemsModeBloc>();
+    sl<ListObserverBloc>().add(ObserveListEvent(listId: widget.listId.value));
   }
 
   @override
@@ -122,58 +127,71 @@ class _ListDetailPageState extends State<ListDetailPage> {
             return BlocConsumer<ListAddItemsModeBloc, ListAddItemsModeState>(
               listener: (context, mode) {},
               builder: (context, mode) {
-                return CupertinoPageScaffold(
-                  backgroundColor: !isDark
-                      ? CupertinoColors.secondarySystemBackground
-                      : null,
-                  navigationBar: CupertinoNavigationBar(
-                    leading: CupertinoNavigationBarBackButton(
-                      onPressed: () => Navigator.pop(context),
-                      previousPageTitle: 'Lists',
-                    ),
-                    middle: Text(
-                      state.listData.title,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                    trailing: FittedBox(
-                      child: mode is ListAddItemsModeDeactivated
-                          ? Row(
-                              children: [
-                                CupertinoButton(
+                return BlocConsumer<FriendsObserverBloc, FriendsObserverState>(
+                  listener: (context, friendsState) {
+                    // TODO: implement listener
+                  },
+                  builder: (context, friendsState) {
+                    return CupertinoPageScaffold(
+                      backgroundColor: !isDark
+                          ? CupertinoColors.secondarySystemBackground
+                          : null,
+                      navigationBar: CupertinoNavigationBar(
+                        leading: CupertinoNavigationBarBackButton(
+                          onPressed: () => Navigator.pop(context),
+                          previousPageTitle: 'Lists',
+                        ),
+                        middle: Text(
+                          state.listData.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                        trailing: FittedBox(
+                          child: mode is ListAddItemsModeDeactivated
+                              ? Row(
+                                  children: [
+                                    CupertinoButton(
+                                      padding: EdgeInsets.zero,
+                                      child: const Icon(CupertinoIcons.add),
+                                      onPressed: () {
+                                        _listAddItemsModeBloc
+                                            .add(ActivateAddItemsModeEvent());
+                                      },
+                                    ),
+                                    CupertinoButton(
+                                      padding: EdgeInsets.zero,
+                                      child:
+                                          const Icon(CupertinoIcons.ellipsis),
+                                      onPressed: () {
+                                        _showListActionSheet(
+                                            context,
+                                            state.listData,
+                                            friendsState
+                                                    is FriendsObserverSuccess
+                                                ? friendsState.friends
+                                                : []);
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : CupertinoButton(
                                   padding: EdgeInsets.zero,
-                                  child: const Icon(CupertinoIcons.add),
+                                  child: const Text('Done'),
                                   onPressed: () {
                                     _listAddItemsModeBloc
-                                        .add(ActivateAddItemsModeEvent());
+                                        .add(DeactivateAddItemsModeEvent());
                                   },
                                 ),
-                                CupertinoButton(
-                                  padding: EdgeInsets.zero,
-                                  child: const Icon(CupertinoIcons.ellipsis),
-                                  onPressed: () {
-                                    _showListActionSheet(
-                                        context, state.listData);
-                                  },
-                                ),
-                              ],
-                            )
-                          : CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              child: const Text('Done'),
-                              onPressed: () {
-                                _listAddItemsModeBloc
-                                    .add(DeactivateAddItemsModeEvent());
-                              },
-                            ),
-                    ),
-                  ),
-                  child: SafeArea(
-                    child: ListDetailBody(
-                      isAddingMode: mode is ListAddItemsModeActivated,
-                      listData: state.listData,
-                    ),
-                  ),
+                        ),
+                      ),
+                      child: SafeArea(
+                        child: ListDetailBody(
+                          isAddingMode: mode is ListAddItemsModeActivated,
+                          listData: state.listData,
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             );
@@ -190,7 +208,11 @@ class _ListDetailPageState extends State<ListDetailPage> {
     super.dispose();
   }
 
-  void _showListActionSheet(BuildContext context, ListData listData) {
+  void _showListActionSheet(
+    BuildContext context,
+    ListData listData,
+    List<Friend> friends,
+  ) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -199,7 +221,28 @@ class _ListDetailPageState extends State<ListDetailPage> {
           CupertinoActionSheetAction(
             onPressed: () {
               Navigator.pop(context);
-              //TODO open edit list page with list data
+
+              final listFormBloc = BlocProvider.of<ListFormBloc>(context);
+              print('add init event for edit'); //TODO remove debug print
+              listFormBloc.add(
+                InitializeListEditPage(
+                  listData: listData,
+                  friends: friends,
+                  isFavorite: null,
+                ),
+              );
+              Navigator.push(
+                context,
+                CupertinoPageRoute<Widget>(
+                  builder: (BuildContext context) {
+                    // edit an existing list -> pass current data to widget
+                    return CreateListPage(
+                      isFavorite: null,
+                      listData: listData,
+                    );
+                  },
+                ),
+              );
             },
             child: const Text('Edit list'),
           ),

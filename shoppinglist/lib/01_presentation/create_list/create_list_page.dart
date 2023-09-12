@@ -4,7 +4,6 @@ import 'package:shoppinglist/01_presentation/create_list/widgets/create_list_bod
 import 'package:shoppinglist/01_presentation/create_list/widgets/safe_in_progress_overlay.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
-import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/list.dart';
 
 class CreateListPage extends StatefulWidget {
@@ -82,7 +81,7 @@ class _CreateListPageState extends State<CreateListPage> {
               navigationBar: CupertinoNavigationBar(
                 leading: CupertinoNavigationBarBackButton(
                   onPressed: () => Navigator.pop(context),
-                  previousPageTitle: "Lists",
+                  previousPageTitle: state.isEditing ? 'Cancel' : "Lists",
                 ),
                 middle: state.isEditing
                     ? const Text('Edit list')
@@ -105,7 +104,7 @@ class _CreateListPageState extends State<CreateListPage> {
               child: SafeArea(
                 child: Stack(
                   children: [
-                    const CreateListBody(),
+                    CreateListBody(),
                     SafeInProgressOverlay(isSaving: state.isSaving),
                   ],
                 ),

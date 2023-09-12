@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/added_friends_list.dart';
 import 'package:shoppinglist/01_presentation/create_list/widgets/manage_members_page.dart';
 import 'package:shoppinglist/01_presentation/util/icon_selection_page.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
-import 'package:shoppinglist/03_domain/entities/friend.dart';
-import 'package:shoppinglist/core/failures/list_failures.dart';
 import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class CreateListBody extends StatelessWidget {
@@ -82,18 +81,25 @@ class CreateListBody extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              child: CupertinoTextField(
-                placeholder: "Enter listname ...",
-                keyboardType: TextInputType.text,
-                maxLength: 20,
-                onChanged: (value) {
-                  // send event that title value has changed
-                  BlocProvider.of<ListFormBloc>(context)
-                      .add(DataChangedEvent(title: value));
-                },
+            CupertinoTextFormFieldRow(
+              initialValue: state.listData.title,
+              placeholder: "Enter listname ...",
+              keyboardType: TextInputType.text,
+              maxLength: 20,
+              decoration: BoxDecoration(
+                color: CupertinoColors.systemBackground,
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(
+                  color: CupertinoColors
+                      .systemGrey6, // Set the border color to red
+                  width: 2.0, // Set the border width as needed
+                ),
               ),
+              onChanged: (value) {
+                // send event that title value has changed
+                BlocProvider.of<ListFormBloc>(context)
+                    .add(DataChangedEvent(title: value));
+              },
             ),
             Builder(builder: (context) {
               if (state.listData.title.isEmpty && state.showErrorMessages) {
@@ -114,7 +120,6 @@ class CreateListBody extends StatelessWidget {
                 height: 20,
               );
             }),
-
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: CupertinoButton(
@@ -132,29 +137,15 @@ class CreateListBody extends StatelessWidget {
                   ),
                 );
               } else {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
+                return const Padding(
+                  padding: EdgeInsets.only(top: 5, left: 15, right: 15),
                   child: AddedFriendsList(),
                 );
               }
             }),
-
             const SizedBox(
               height: 30,
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     CupertinoButton.filled(
-            //       child: Text("Cancel"),
-            //       onPressed: () {},
-            //     ),
-            //     CupertinoButton.filled(
-            //       child: Text("Create"),
-            //       onPressed: () {},
-            //     ),
-            //   ],
-            // ),
           ],
         );
       },

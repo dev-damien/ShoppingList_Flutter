@@ -9,6 +9,7 @@ import 'package:shoppinglist/02_application/items/controller/items_controller_bl
 import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
 import 'package:shoppinglist/02_application/lists/controller/list_controller_bloc.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
+import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
