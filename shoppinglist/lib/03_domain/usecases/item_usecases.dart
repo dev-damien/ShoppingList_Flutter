@@ -19,6 +19,11 @@ class ItemUsecases {
     return itemRepository.delete(listId, item);
   }
 
+  Future<Either<ItemFailure, Unit>> itemBought(String listId, Item item) async{
+    await itemRepository.createBought(listId, item);
+    return itemRepository.delete(listId, item);
+  }
+
   Future<Either<ItemFailure, Unit>> update(String listId, Item item) {
     return itemRepository.update(listId, item);
   }

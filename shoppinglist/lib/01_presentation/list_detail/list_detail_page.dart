@@ -29,25 +29,21 @@ class _ListDetailPageState extends State<ListDetailPage> {
   void initState() {
     super.initState();
     _listAddItemsModeBloc = sl<ListAddItemsModeBloc>();
-    sl<ListObserverBloc>().add(ObserveListEvent(listId: widget.listId.value));
+    BlocProvider.of<ListObserverBloc>(context)
+        .add(ObserveListEvent(listId: widget.listId.value));
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
+    BlocProvider.of<ListObserverBloc>(context)
+        .add(ObserveListEvent(listId: widget.listId.value));
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
           value: _listAddItemsModeBloc,
-        ),
-        BlocProvider(
-          create: (context) => sl<ListObserverBloc>()
-            ..add(
-              ObserveListEvent(
-                listId: widget.listId.value,
-              ),
-            ),
         ),
       ],
       child: BlocConsumer<ListObserverBloc, ListObserverState>(

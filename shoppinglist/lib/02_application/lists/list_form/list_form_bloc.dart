@@ -122,17 +122,21 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
         final ListData editedList = state.listData.copyWith(
           title: event.title,
           imageId: event.imageId,
-          members: state.listData.members
-            ..add(user.id.value), // add creator to members
-          admins: [user.id.value], // add creator as admin
+          members: state.listData.members,
         );
 
         if (state.isEditing) {
           failureOrSuccess =
               await listUsecases.update(editedList, state.isFavorite);
         } else {
-          failureOrSuccess =
-              await listUsecases.create(editedList, state.isFavorite);
+          // add creator as a member and as the admin
+          failureOrSuccess = await listUsecases.create(
+              editedList
+                ..copyWith(
+                  members: state.listData.members..add(user.id.value),
+                  admins: [user.id.value],
+                ),
+              state.isFavorite);
         }
 
         emit(state.copyWith(

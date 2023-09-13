@@ -51,8 +51,9 @@ class ItemCard extends StatelessWidget {
             ),
             SlidableAction(
               onPressed: (context) {
-                //TODO implement set bought
                 print("${item.title} -> bought by slide");
+                final controllerBloc = context.read<ItemsControllerBloc>();
+                controllerBloc.add(BoughtItemEvent(listId: listId, item: item));
               },
               backgroundColor: CupertinoColors.activeGreen,
               foregroundColor: CupertinoColors.white,

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/list_detail/list_detail_page.dart';
+import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
@@ -32,6 +34,8 @@ class ListPreviewCard extends StatelessWidget {
           ? const Icon(CupertinoIcons.star_fill)
           : const Icon(CupertinoIcons.star),
       onTap: () {
+        BlocProvider.of<ListObserverBloc>(context)
+            .add(ObserveListEvent(listId: listPreview.id.value));
         Navigator.push(
           context,
           CupertinoPageRoute<Widget>(

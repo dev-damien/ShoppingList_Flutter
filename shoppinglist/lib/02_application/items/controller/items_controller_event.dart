@@ -26,3 +26,13 @@ class UpdateItemEvent extends ItemsControllerEvent {
     required this.item,
   });
 }
+
+class BoughtItemEvent extends ItemsControllerEvent {
+  final String listId;
+  final Item item;
+
+  const BoughtItemEvent({
+    required this.listId,
+    required this.item,
+  });
+}

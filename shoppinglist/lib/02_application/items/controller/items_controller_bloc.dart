@@ -31,5 +31,13 @@ class ItemsControllerBloc
           (failure) => emit(ItemsControllerFailure(itemFailure: failure)),
           (success) => emit(ItemsControllerSuccess()));
     });
+    on<BoughtItemEvent>((event, emit) async {
+      emit(ItemsControllerInProgress());
+      final failureOrSuccess =
+          await itemUsecases.itemBought(event.listId, event.item);
+      failureOrSuccess.fold(
+          (failure) => emit(ItemsControllerFailure(itemFailure: failure)),
+          (success) => emit(ItemsControllerSuccess()));
+    });
   }
 }

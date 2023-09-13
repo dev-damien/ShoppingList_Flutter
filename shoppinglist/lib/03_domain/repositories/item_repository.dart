@@ -8,6 +8,8 @@ abstract class ItemRepository {
 
   Future<Either<ItemFailure, Unit>> create(String listId, Item item);
 
+  Future<Either<ItemFailure, Unit>> createBought(String listId, Item item);
+
   Future<Either<ItemFailure, Unit>> update(String listId, Item item);
 
   Future<Either<ItemFailure, Unit>> delete(String listId, Item item);

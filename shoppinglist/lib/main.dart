@@ -72,6 +72,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => di.sl<ListControllerBloc>(),
         ),
+        BlocProvider(
+          create: (context) => di.sl<ListObserverBloc>(),
+        ),
       ],
       child: CupertinoApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),
