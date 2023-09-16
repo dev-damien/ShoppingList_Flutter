@@ -21,7 +21,7 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        print("long press down on ${item.title}");
+        _showItemActionSheet(context, listId, item);
       },
       child: Slidable(
         // Specify a key if the Slidable is dismissible.
@@ -134,14 +134,58 @@ class ItemCard extends StatelessWidget {
               CupertinoIcons.ellipsis,
             ),
             onPressed: () {
-              //TODO implement show options (mark as bought, edit, delete)
-              print("show options of item");
+              _showItemActionSheet(context, listId, item);
             },
           ),
         ),
       ),
     );
   }
+}
+
+void _showItemActionSheet(
+  BuildContext context,
+  String listId,
+  Item item,
+) {
+  showCupertinoModalPopup<void>(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      title: Text('Options for item "${item.title}"'),
+      actions: <CupertinoActionSheetAction>[
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context);
+            openEditItemDialog(
+              context,
+              item.title,
+              item.quantity,
+              listId,
+              item,
+            );
+          },
+          child: const Text('Edit'),
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.pop(context);
+            final controllerBloc = context.read<ItemsControllerBloc>();
+            controllerBloc.add(BoughtItemEvent(listId: listId, item: item));
+          },
+          child: const Text('Bought'),
+        ),
+        CupertinoActionSheetAction(
+          isDestructiveAction: true,
+          onPressed: () {
+            Navigator.pop(context);
+            final controllerBloc = context.read<ItemsControllerBloc>();
+            controllerBloc.add(DeleteItemEvent(listId: listId, item: item));
+          },
+          child: const Text('Delete'),
+        ),
+      ],
+    ),
+  );
 }
 
 class EditItemDialog extends StatefulWidget {
