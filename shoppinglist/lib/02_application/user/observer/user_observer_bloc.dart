@@ -30,13 +30,15 @@ class UserObserverBloc extends Bloc<UserObserverEvent, UserObserverState> {
     on<UserUpdatedEvent>(
       (event, emit) {
         event.failureOrUserData.fold(
-          (failures) => emit(
+          (failure) => emit(
             UserObserverFailure(
-              userFailure: failures,
+              userFailure: failure,
             ),
           ),
           (userData) => emit(
-            UserObserverSuccess(userData: userData),
+            UserObserverSuccess(
+              userData: userData,
+            ),
           ),
         );
       },

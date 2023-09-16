@@ -115,7 +115,7 @@ class FriendUsecases {
     );
 
     print(
-        'friend usecase -> searchUsers: input=$searchString result=${result.map((e) => e.name)}'); //TODO remove debug print
+        'friend usecase -> searchUsers: input=$searchString result=${result.map((e) => e.name)}');
     return right<FriendFailure, List<UserData>>(result);
   }
 }

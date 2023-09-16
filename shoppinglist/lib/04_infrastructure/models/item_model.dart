@@ -6,18 +6,16 @@ class ItemModel {
   final String id;
   final String title;
   final int quantity;
-  final bool isBought;
   final String addedBy;
-  final String addedTime;
+  final Timestamp? addedTime;
   final String boughtBy;
-  final String boughtTime;
+  final Timestamp? boughtTime;
   final dynamic serverTimestamp;
 
   ItemModel(
       {required this.id,
       required this.title,
       required this.quantity,
-      required this.isBought,
       required this.addedBy,
       required this.addedTime,
       required this.boughtBy,
@@ -26,10 +24,8 @@ class ItemModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'title': title,
       'quantity': quantity,
-      'isBought': isBought,
       'addedBy': addedBy,
       'addedTime': addedTime,
       'boughtBy': boughtBy,
@@ -41,13 +37,12 @@ class ItemModel {
   factory ItemModel.fromMap(Map<String, dynamic> map) {
     return ItemModel(
       id: "", //will be set at another point
-      title: map['title'] as String,
-      quantity: map['quantity'] as int,
-      isBought: map['isBought'] as bool,
-      addedBy: map['addedBy'] as String,
-      addedTime: map['addedTime'] as String,
-      boughtBy: map['boughtBy'] as String,
-      boughtTime: map['boughtTime'] as String,
+      title: (map['title'] ?? "unknown") as String,
+      quantity: (map['quantity'] ?? 0) as int,
+      addedBy: (map['addedBy'] ?? "unknown") as String,
+      addedTime: map['addedTime'],
+      boughtBy: (map['boughtBy'] ?? "unknown") as String,
+      boughtTime: map['boughtTime'],
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
@@ -56,18 +51,16 @@ class ItemModel {
     String? id,
     String? title,
     int? quantity,
-    bool? isBought,
     String? addedBy,
-    String? addedTime,
+    Timestamp? addedTime,
     String? boughtBy,
-    String? boughtTime,
+    Timestamp? boughtTime,
     dynamic serverTimestamp,
   }) {
     return ItemModel(
       id: id ?? this.id,
       title: title ?? this.title,
       quantity: quantity ?? this.quantity,
-      isBought: isBought ?? this.isBought,
       addedBy: addedBy ?? this.addedBy,
       addedTime: addedTime ?? this.addedTime,
       boughtBy: boughtBy ?? this.boughtBy,
@@ -76,9 +69,8 @@ class ItemModel {
     );
   }
 
-  factory ItemModel.fromFirestore(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return ItemModel.fromMap(doc.data()).copyWith(id: doc.id);
+  factory ItemModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    return ItemModel.fromMap(doc.data()!).copyWith(id: doc.id);
   }
 
   Item toDomain() {
@@ -88,7 +80,6 @@ class ItemModel {
         boughtBy: boughtBy,
         boughtTime: boughtTime,
         id: UniqueID.fromUniqueString(id),
-        isBought: isBought,
         quantity: quantity,
         title: title);
   }
@@ -98,7 +89,6 @@ class ItemModel {
         id: item.id.value,
         title: item.title,
         quantity: item.quantity,
-        isBought: item.isBought,
         addedBy: item.addedBy,
         addedTime: item.addedTime,
         boughtBy: item.boughtBy,

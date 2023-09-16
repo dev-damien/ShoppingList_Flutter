@@ -9,19 +9,32 @@ import 'package:shoppinglist/02_application/friend_requests/controller_respond/f
 import 'package:shoppinglist/02_application/friend_requests/controller_send/friend_request_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
+import 'package:shoppinglist/02_application/items/add_form/add_item_form_bloc.dart';
+import 'package:shoppinglist/02_application/items/controller/items_controller_bloc.dart';
+import 'package:shoppinglist/02_application/items/observer/items_observer_bloc.dart';
 import 'package:shoppinglist/02_application/list_previews/observer/observer_bloc.dart';
+import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mode_bloc.dart';
+import 'package:shoppinglist/02_application/lists/controller/list_controller_bloc.dart';
+import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
+import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
+import 'package:shoppinglist/03_domain/repositories/item_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/list_preview_repository.dart';
+import 'package:shoppinglist/03_domain/repositories/list_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/03_domain/usecases/auth_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/friend_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/item_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/list_preview_usecases.dart';
+import 'package:shoppinglist/03_domain/usecases/list_usecases.dart';
 import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/auth_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/friend_repository_impl.dart';
+import 'package:shoppinglist/04_infrastructure/repositories/item_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/list_preview_repository_impl.dart';
+import 'package:shoppinglist/04_infrastructure/repositories/list_repository_impl.dart';
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
@@ -100,6 +113,25 @@ Future<void> init() async {
       listPreviewUsecases: sl(),
     ),
   );
+  sl.registerFactory(
+    () => ListObserverBloc(
+      listUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => ListAddItemsModeBloc(),
+  );
+  sl.registerFactory(
+    () => ListFormBloc(
+      listUsecases: sl(),
+      userUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => ListControllerBloc(
+      listUsecases: sl(),
+    ),
+  );
 
   //! usecases
   sl.registerLazySingleton(
@@ -107,10 +139,22 @@ Future<void> init() async {
       listPreviewRepository: sl(),
     ),
   );
+  sl.registerLazySingleton(
+    () => ListUsecases(
+      listRepository: sl(),
+      listPreviewRepository: sl(),
+      itemRepository: sl(),
+    ),
+  );
 
   //! repos
   sl.registerLazySingleton<ListPreviewRepository>(
     () => ListPreviewRepositoryImpl(
+      firestore: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ListRepository>(
+    () => ListRepositoryImpl(
       firestore: sl(),
     ),
   );
@@ -143,7 +187,7 @@ Future<void> init() async {
       friendUsecases: sl(),
     ),
   );
-    sl.registerFactory(
+  sl.registerFactory(
     () => FriendRequestRespondBloc(
       friendUsecases: sl(),
     ),
@@ -162,6 +206,39 @@ Future<void> init() async {
         firestore: sl(),
         userRepository: sl(),
       ));
+
+  //? ################# items #####################################################################
+
+  //! state management
+  sl.registerFactory(
+    () => ItemsObserverBloc(
+      itemUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => ItemsControllerBloc(
+      itemUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => AddItemFormBloc(
+      itemUsecases: sl(),
+    ),
+  );
+
+  //! usecases
+  sl.registerLazySingleton(
+    () => ItemUsecases(
+      itemRepository: sl(),
+    ),
+  );
+
+  //! repos
+  sl.registerLazySingleton<ItemRepository>(
+    () => ItemRepositoryImpl(
+      firestore: sl(),
+    ),
+  );
 
   //! ################# external: firebase and firestore #####################################################################
   //! auth
