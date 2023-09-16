@@ -9,6 +9,10 @@ class InsufficientPermissions extends FriendFailure {}
 
 class AlreadyFriends extends FriendFailure {}
 
+class UsersAreNoFriends extends FriendFailure {}
+
+class AlreadyRequested extends FriendFailure {}
+
 class UserNotFound extends FriendFailure {}
 
 class UnexpectedFailure extends FriendFailure {}

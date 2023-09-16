@@ -6,14 +6,17 @@ abstract class ListPreviewRepository {
   Stream<Either<ListPreviewFailure, List<ListPreview>>> watchAll();
 
   Future<Either<ListPreviewFailure, Unit>> create(
+    String userId,
     ListPreview list,
   );
 
   Future<Either<ListPreviewFailure, Unit>> update(
+    String userId,
     ListPreview list,
   );
 
   Future<Either<ListPreviewFailure, Unit>> delete(
-    ListPreview list,
+    String userId,
+    String listId,
   ); //todo or use UniqueID only
 }

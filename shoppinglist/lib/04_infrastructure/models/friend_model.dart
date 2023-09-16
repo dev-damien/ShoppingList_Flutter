@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
-import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 
 class FriendModel with EquatableMixin {
   final String id;
@@ -29,8 +28,8 @@ class FriendModel with EquatableMixin {
   factory FriendModel.fromMap(Map<String, dynamic> map) {
     return FriendModel(
       id: "", //is set later because its not part of the map
-      nickname: map['nickname'] as String,
-      imageId: map['image_id'] as String,
+      nickname: (map['nickname'] ?? map['name'] ?? "unknown") as String,
+      imageId: (map['imageId'] ?? "unknown") as String,
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }

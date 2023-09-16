@@ -1,31 +1,32 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class ProfileOverview extends StatelessWidget {
-  const ProfileOverview({super.key});
+  final UserData userData;
+
+  const ProfileOverview({required this.userData, super.key});
 
   @override
   Widget build(BuildContext context) {
-    //todo get real user data
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
-          CupertinoIcons.profile_circled,
+          ImageMapper.toIconData(userData.imageId),
           size: 80,
         ),
-        //todo replace with real data
         Row(
           children: [
             Text("Name: "),
-            Text("nameOfUser"),
+            Text(userData.name),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
-        //todo replace with real data
         Row(
           children: [
             Text("ID: "),
-            Text("ociwnhepifps0fnwjio"),
+            Text(userData.id.value),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),

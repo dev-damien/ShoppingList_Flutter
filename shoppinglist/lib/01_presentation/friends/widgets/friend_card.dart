@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppinglist/02_application/friends/controller/friend_controller_bloc.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
+import 'package:shoppinglist/injection.dart';
 
 class FriendCard extends StatelessWidget {
   final Friend friend;
@@ -11,30 +15,40 @@ class FriendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // whole tile triggers the event, without only widgets like icon or title
-      behavior: HitTestBehavior.translucent,
-      onLongPress: () {
-        _showFriendActionSheet(context);
-      },
-      child: CupertinoListTile.notched(
-        leading: const SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          //TODO set selected icon of friend
-          child: Icon(CupertinoIcons.person),
-        ),
-        title: Text(
-          friend.nickname,
-        ),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Icon(
-            CupertinoIcons.ellipsis,
+    final friendControllerBloc = sl<FriendControllerBloc>();
+
+    return BlocProvider(
+      create: (context) => friendControllerBloc,
+      child: GestureDetector(
+        // whole tile triggers the event, not only widgets like icon or title
+        behavior: HitTestBehavior.translucent,
+        onLongPress: () {
+          _showFriendActionSheet(context);
+        },
+        child: CupertinoListTile.notched(
+          leading: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Icon(
+              ImageMapper.toIconData(friend.imageId),
+              size: 30,
+            ),
           ),
-          onPressed: () {
-            _showFriendActionSheet(context);
-          },
+          title: Text(
+            friend.nickname,
+          ),
+          subtitle: Text(
+            friend.id.value,
+          ),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(
+              CupertinoIcons.ellipsis,
+            ),
+            onPressed: () {
+              _showFriendActionSheet(context);
+            },
+          ),
         ),
       ),
     );
@@ -50,6 +64,7 @@ class FriendCard extends StatelessWidget {
           CupertinoActionSheetAction(
             onPressed: () {
               Navigator.pop(context);
+              _showNicknameDialog(context);
             },
             child: const Text('Change nickname'),
           ),
@@ -57,10 +72,109 @@ class FriendCard extends StatelessWidget {
             isDestructiveAction: true,
             onPressed: () {
               Navigator.pop(context);
+              _showRemoveFriendDialog(context);
             },
             child: const Text('Remove as friend'),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showNicknameDialog(BuildContext context) {
+    String curValue = "";
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return BlocConsumer<FriendControllerBloc, FriendControllerState>(
+          listener: (context, state) {
+            if (state is FriendControllerSuccess) {
+              Navigator.of(dialogContext).pop();
+            }
+          },
+          builder: (context, state) {
+            return CupertinoAlertDialog(
+              title: state is FriendControllerInProgress
+                  ? Text('Changing name ...')
+                  : Text('Change Nickname'),
+              content: state is FriendControllerInProgress
+                  ? Center(
+                      child: CupertinoActivityIndicator(),
+                    )
+                  : CupertinoTextField(
+                      placeholder: 'New Nickname',
+                      onChanged: (newNickname) {
+                        curValue = newNickname;
+                      },
+                    ),
+              actions: state is FriendControllerInProgress
+                  ? <Widget>[]
+                  : <Widget>[
+                      CupertinoDialogAction(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop();
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      CupertinoDialogAction(
+                        onPressed: () {
+                          BlocProvider.of<FriendControllerBloc>(context).add(
+                              UpdateFriendNicknameEvent(
+                                  friend: friend, nickname: curValue));
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showRemoveFriendDialog(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) =>
+          BlocConsumer<FriendControllerBloc, FriendControllerState>(
+        listener: (context, state) {
+          if (state is FriendControllerSuccess) {
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is FriendControllerInProgress ||
+              state is FriendControllerSuccess;
+          return CupertinoAlertDialog(
+            title: isLoading
+                ? const Text('Removing friend ...')
+                : Text(
+                    'Do you want to remove ${friend.nickname} as your friend?'),
+            content: isLoading
+                ? const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                : const Text('You will still stay together in all lists'),
+            actions: isLoading
+                ? []
+                : <CupertinoDialogAction>[
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        BlocProvider.of<FriendControllerBloc>(context)
+                            .add(RemoveFriendEvent(friend: friend));
+                      },
+                      isDestructiveAction: true,
+                      child: const Text('Remove'),
+                    ),
+                  ],
+          );
+        },
       ),
     );
   }

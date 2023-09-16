@@ -3,6 +3,8 @@ import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 
 import 'list_preview_card.dart';
 
+//TODO order lists by isFavorite and maybe other things
+
 class ListsList extends StatelessWidget {
   final List<ListPreview> listPreviews;
 

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
 import 'package:shoppinglist/03_domain/entities/list_preview.dart';
 
-class ListPreviewModel with EquatableMixin{
+class ListPreviewModel with EquatableMixin {
   final String id;
   final String title;
   final String imageId; //todo: this might become another datatype
@@ -30,9 +30,9 @@ class ListPreviewModel with EquatableMixin{
   factory ListPreviewModel.fromMap(Map<String, dynamic> map) {
     return ListPreviewModel(
       id: "", //is set later because its not part of the map
-      title: map['title'] as String,
-      imageId: map['image_id'] as String,
-      isFavorite: map['is_favorite'] as bool,
+      title: (map['title'] ?? "new list") as String,
+      imageId: (map['imageId'] ?? "no image") as String,
+      isFavorite: (map['isFavorite'] ?? false) as bool,
       serverTimestamp: map['serverTimestamp'] as dynamic,
     );
   }
@@ -74,7 +74,7 @@ class ListPreviewModel with EquatableMixin{
         isFavorite: listPreview.isFavorite,
         serverTimestamp: FieldValue.serverTimestamp());
   }
-  
+
   @override
   List<Object?> get props => [id, title, imageId, isFavorite];
 }
