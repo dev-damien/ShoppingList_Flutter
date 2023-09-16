@@ -12,5 +12,5 @@ abstract class ItemRepository {
 
   Future<Either<ItemFailure, Unit>> update(String listId, Item item);
 
-  Future<Either<ItemFailure, Unit>> delete(String listId, Item item);
+  Future<Either<ItemFailure, Unit>> delete(String listId, String itemId);
 }

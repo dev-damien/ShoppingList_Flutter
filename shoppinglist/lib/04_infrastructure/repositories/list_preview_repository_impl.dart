@@ -35,12 +35,11 @@ class ListPreviewRepositoryImpl implements ListPreviewRepository {
 
   @override
   Future<Either<ListPreviewFailure, Unit>> delete(
-      String userId, ListPreview list) async {
+      String userId, String listId) async {
     try {
       final userDoc = firestore.collection('users').doc(userId);
-      final listPreviewModel = ListPreviewModel.fromDomain(list);
 
-      await userDoc.listPreviewCollection.doc(listPreviewModel.id).delete();
+      await userDoc.listPreviewCollection.doc(listId).delete();
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -62,7 +61,7 @@ class ListPreviewRepositoryImpl implements ListPreviewRepository {
 
       await userDoc.listPreviewCollection
           .doc(listPreviewModel.id)
-          .update(listPreviewModel.toMap());
+          .set(listPreviewModel.toMap());
 
       return right(unit);
     } on FirebaseException catch (e) {

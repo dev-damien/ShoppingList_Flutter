@@ -16,12 +16,12 @@ class ItemUsecases {
   }
 
   Future<Either<ItemFailure, Unit>> delete(String listId, Item item) {
-    return itemRepository.delete(listId, item);
+    return itemRepository.delete(listId, item.id.value);
   }
 
-  Future<Either<ItemFailure, Unit>> itemBought(String listId, Item item) async{
+  Future<Either<ItemFailure, Unit>> itemBought(String listId, Item item) async {
     await itemRepository.createBought(listId, item);
-    return itemRepository.delete(listId, item);
+    return itemRepository.delete(listId, item.id.value);
   }
 
   Future<Either<ItemFailure, Unit>> update(String listId, Item item) {

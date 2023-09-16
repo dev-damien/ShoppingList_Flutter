@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:shoppinglist/03_domain/entities/item.dart';
 
 import 'package:shoppinglist/03_domain/entities/list.dart';
 import 'package:shoppinglist/03_domain/repositories/list_repository.dart';
+import 'package:shoppinglist/04_infrastructure/models/item_model.dart';
 import 'package:shoppinglist/04_infrastructure/models/list_model.dart';
 import 'package:shoppinglist/core/failures/list_failures.dart';
 
@@ -110,5 +112,82 @@ class ListRepositoryImpl implements ListRepository {
         }
       });
     } catch (e) {}
+  }
+
+  @override
+  Future<Either<ListFailure, ListData>> get(String listId) async {
+    try {
+      print("list repo -> get($listId)");
+      final listDoc = await firestore.collection('lists').doc(listId).get();
+
+      if (!listDoc.exists) {
+        return left<ListFailure, ListData>(ListDoesNotExist());
+      }
+      var listData = ListModel.fromFirestore(listDoc).toDomain();
+      return right<ListFailure, ListData>(listData);
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left<ListFailure, ListData>(InsufficientPermissions());
+        } else {
+          return left<ListFailure, ListData>(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left<ListFailure, ListData>(UnexpectedFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<ListFailure, List<Item>>> getItems(String listId) async {
+    try {
+      print("list repo -> getItems($listId)");
+      return await firestore
+          .collection('lists')
+          .doc(listId)
+          .collection('items')
+          .get()
+          .then((snapshot) => right(snapshot.docs.map((doc) {
+                return ItemModel.fromFirestore(doc).toDomain();
+              }).toList()));
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<ListFailure, List<Item>>> getItemsBought(String listId) async {
+    try {
+      print("list repo -> getItemsBought($listId)");
+      return await firestore
+          .collection('lists')
+          .doc(listId)
+          .collection('items_bought')
+          .get()
+          .then((snapshot) => right(snapshot.docs.map((doc) {
+                return ItemModel.fromFirestore(doc).toDomain();
+              }).toList()));
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (e.code.contains("permission-denied") ||
+            e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailureFirebase());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 }

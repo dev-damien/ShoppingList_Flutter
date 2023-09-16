@@ -70,12 +70,11 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
-  Future<Either<ItemFailure, Unit>> delete(String listId, Item item) async {
+  Future<Either<ItemFailure, Unit>> delete(String listId, String itemId) async {
     try {
       final listDoc = firestore.collection('lists').doc(listId);
-      final itemModel = ItemModel.fromDomain(item);
 
-      await listDoc.collection('items').doc(itemModel.id).delete();
+      await listDoc.collection('items').doc(itemId).delete();
 
       return right(unit);
     } on FirebaseException catch (e) {

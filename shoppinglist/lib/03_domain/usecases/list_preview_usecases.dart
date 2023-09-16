@@ -25,7 +25,7 @@ class ListPreviewUsecases {
   }
 
   Future<Either<ListPreviewFailure, Unit>> delete(
-      String userId, ListPreview list) {
-    return listPreviewRepository.delete(userId, list);
+      String userId, String listId) {
+    return listPreviewRepository.delete(userId, listId);
   }
 }

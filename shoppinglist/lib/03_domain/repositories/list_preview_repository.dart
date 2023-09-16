@@ -17,6 +17,6 @@ abstract class ListPreviewRepository {
 
   Future<Either<ListPreviewFailure, Unit>> delete(
     String userId,
-    ListPreview list,
+    String listId,
   ); //todo or use UniqueID only
 }

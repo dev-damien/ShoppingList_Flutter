@@ -143,6 +143,7 @@ Future<void> init() async {
     () => ListUsecases(
       listRepository: sl(),
       listPreviewRepository: sl(),
+      itemRepository: sl(),
     ),
   );
 
