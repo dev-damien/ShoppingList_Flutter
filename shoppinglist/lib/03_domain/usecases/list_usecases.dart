@@ -102,6 +102,9 @@ class ListUsecases {
         // remove user id from members
         list.members.remove(user.id.value);
 
+        //remove user if from admins, if contained
+        list.admins.remove(user.id.value);
+
         // Update the list and return the result
         final updateResult = await listRepository.update(list);
 

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/create_list/create_list_page.dart';
-import 'package:shoppinglist/01_presentation/home/home_page.dart';
 import 'package:shoppinglist/01_presentation/list_detail/widgets/list_detail_body.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mode_bloc.dart';
@@ -40,7 +39,6 @@ class _ListDetailPageState extends State<ListDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('build start'); //TODO remove debug print
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final userOption = sl<AuthRepository>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
@@ -56,8 +54,6 @@ class _ListDetailPageState extends State<ListDetailPage> {
       ],
       child: BlocConsumer<ListObserverBloc, ListObserverState>(
         listener: (context, state) {
-          print(
-              'listObserver listener with ${state.runtimeType}'); //TODO remove debug print
           // user is not member in list
           // or user has no permissions to view list
           if (state is ListObserverSuccess &&
@@ -355,9 +351,10 @@ class _ListDetailPageState extends State<ListDetailPage> {
       builder: (BuildContext context) =>
           BlocConsumer<ListControllerBloc, ListControllerState>(
         listener: (context, state) {
-          if (state is ListControllerSuccess) {
-            Navigator.pop(context);
-            //Navigator.push(context, CupertinoPageRoute(builder: ));
+          if (state is ListControllerSuccess ||
+              state is ListControllerFailure) {
+            //TODO show dialog if failure
+            Navigator.pop(context); // close dialog
           }
         },
         builder: (context, state) {
@@ -385,6 +382,9 @@ class _ListDetailPageState extends State<ListDetailPage> {
                       onPressed: () {
                         BlocProvider.of<ListControllerBloc>(context)
                             .add(LeaveListEvent(listId: listData.id.value));
+
+                        //BUG user returns to list detail page after leaving
+                        // user shoud return to home page (list overview)
                       },
                       isDestructiveAction: true,
                       child: const Text('Leave'),
