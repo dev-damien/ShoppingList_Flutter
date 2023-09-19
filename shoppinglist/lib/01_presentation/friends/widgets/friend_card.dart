@@ -42,7 +42,7 @@ class FriendCard extends StatelessWidget {
           ),
           trailing: CupertinoButton(
             padding: EdgeInsets.zero,
-            child: Icon(
+            child: const Icon(
               CupertinoIcons.ellipsis,
             ),
             onPressed: () {
@@ -58,7 +58,13 @@ class FriendCard extends StatelessWidget {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text('Options for ${friend.nickname}'),
+        title: Text(
+          'Options for "${friend.nickname}"',
+          style: const TextStyle(
+            fontSize: 18, // Adjust the font size as needed
+            fontWeight: FontWeight.bold, // Make it bold
+          ),
+        ),
         //message: const Text('Message'),
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
@@ -95,10 +101,10 @@ class FriendCard extends StatelessWidget {
           builder: (context, state) {
             return CupertinoAlertDialog(
               title: state is FriendControllerInProgress
-                  ? Text('Changing name ...')
-                  : Text('Change Nickname'),
+                  ? const Text('Changing name ...')
+                  : const Text('Change Nickname'),
               content: state is FriendControllerInProgress
-                  ? Center(
+                  ? const Center(
                       child: CupertinoActivityIndicator(),
                     )
                   : CupertinoTextField(

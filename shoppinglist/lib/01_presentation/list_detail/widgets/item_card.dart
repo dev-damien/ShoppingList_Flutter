@@ -65,7 +65,7 @@ class ItemCard extends StatelessWidget {
 
         // The end action pane is the one at the right or the bottom side.
         endActionPane: ActionPane(
-          motion: DrawerMotion(),
+          motion: const DrawerMotion(),
           children: [
             SlidableAction(
               onPressed: (context) {
@@ -130,7 +130,7 @@ class ItemCard extends StatelessWidget {
             ],
           ),
           trailing: CupertinoButton(
-            child: Icon(
+            child: const Icon(
               CupertinoIcons.ellipsis,
             ),
             onPressed: () {
@@ -151,7 +151,13 @@ void _showItemActionSheet(
   showCupertinoModalPopup<void>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
-      title: Text('Options for item "${item.title}"'),
+      title: Text(
+        'Options for item "${item.title}"',
+        style: const TextStyle(
+          fontSize: 18, // Adjust the font size as needed
+          fontWeight: FontWeight.bold, // Make it bold
+        ),
+      ),
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
           onPressed: () {

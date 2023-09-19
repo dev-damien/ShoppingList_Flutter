@@ -119,24 +119,28 @@ class ListFormBloc extends Bloc<ListFormEvent, ListFormState> {
         final userOption = sl<AuthRepository>().getSignedInUser();
         final user = userOption.getOrElse(() => throw NotAuthenticatedError());
 
-        final ListData editedList = state.listData.copyWith(
+        final members = state.listData.members;
+        final admins = state.listData.admins;
+
+        if (!state.isEditing) {
+          // if creating, add creator as member and admin
+          members.add(user.id.value);
+          admins.add(user.id.value);
+        }
+
+        ListData editedList = state.listData.copyWith(
           title: event.title,
           imageId: event.imageId,
           members: state.listData.members,
+          admins: admins,
         );
 
         if (state.isEditing) {
           failureOrSuccess =
               await listUsecases.update(editedList, state.isFavorite);
         } else {
-          // add creator as a member and as the admin
-          failureOrSuccess = await listUsecases.create(
-              editedList
-                ..copyWith(
-                  members: state.listData.members..add(user.id.value),
-                  admins: [user.id.value],
-                ),
-              state.isFavorite);
+          failureOrSuccess =
+              await listUsecases.create(editedList, state.isFavorite);
         }
 
         emit(state.copyWith(

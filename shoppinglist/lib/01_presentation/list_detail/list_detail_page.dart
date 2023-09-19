@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/create_list/create_list_page.dart';
+import 'package:shoppinglist/01_presentation/home/home_page.dart';
 import 'package:shoppinglist/01_presentation/list_detail/widgets/list_detail_body.dart';
 import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mode_bloc.dart';
@@ -11,7 +12,11 @@ import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.da
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
 import 'package:shoppinglist/03_domain/entities/list.dart';
+import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
+import 'package:shoppinglist/core/failures/list_failures.dart';
 import 'package:shoppinglist/injection.dart';
+
+import '../../core/errors/errors.dart';
 
 class ListDetailPage extends StatefulWidget {
   final UniqueID listId;
@@ -35,7 +40,10 @@ class _ListDetailPageState extends State<ListDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('build start'); //TODO remove debug print
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final userOption = sl<AuthRepository>().getSignedInUser();
+    final user = userOption.getOrElse(() => throw NotAuthenticatedError());
 
     BlocProvider.of<ListObserverBloc>(context)
         .add(ObserveListEvent(listId: widget.listId.value));
@@ -47,7 +55,19 @@ class _ListDetailPageState extends State<ListDetailPage> {
         ),
       ],
       child: BlocConsumer<ListObserverBloc, ListObserverState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          print(
+              'listObserver listener with ${state.runtimeType}'); //TODO remove debug print
+          // user is not member in list
+          // or user has no permissions to view list
+          if (state is ListObserverSuccess &&
+                  (!state.listData.members.contains(user.id.value) &&
+                      !state.listData.admins.contains(user.id.value)) ||
+              state is ListObserverFailure &&
+                  state.listFailure is InsufficientPermissions) {
+            Navigator.pop(context);
+          }
+        },
         builder: (context, state) {
           if (state is ListObserverInitial) {
             return Container();
@@ -124,9 +144,7 @@ class _ListDetailPageState extends State<ListDetailPage> {
               listener: (context, mode) {},
               builder: (context, mode) {
                 return BlocConsumer<FriendsObserverBloc, FriendsObserverState>(
-                  listener: (context, friendsState) {
-                    // TODO: implement listener
-                  },
+                  listener: (context, friendsState) {},
                   builder: (context, friendsState) {
                     return CupertinoPageScaffold(
                       backgroundColor: !isDark
@@ -212,14 +230,20 @@ class _ListDetailPageState extends State<ListDetailPage> {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text('Options for ${listData.title}'),
+        title: Text(
+          'Options for ${listData.title}',
+          style: const TextStyle(
+            fontSize: 18, // Adjust the font size as needed
+            fontWeight: FontWeight.bold, // Make it bold
+          ),
+        ),
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
               Navigator.pop(context);
 
               final listFormBloc = BlocProvider.of<ListFormBloc>(context);
-              print('add init event for edit'); //TODO remove debug print
+              print('add init event for edit');
               listFormBloc.add(
                 InitializeListEditPage(
                   listData: listData,
@@ -231,7 +255,8 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 context,
                 CupertinoPageRoute<Widget>(
                   builder: (BuildContext context) {
-                    // edit an existing list -> pass current data to widget
+                    // Edit an existing list -> pass current data to widget
+                    // TODO get real isFav data from preview
                     return CreateListPage(
                       isFavorite: null,
                       listData: listData,
@@ -240,14 +265,24 @@ class _ListDetailPageState extends State<ListDetailPage> {
                 ),
               );
             },
-            child: const Text('Edit list'),
+            child: const Text(
+              'Edit list',
+              style: TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+              ),
+            ),
           ),
           CupertinoActionSheetAction(
             onPressed: () {
               Navigator.pop(context);
-              //TODO leave list
+              _showLeaveListDialog(context, listData);
             },
-            child: const Text('Leave list'),
+            child: const Text(
+              'Leave list',
+              style: TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+              ),
+            ),
           ),
           CupertinoActionSheetAction(
             isDestructiveAction: true,
@@ -255,14 +290,19 @@ class _ListDetailPageState extends State<ListDetailPage> {
               Navigator.pop(context);
               _showDeleteListDialog(context, listData);
             },
-            child: const Text('Delete List'),
+            child: const Text(
+              'Delete List',
+              style: TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+                color: CupertinoColors.systemRed, // Make it red
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  //TODO delete list
   void _showDeleteListDialog(BuildContext context, ListData listData) {
     showCupertinoModalPopup<void>(
       context: context,
@@ -301,6 +341,53 @@ class _ListDetailPageState extends State<ListDetailPage> {
                       },
                       isDestructiveAction: true,
                       child: const Text('Delete'),
+                    ),
+                  ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _showLeaveListDialog(BuildContext context, ListData listData) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) =>
+          BlocConsumer<ListControllerBloc, ListControllerState>(
+        listener: (context, state) {
+          if (state is ListControllerSuccess) {
+            Navigator.pop(context);
+            //Navigator.push(context, CupertinoPageRoute(builder: ));
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is ListControllerInProgress;
+          return CupertinoAlertDialog(
+            title: isLoading
+                ? Text('Leaving "${listData.title}"')
+                : Text('Do you really want to leave "${listData.title}"'),
+            content: isLoading
+                ? const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                : const Text(
+                    'If you leave this list, you will loose any access to it.'),
+            actions: isLoading
+                ? []
+                : <CupertinoDialogAction>[
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        BlocProvider.of<ListControllerBloc>(context)
+                            .add(LeaveListEvent(listId: listData.id.value));
+                      },
+                      isDestructiveAction: true,
+                      child: const Text('Leave'),
                     ),
                   ],
           );

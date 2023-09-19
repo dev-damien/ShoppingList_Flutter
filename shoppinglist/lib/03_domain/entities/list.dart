@@ -4,7 +4,7 @@ class ListData {
   final UniqueID id;
   final String title;
   final List<String> members;
-  final String imageId; //todo: this might become another datatype
+  final String imageId;
   final List<String> admins;
 
   ListData({

@@ -88,25 +88,30 @@ class ListUsecases {
 
     final listOrFailure = await listRepository.get(listId);
 
-    await listOrFailure.fold(
+    return await listOrFailure.fold(
       (failure) async {
         return left(failure);
       },
       (list) async {
         // remove list preview from user
-        listPreviewRepository.delete(
+        await listPreviewRepository.delete(
           user.id.value,
           listId,
         );
 
         // remove user id from members
         list.members.remove(user.id.value);
-        return await listRepository.update(list);
 
-        //TODO ADMIN: if only admin, make other user new admin to avoid having no admin for a list
+        // Update the list and return the result
+        final updateResult = await listRepository.update(list);
+
+        // Check the update result and return it
+        return updateResult.fold(
+          (updateFailure) => left(updateFailure),
+          (_) => right(unit),
+        );
       },
     );
-    return left(UnexpectedFailure());
   }
 
   Future<Either<ListFailure, Unit>> delete(String listId) async {
