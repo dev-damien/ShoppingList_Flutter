@@ -17,6 +17,7 @@ import 'package:shoppinglist/02_application/lists/adding_mode/list_add_items_mod
 import 'package:shoppinglist/02_application/lists/controller/list_controller_bloc.dart';
 import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart';
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
+import 'package:shoppinglist/02_application/user/getter/user_getter_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
@@ -87,6 +88,11 @@ Future<void> init() async {
   //! state management
   sl.registerFactory(
     () => UserObserverBloc(
+      userUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => UserGetterBloc(
       userUsecases: sl(),
     ),
   );

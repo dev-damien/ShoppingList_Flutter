@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:shoppinglist/02_application/friends/observer/friends_observer_bloc.dart';
 import 'package:shoppinglist/02_application/items/controller/items_controller_bloc.dart';
+import 'package:shoppinglist/02_application/user/getter/user_getter_bloc.dart';
+import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 
 import 'package:shoppinglist/03_domain/entities/item.dart';
+import 'package:shoppinglist/03_domain/usecases/user_usecases.dart';
 import 'package:shoppinglist/injection.dart';
 
 class ItemCard extends StatelessWidget {
@@ -113,9 +117,72 @@ class ItemCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(
-                  'by ${item.addedBy}',
-                  overflow: TextOverflow.ellipsis,
+                child: BlocConsumer<UserObserverBloc, UserObserverState>(
+                  listener: (context, state) {},
+                  builder: (context, userState) {
+                    return BlocConsumer<FriendsObserverBloc,
+                        FriendsObserverState>(
+                      listener: (context, state) {},
+                      builder: (context, friendsState) {
+                        if (userState is UserObserverSuccess &&
+                            userState.userData.id.value == item.addedBy) {
+                          // item has been added by user himself
+                          return const Text(
+                            'by You',
+                            overflow: TextOverflow.ellipsis,
+                          );
+                        }
+                        if (friendsState is FriendsObserverSuccess &&
+                            friendsState.friends
+                                .map((friend) => friend.id.value)
+                                .contains(item.addedBy)) {
+                          // item has been added by a friend
+                          final friend = friendsState.friends.firstWhere(
+                              (friend) => friend.id.value == item.addedBy);
+                          return Text(
+                            'by ${friend.nickname}',
+                            overflow: TextOverflow.ellipsis,
+                          );
+                        }
+                        return BlocProvider(
+                          create: (context) => sl<UserGetterBloc>()
+                            ..add(GetUserByIdEvent(userId: item.addedBy)),
+                          child: BlocConsumer<UserGetterBloc, UserGetterState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              if (state is UserGetterLoading) {
+                                return const Center(
+                                  child: CupertinoActivityIndicator(),
+                                );
+                              }
+                              if (state is UserGetterFailure) {
+                                return const Text(
+                                  'by unknown',
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              }
+                              if (state is UserGetterSuccess) {
+                                return Text(
+                                  'by ${state.userData.name}',
+                                  overflow: TextOverflow.ellipsis,
+                                );
+                              }
+                              return const Text(
+                                'by unknown',
+                                overflow: TextOverflow.ellipsis,
+                              );
+                            },
+                          ),
+                        );
+
+                        // TODO move this in an own bloc for logic separation
+                        // is other user -> get by id
+                        // send event to get username,
+                        // if state is failure, show unknown or error name,
+                        // else show the name returned in the state
+                      },
+                    );
+                  },
                 ),
               ),
               Text(
