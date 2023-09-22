@@ -40,7 +40,6 @@ class _ItemsListState extends State<ItemsList> {
   Widget build(BuildContext context) {
     return BlocConsumer<ItemsObserverBloc, ItemsObserverState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
         if (state is ItemsObserverInitial) {
@@ -72,6 +71,19 @@ class _ItemsListState extends State<ItemsList> {
               ),
             );
           }
+          // sort items by added time, newest first
+          final itemsSorted = state.items.sort((item1, item2) {
+            if (item1.addedTime == null) {
+              // if item1 has no time, its after
+              return 1;
+            }
+            if (item2.addedTime == null) {
+              // if item2 has no time (but item1 has), item1 is before
+              return -1;
+            }
+            // both items have a time, use default sort but reverse by flipping sign (bigger dates first)
+            return item1.addedTime!.compareTo(item2.addedTime!) * -1;
+          });
           return CupertinoListSection(
             topMargin: 0,
             margin: const EdgeInsets.all(0),
