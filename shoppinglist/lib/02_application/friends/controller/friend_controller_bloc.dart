@@ -21,7 +21,7 @@ class FriendControllerBloc
         ),
       );
       //? only for visual purpose. can be removed
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 1));
 
       final failureOrSuccess = await friendUsecases
           .updateNickname(event.friend.copyWith(nickname: event.nickname));

@@ -22,8 +22,6 @@ class AddItemFormBloc extends Bloc<ItemAddFormEvent, AddItemFormState> {
     });
     on<SafePressedEvent>((event, emit) async {
       emit(state.copyWith(isSaving: true, failureOrSuccessOption: none()));
-      //? only for visual purpose. can be removed
-      await Future.delayed(const Duration(milliseconds: 500));
 
       Either<ItemFailure, Unit>? failureOrSuccess;
 
