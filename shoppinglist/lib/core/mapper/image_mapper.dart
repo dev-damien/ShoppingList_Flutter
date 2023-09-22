@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class ImageMapper {
+  //! ========== images for LISTS ================
   static const Map<String, Map<String, IconData>> string2iconDataList = {
     "square_list": {
       "default": CupertinoIcons.square_list,
@@ -100,23 +101,53 @@ class ImageMapper {
     },
   };
 
-  static final Map<IconData, String> iconData2stringList = _reverseMap();
+  //! ========== images for USERS ================
+
+  static const Map<String, Map<String, IconData>> string2iconDataUser = {
+    "profile_circled": {
+      "default": CupertinoIcons.profile_circled,
+      "filled": CupertinoIcons.profile_circled,
+    },
+    "ant": {
+      "default": CupertinoIcons.ant,
+      "filled": CupertinoIcons.ant_fill,
+    },
+    "eye": {
+      "default": CupertinoIcons.eye,
+      "filled": CupertinoIcons.eye_fill,
+    },
+    "person_alt_circle": {
+      "default": CupertinoIcons.person_alt_circle,
+      "filled": CupertinoIcons.person_alt_circle_fill,
+    },
+  };
+
+  static final Map<IconData, String> iconData2stringList =
+      _reverseMap(string2iconDataList);
+
+  static final Map<IconData, String> iconData2stringUser =
+      _reverseMap(string2iconDataUser);
 
   static IconData toIconData(String id) {
-    return string2iconDataList[id]?['default'] ?? CupertinoIcons.nosign;
+    return string2iconDataList[id]?['default'] ??
+        string2iconDataUser[id]?['default'] ??
+        CupertinoIcons.nosign;
   }
 
   static String toID(IconData icon) {
-    return iconData2stringList[icon] ?? 'Invalid IconData';
+    return iconData2stringList[icon] ??
+        iconData2stringUser[icon] ??
+        'Invalid IconData';
   }
 
-  static Map<IconData, String> _reverseMap() {
-    Map<IconData, String> iconData2stringList = {};
-    string2iconDataList.forEach((id, styles) {
+  static Map<IconData, String> _reverseMap(
+      Map<String, Map<String, IconData>> map) {
+    Map<IconData, String> iconData2string = {};
+    map.forEach((id, styles) {
       styles.forEach((style, icon) {
         iconData2stringList[icon] = id;
       });
     });
-    return iconData2stringList;
+    return iconData2string;
   }
 }
