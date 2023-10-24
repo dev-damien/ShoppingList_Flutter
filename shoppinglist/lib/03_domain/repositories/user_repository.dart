@@ -10,13 +10,13 @@ abstract class UserRepository {
 
   Future<Either<UserFailure, Unit>> update(UserData user);
 
-  //todo or use UniqueID only
-  //todo maybe remove entirely
-  Future<Either<UserFailure, Unit>> delete(UserData user);
+  Future<Either<UserFailure, Unit>> deleteDocument();
 
   Future<Either<UserFailure, UserData>> getById(String id);
 
   Future<Either<UserFailure, List<UserData>>> getByName(String id);
 
   Future<Either<UserFailure, UserData>> getCurrentUserData();
+
+  Future<Either<UserFailure, Unit>> purgeUserConnections();
 }

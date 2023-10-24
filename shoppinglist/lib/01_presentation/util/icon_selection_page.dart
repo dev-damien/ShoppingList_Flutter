@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 class IconSelectionPage extends StatelessWidget {
   final Map<String, IconData> iconDataMap;
 
+  final int iconsPerRow = 4;
+
   const IconSelectionPage({
     super.key,
     required this.iconDataMap,
@@ -15,10 +17,12 @@ class IconSelectionPage extends StatelessWidget {
         middle: Text('Select an Icon'),
       ),
       child: ListView.builder(
-        itemCount: (iconDataMap.length / 3).ceil(),
+        itemCount: (iconDataMap.length / iconsPerRow).ceil(),
         itemBuilder: (context, index) {
-          final start = index * 3;
-          final end = (index + 1) * 3;
+          final start = index * iconsPerRow;
+          int end = ((index + 1) * iconsPerRow);
+          // end is max the last element of the map
+          end = end > iconDataMap.length ? iconDataMap.length : end;
           final currentIcons = iconDataMap.entries.toList().sublist(start, end);
 
           return Row(
@@ -29,8 +33,6 @@ class IconSelectionPage extends StatelessWidget {
 
               return CupertinoButton(
                 onPressed: () {
-                  // Handle icon selection here
-                  print('Selected: $iconTitle');
                   Navigator.pop(
                       context, iconTitle); // Pass the selected icon back
                 },

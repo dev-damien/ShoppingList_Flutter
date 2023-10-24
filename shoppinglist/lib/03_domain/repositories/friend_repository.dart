@@ -35,6 +35,10 @@ abstract class FriendRepository {
     String userId,
   );
 
+  Future<Either<FriendFailure, List<Friend>>> getAll();
+
+  Future<Either<FriendFailure, Unit>> updateOwnNameForFriends(String newNickname);
+
 //TODO add later as nice to have
   // Future<Either<FriendFailure, Unit>> blockUser(
   //   String userId,

@@ -13,4 +13,7 @@ abstract class AuthRepository {
   Future<void> signOut();
 
   Option<CustomUser> getSignedInUser();
+
+  Future<void> deleteAccount();
+
 }

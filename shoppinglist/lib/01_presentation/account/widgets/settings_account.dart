@@ -1,8 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoppinglist/01_presentation/util/icon_selection_page.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
+import 'package:shoppinglist/02_application/user/controller/user_controller_bloc.dart';
+import 'package:shoppinglist/03_domain/entities/user_data.dart';
+import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class SettingsAccount extends StatelessWidget {
   const SettingsAccount({super.key});
@@ -20,8 +23,7 @@ class SettingsAccount extends StatelessWidget {
           ),
           trailing: const CupertinoListTileChevron(),
           onTap: () {
-            //todo open page to change profile picture
-            print("change profile picture clicked");
+            _showIconSelectionDialog(context);
           },
         ),
         CupertinoListTile.notched(
@@ -33,9 +35,7 @@ class SettingsAccount extends StatelessWidget {
           ),
           trailing: const CupertinoListTileChevron(),
           onTap: () {
-            //todo open change name page/dialog
-            print("change name clicked");
-            print(FirebaseAuth.instance.currentUser);
+            _showChangeNameDialog(context, null);
           },
         ),
         CupertinoListTile.notched(
@@ -78,4 +78,70 @@ class SettingsAccount extends StatelessWidget {
       ],
     );
   }
+
+  void _showIconSelectionDialog(BuildContext context) async {
+    final Map<String, IconData> iconDataMap = ImageMapper.string2iconDataUser
+        .map((key, value) => MapEntry(key, value['default']!));
+    await showCupertinoDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return IconSelectionPage(iconDataMap: iconDataMap);
+      },
+    ).then((imageValue) {
+      if (imageValue != null) {
+        BlocProvider.of<UserControllerBloc>(context).add(
+          UpdateUserEvent(
+            userData: UserData.empty().copyWith(imageId: imageValue),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _showChangeNameDialog(
+    BuildContext context,
+    String? currentName,
+  ) {
+    String newName = currentName ?? "";
+    //todo Initialize with the current name
+
+    return showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Enter your new name'),
+          content: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: CupertinoTextField(
+              placeholder: 'Enter name',
+              onChanged: (value) {
+                newName = value;
+              },
+            ),
+          ),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CupertinoDialogAction(
+              child: const Text('Safe'),
+              onPressed: () {
+                BlocProvider.of<UserControllerBloc>(context).add(
+                  UpdateUserEvent(
+                    userData: UserData.empty().copyWith(name: newName),
+                  ),
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //TODO user currentuser. reauthenticate with credientials before deleteing to avaoid errors
 }

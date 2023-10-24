@@ -75,4 +75,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Option<CustomUser> getSignedInUser() =>
       optionOf(firebaseAuth.currentUser?.toDomain());
+
+  @override
+  Future<void> deleteAccount() async {
+    await firebaseAuth.currentUser?.delete();
+  }
 }

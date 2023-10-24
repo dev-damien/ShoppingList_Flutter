@@ -16,15 +16,29 @@ class UserRepositoryImpl implements UserRepository {
   });
 
   @override
-  Future<Either<UserFailure, Unit>> delete(UserData user) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Either<UserFailure, Unit>> deleteDocument() async {
+    try {
+      final userDocRef = await firestore.userDocument();
+      final userDoc = await userDocRef.get();
+
+      firestore.collection('users').doc(userDoc.id).delete();
+      return right(unit);
+    } catch (e) {
+      return left(UnexpectedFailure());
+    }
   }
 
   @override
-  Future<Either<UserFailure, Unit>> update(UserData user) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<Either<UserFailure, Unit>> update(UserData user) async {
+    try {
+      firestore
+          .collection('users')
+          .doc(user.id.value)
+          .update(UserModel.fromDomain(user).toMap());
+      return right(unit);
+    } catch (e) {
+      return left(UnexpectedFailure());
+    }
   }
 
   @override
@@ -164,5 +178,11 @@ class UserRepositoryImpl implements UserRepository {
         return left(UnexpectedFailure());
       }
     }
+  }
+
+  @override
+  Future<Either<UserFailure, Unit>> purgeUserConnections() {
+    // TODO: implement purgeUserConnections
+    throw UnimplementedError();
   }
 }

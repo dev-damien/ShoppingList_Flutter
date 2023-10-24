@@ -27,4 +27,8 @@ class AuthUsecases {
   Option<CustomUser> getSignedInUser() {
     return authRepository.getSignedInUser();
   }
+
+  Future<void> deleteAccount() async {
+    return authRepository.deleteAccount();
+  }
 }

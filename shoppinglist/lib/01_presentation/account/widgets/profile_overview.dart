@@ -16,19 +16,22 @@ class ProfileOverview extends StatelessWidget {
           ImageMapper.toIconData(userData.imageId),
           size: 80,
         ),
-        Row(
-          children: [
-            Text("Name: "),
-            Text(userData.name),
-          ],
-          mainAxisAlignment: MainAxisAlignment.center,
+        const SizedBox(
+          height: 15,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("ID: "),
+            const Text("Name: "),
+            Text(userData.name),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("ID: "),
             Text(userData.id.value),
           ],
-          mainAxisAlignment: MainAxisAlignment.center,
         ),
       ],
     );

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shoppinglist/03_domain/entities/friend.dart';
 import 'package:shoppinglist/03_domain/entities/id.dart';
-import 'package:shoppinglist/03_domain/entities/user_data.dart';
 import 'package:shoppinglist/03_domain/repositories/friend_repository.dart';
 import 'package:shoppinglist/03_domain/repositories/user_repository.dart';
 import 'package:shoppinglist/04_infrastructure/extensions/firebase_helpers.dart';
@@ -362,6 +361,60 @@ class FriendRepositoryImpl implements FriendRepository {
       } else {
         return left(UnexpectedFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<FriendFailure, List<Friend>>> getAll() async {
+    try {
+      final userDocRef = await firestore.userDocument();
+      return await userDocRef.friendPreviewCollection.get().then((snapshot) =>
+          right<FriendFailure, List<Friend>>(snapshot.docs
+              .map((doc) => FriendModel.fromFirestore(doc).toDomain())
+              .toList()));
+    } catch (e) {
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<FriendFailure, Unit>> updateOwnNameForFriends(
+      String newNickname) async {
+    try {
+      final userDocRef = await firestore.userDocument();
+      final userDoc = await userDocRef.get();
+      final friends = await userDocRef.friendPreviewCollection.get().then(
+            (snapshot) => snapshot.docs
+                .map(
+                  (doc) => FriendModel.fromFirestore(doc).toDomain(),
+                )
+                .toList(),
+          );
+      for (final Friend friend in friends) {
+        // the document with nickname regarding this user in the doc of his friend
+        final ownFriendDoc = await firestore
+            .collection('users')
+            .doc(friend.id.value)
+            .collection('friends')
+            .doc(userDocRef.id)
+            .get();
+        // true if user changed the name of this user, meaning he give this user a nickname
+        //BUG does not work as intended, name update nickname only if user has not set a nickname
+        final isNicknameSet =
+            ownFriendDoc.get('nickname') != userDoc.get('name');
+        if (isNicknameSet) {
+          // update the name for that friend
+          firestore
+              .collection('users')
+              .doc(friend.id.value)
+              .collection('friends')
+              .doc(userDocRef.id)
+              .update({'nickname': newNickname});
+        }
+      }
+      return right(unit);
+    } catch (e) {
+      return left(UnexpectedFailure());
     }
   }
 }
