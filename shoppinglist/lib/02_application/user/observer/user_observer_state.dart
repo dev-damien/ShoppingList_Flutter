@@ -13,5 +13,9 @@ class UserObserverFailure extends UserObserverState {
 
 class UserObserverSuccess extends UserObserverState {
   final UserData userData;
-  UserObserverSuccess({required this.userData});
+  final bool isEmailAuhenticated;
+  UserObserverSuccess({
+    required this.userData,
+    required this.isEmailAuhenticated,
+  });
 }

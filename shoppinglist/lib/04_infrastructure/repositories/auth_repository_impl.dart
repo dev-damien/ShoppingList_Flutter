@@ -80,4 +80,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> deleteAccount() async {
     await firebaseAuth.currentUser?.delete();
   }
+
+  @override
+  Future<bool> isEmailAuthenticated() async {
+    return firebaseAuth.currentUser?.emailVerified ?? false;
+  }
 }

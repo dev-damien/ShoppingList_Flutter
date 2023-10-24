@@ -90,6 +90,7 @@ Future<void> init() async {
   sl.registerFactory(
     () => UserObserverBloc(
       userUsecases: sl(),
+      authUsecases: sl(),
     ),
   );
   sl.registerFactory(

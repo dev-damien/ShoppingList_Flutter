@@ -16,4 +16,6 @@ abstract class AuthRepository {
 
   Future<void> deleteAccount();
 
+  Future<bool> isEmailAuthenticated();
+
 }

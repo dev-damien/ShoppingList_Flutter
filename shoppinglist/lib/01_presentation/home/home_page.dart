@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
           return CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
               items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: TabIconWithNotification(
                     iconData: CupertinoIcons.square_list,
                     notificationCount: 0,
@@ -61,14 +61,14 @@ class HomePage extends StatelessWidget {
                   ),
                   label: "Friends",
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: TabIconWithNotification(
                     iconData: CupertinoIcons.settings,
                     notificationCount: 0,
                   ),
                   label: "Settings",
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: TabIconWithNotification(
                     iconData: CupertinoIcons.profile_circled,
                     notificationCount: 0,
