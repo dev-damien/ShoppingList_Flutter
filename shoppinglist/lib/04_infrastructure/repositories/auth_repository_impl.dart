@@ -82,6 +82,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> sendVerificationMail() async {
+    await firebaseAuth.currentUser?.sendEmailVerification();
+  }
+
+  @override
   Future<bool> isEmailAuthenticated() async {
     return firebaseAuth.currentUser?.emailVerified ?? false;
   }

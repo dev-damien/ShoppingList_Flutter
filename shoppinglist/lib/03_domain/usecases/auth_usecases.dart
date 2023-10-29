@@ -32,6 +32,10 @@ class AuthUsecases {
     return authRepository.deleteAccount();
   }
 
+  Future<void> sendVerificationMail() async {
+    return authRepository.sendVerificationMail();
+  }
+
   Future<bool> isEmailAuthenticated() async {
     return authRepository.isEmailAuthenticated();
   }

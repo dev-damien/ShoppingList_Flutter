@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoppinglist/01_presentation/account/account_page.dart';
+import 'package:shoppinglist/01_presentation/account/widgets/verify_mail.dart';
 import 'package:shoppinglist/01_presentation/friends/friends_page.dart';
 import 'package:shoppinglist/01_presentation/home/widgets/tabIconWithNotification.dart';
 import 'package:shoppinglist/01_presentation/lists_overview/lists_overview_page.dart';
 import 'package:shoppinglist/01_presentation/settings/settings_page.dart';
 import 'package:shoppinglist/02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
+import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
 import 'package:shoppinglist/core/failures/friend_failures.dart';
 
 class HomePage extends StatelessWidget {
@@ -26,78 +28,92 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FriendRequestsObserverBloc, FriendRequestsObserverState>(
-      builder: (context, state) {
-        if (state is FriendRequestsObserverInitial) {
-          return Container();
-        }
-        if (state is FriendRequestsObserverLoading) {
-          return const CupertinoActivityIndicator();
-        }
-        if (state is FriendRequestsObserverFailure) {
-          return Center(
-            child: Text(
-              mapFailureMessage(
-                state.friendFailure,
-              ),
+    return BlocConsumer<UserObserverBloc, UserObserverState>(
+      listener: (context, state) {},
+      builder: (context, userState) {
+        return Stack(
+          children: [
+            BlocBuilder<FriendRequestsObserverBloc,
+                FriendRequestsObserverState>(
+              builder: (context, state) {
+                if (state is FriendRequestsObserverInitial) {
+                  return Container();
+                }
+                if (state is FriendRequestsObserverLoading) {
+                  return const CupertinoActivityIndicator();
+                }
+                if (state is FriendRequestsObserverFailure) {
+                  return Center(
+                    child: Text(
+                      mapFailureMessage(
+                        state.friendFailure,
+                      ),
+                    ),
+                  );
+                }
+                if (state is FriendRequestsObserverSuccess) {
+                  return CupertinoTabScaffold(
+                    tabBar: CupertinoTabBar(
+                      items: <BottomNavigationBarItem>[
+                        const BottomNavigationBarItem(
+                          icon: TabIconWithNotification(
+                            iconData: CupertinoIcons.square_list,
+                            notificationCount: 0,
+                          ),
+                          label: "Lists",
+                        ),
+                        BottomNavigationBarItem(
+                          icon: TabIconWithNotification(
+                            iconData: CupertinoIcons.person_2,
+                            notificationCount: state.friendRequests.length,
+                          ),
+                          label: "Friends",
+                        ),
+                        const BottomNavigationBarItem(
+                          icon: TabIconWithNotification(
+                            iconData: CupertinoIcons.settings,
+                            notificationCount: 0,
+                          ),
+                          label: "Settings",
+                        ),
+                        const BottomNavigationBarItem(
+                          icon: TabIconWithNotification(
+                            iconData: CupertinoIcons.profile_circled,
+                            notificationCount: 0,
+                          ),
+                          label: "Account",
+                        ),
+                      ],
+                    ),
+                    tabBuilder: (BuildContext context, int index) {
+                      return CupertinoTabView(
+                        builder: (BuildContext context) {
+                          switch (index) {
+                            case 0:
+                              return const ListsOverviewPage();
+                            case 1:
+                              return const FriendsPage();
+                            case 2:
+                              return const SettingsPage();
+                            case 3:
+                              return const AccountPage();
+                            default:
+                              return const ListsOverviewPage();
+                          }
+                        },
+                      );
+                    },
+                  );
+                }
+                return Container();
+              },
             ),
-          );
-        }
-        if (state is FriendRequestsObserverSuccess) {
-          return CupertinoTabScaffold(
-            tabBar: CupertinoTabBar(
-              items: <BottomNavigationBarItem>[
-                const BottomNavigationBarItem(
-                  icon: TabIconWithNotification(
-                    iconData: CupertinoIcons.square_list,
-                    notificationCount: 0,
-                  ),
-                  label: "Lists",
-                ),
-                BottomNavigationBarItem(
-                  icon: TabIconWithNotification(
-                    iconData: CupertinoIcons.person_2,
-                    notificationCount: state.friendRequests.length,
-                  ),
-                  label: "Friends",
-                ),
-                const BottomNavigationBarItem(
-                  icon: TabIconWithNotification(
-                    iconData: CupertinoIcons.settings,
-                    notificationCount: 0,
-                  ),
-                  label: "Settings",
-                ),
-                const BottomNavigationBarItem(
-                  icon: TabIconWithNotification(
-                    iconData: CupertinoIcons.profile_circled,
-                    notificationCount: 0,
-                  ),
-                  label: "Account",
-                ),
-              ],
-            ),
-            tabBuilder: (BuildContext context, int index) {
-              return CupertinoTabView(
-                builder: (BuildContext context) {
-                  switch (index) {
-                    case 0:
-                      return const ListsOverviewPage();
-                    case 1:
-                      return const FriendsPage();
-                    case 2:
-                      return const SettingsPage();
-                    case 3:
-                      return const AccountPage();
-                    default:
-                      return const ListsOverviewPage();
-                  }
-                },
-              );
-            },
-          );
-        }
-        return Container();
+            VerifyMailOverlay(
+              isEmailAuthenticated: (userState is UserObserverSuccess &&
+                  userState.isEmailAuhenticated),
+            )
+          ],
+        );
       },
     );
   }
