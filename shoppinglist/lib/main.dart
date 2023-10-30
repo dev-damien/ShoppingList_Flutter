@@ -12,6 +12,7 @@ import 'package:shoppinglist/02_application/lists/list_form/list_form_bloc.dart'
 import 'package:shoppinglist/02_application/lists/observer/list_observer_bloc.dart';
 import 'package:shoppinglist/02_application/user/controller/user_controller_bloc.dart';
 import 'package:shoppinglist/02_application/user/observer/user_observer_bloc.dart';
+import 'package:shoppinglist/02_application/verification/userVerification/user_verification_bloc.dart';
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart' as r;
@@ -78,6 +79,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => di.sl<UserControllerBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<UserVerificationBloc>(),
         ),
       ],
       child: CupertinoApp.router(

@@ -40,6 +40,7 @@ import 'package:shoppinglist/04_infrastructure/repositories/list_repository_impl
 import 'package:shoppinglist/04_infrastructure/repositories/user_repository_impl.dart';
 
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
+import '02_application/verification/userVerification/user_verification_bloc.dart';
 import '04_infrastructure/local/theme_local_storage.dart';
 
 final sl = GetIt.I; //service locator
@@ -67,6 +68,11 @@ Future<void> init() async {
   );
   sl.registerFactory(
     () => AuthBloc(
+      authUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => UserVerificationBloc(
       authUsecases: sl(),
     ),
   );

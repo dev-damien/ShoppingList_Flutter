@@ -8,12 +8,14 @@ class UserObserverLoading extends UserObserverState {}
 
 class UserObserverFailure extends UserObserverState {
   final UserFailure userFailure;
+
   UserObserverFailure({required this.userFailure});
 }
 
 class UserObserverSuccess extends UserObserverState {
   final UserData userData;
   final bool isEmailAuhenticated;
+
   UserObserverSuccess({
     required this.userData,
     required this.isEmailAuhenticated,

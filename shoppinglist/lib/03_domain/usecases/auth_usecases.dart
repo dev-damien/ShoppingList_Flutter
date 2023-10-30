@@ -37,6 +37,6 @@ class AuthUsecases {
   }
 
   Future<bool> isEmailAuthenticated() async {
-    return authRepository.isEmailAuthenticated();
+    return await authRepository.isEmailAuthenticated();
   }
 }
