@@ -18,6 +18,7 @@ class VerifyMailOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //refresh userdata all 3 seconds to see if user is verified
     final refreshTimer = Timer.periodic(const Duration(seconds: 3), (Timer t) {
       sl<FirebaseAuth>().currentUser?.reload();
     });

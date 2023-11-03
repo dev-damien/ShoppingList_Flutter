@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoppinglist/02_application/add_friends/searchForm/friend_search_form_bloc.dart';
 import 'package:shoppinglist/02_application/auth/authbloc/auth_bloc.dart';
+import 'package:shoppinglist/02_application/auth/password/password_reset_form_bloc.dart';
 import 'package:shoppinglist/02_application/auth/signupform/sign_up_form_bloc.dart';
 import 'package:shoppinglist/02_application/friend_requests/controller_respond/friend_request_respond_bloc.dart';
 import 'package:shoppinglist/02_application/friend_requests/controller_send/friend_request_controller_bloc.dart';
@@ -107,6 +108,11 @@ Future<void> init() async {
   sl.registerFactory(
     () => UserControllerBloc(
       userUsecases: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => PasswordResetFormBloc(
+      authUsecases: sl(),
     ),
   );
 
