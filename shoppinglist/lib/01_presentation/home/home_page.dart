@@ -33,6 +33,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        BlocProvider.of<AuthBloc>(context).add(AuthCheckRequestedEvent());
         if (state is AuthStateUnauthenticated) {
           Navigator.push(
             context,

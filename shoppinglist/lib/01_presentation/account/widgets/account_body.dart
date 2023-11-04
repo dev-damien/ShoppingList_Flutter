@@ -43,13 +43,13 @@ class AccountBody extends StatelessWidget {
         if (state is UserObserverSuccess) {
           return Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ProfileOverview(
                 userData: state.userData,
               ),
-              SettingsAccount(),
+              const SettingsAccount(),
             ],
           );
         }
