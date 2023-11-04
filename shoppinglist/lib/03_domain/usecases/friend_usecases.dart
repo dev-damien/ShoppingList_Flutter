@@ -93,6 +93,7 @@ class FriendUsecases {
       String searchString) async {
     final matchedId = await userRepository.getById(searchString);
     final matchedName = await userRepository.getByName(searchString);
+
     List<UserData> result = List.empty(growable: true);
 
     matchedId.fold(
@@ -111,6 +112,16 @@ class FriendUsecases {
       (users) {
         // list of users where name matches search string
         result.addAll(users);
+      },
+    );
+
+    // remove the user himself from the result list
+    final user = await userRepository.getCurrentUserData();
+    user.fold(
+      (l) => null,
+      (userData) {
+        result.removeWhere(
+            (resultUser) => resultUser.id.value == userData.id.value);
       },
     );
 
