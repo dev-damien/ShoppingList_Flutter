@@ -142,6 +142,7 @@ class SignUpForm extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 placeholder: 'E-Mail',
+                autocorrect: false,
                 onChanged: (input) {
                   _emailInput = input;
                   validateEmail(input);
@@ -185,7 +186,9 @@ class SignUpForm extends StatelessWidget {
                         password: null,
                       ),
                     );
-                    String message = validateEmail(_emailInput) ?? validatePassword(_passwordInput)?? "Unexpected Error";
+                    String message = validateEmail(_emailInput) ??
+                        validatePassword(_passwordInput) ??
+                        "Unexpected Error";
                     _showCupertinoDialog("Information", message);
                   }
                 },
