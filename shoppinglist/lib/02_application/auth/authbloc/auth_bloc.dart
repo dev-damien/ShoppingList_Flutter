@@ -24,7 +24,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     on<AuthCheckRequestedEvent>(
       (event, emit) {
-        print('bloc check start'); //TODO remove debug print
         final userOption = authUsecases.getSignedInUser();
         userOption.fold(
           () => emit(
@@ -34,12 +33,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             AuthStateAuthenticated(),
           ),
         );
-        print('bloc check start'); //TODO remove debug print
       },
     );
     on<WatchAuthStateEvent>(
       (event, emit) async {
-        print('bloc watch start'); //TODO remove debug print
         await _authStreamSub?.cancel();
         _authStreamSub = authUsecases.watchAuthState().listen(
           (userOrFailure) {
@@ -55,7 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             );
           },
         );
-        print('bloc watch end'); //TODO remove debug print
       },
     );
   }
