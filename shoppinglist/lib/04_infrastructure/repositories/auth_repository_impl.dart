@@ -69,14 +69,17 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() => Future.wait([
-        //just antoher way to await multiple futures
-        firebaseAuth.signOut(),
-      ]);
+  Future<void> signOut() => Future.wait(
+        [
+          //just antoher way to await multiple futures
+          firebaseAuth.signOut(),
+        ],
+      );
 
   @override
-  Option<CustomUser> getSignedInUser() =>
-      optionOf(firebaseAuth.currentUser?.toDomain());
+  Option<CustomUser> getSignedInUser() {
+    return optionOf(firebaseAuth.currentUser?.toDomain());
+  }
 
   @override
   Future<void> deleteAccount() async {
@@ -129,5 +132,12 @@ class AuthRepositoryImpl implements AuthRepository {
       }
       return left(UnexpectedFailure());
     }
+  }
+
+  @override
+  Stream<Either<AuthFailure, User?>> watchAuthState() {
+    return firebaseAuth.authStateChanges().map((firebaseUser) {
+      return right(firebaseUser);
+    });
   }
 }

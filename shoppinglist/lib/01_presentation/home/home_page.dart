@@ -33,7 +33,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        BlocProvider.of<AuthBloc>(context).add(AuthCheckRequestedEvent());
         if (state is AuthStateUnauthenticated) {
           Navigator.push(
             context,
@@ -48,6 +47,11 @@ class HomePage extends StatelessWidget {
       child: BlocConsumer<UserObserverBloc, UserObserverState>(
         listener: (context, state) {},
         builder: (context, userState) {
+          if (userState is UserObserverLoading) {
+            return const Center(
+              child: CupertinoActivityIndicator(),
+            );
+          }
           return Stack(
             children: [
               BlocBuilder<FriendRequestsObserverBloc,

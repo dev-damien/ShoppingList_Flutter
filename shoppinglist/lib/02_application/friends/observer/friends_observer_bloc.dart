@@ -17,17 +17,19 @@ class FriendsObserverBloc
 
   FriendsObserverBloc({required this.friendUsecases})
       : super(FriendsObserverInitial()) {
-    on<ObserveAllFriendsEvent>((event, emit) async {
-      emit(FriendsObserverLoading());
-      await _friendStreamSub?.cancel();
-      _friendStreamSub = friendUsecases.watchAllFriends().listen(
-            (failureOrFriends) => add(
-              FriendsUpdatedEvent(
-                failureOrFriends: failureOrFriends,
+    on<ObserveAllFriendsEvent>(
+      (event, emit) async {
+        emit(FriendsObserverLoading());
+        await _friendStreamSub?.cancel();
+        _friendStreamSub = friendUsecases.watchAllFriends().listen(
+              (failureOrFriends) => add(
+                FriendsUpdatedEvent(
+                  failureOrFriends: failureOrFriends,
+                ),
               ),
-            ),
-          );
-    });
+            );
+      },
+    );
     on<FriendsUpdatedEvent>(
       (event, emit) {
         event.failureOrFriends.fold(

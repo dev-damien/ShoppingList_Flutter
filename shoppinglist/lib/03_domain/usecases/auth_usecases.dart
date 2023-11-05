@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shoppinglist/03_domain/entities/user.dart';
 import 'package:shoppinglist/03_domain/repositories/auth_repository.dart';
 import 'package:shoppinglist/core/failures/auth_failures.dart';
@@ -48,5 +49,9 @@ class AuthUsecases {
 
   Future<bool> isEmailAuthenticated() async {
     return await authRepository.isEmailAuthenticated();
+  }
+
+  Stream<Either<AuthFailure, User?>> watchAuthState() {
+    return authRepository.watchAuthState();
   }
 }

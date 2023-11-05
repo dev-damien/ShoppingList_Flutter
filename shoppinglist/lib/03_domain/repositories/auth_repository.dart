@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shoppinglist/core/failures/auth_failures.dart';
 import 'package:shoppinglist/03_domain/entities/user.dart';
 import 'package:shoppinglist/core/failures/reset_password_failures.dart';
@@ -24,4 +25,6 @@ abstract class AuthRepository {
 
   Future<Either<ResetPasswordFailure, Unit>> resetPassword(
       String code, String newPassword);
+
+  Stream<Either<AuthFailure, User?>> watchAuthState();
 }
