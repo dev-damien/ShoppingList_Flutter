@@ -37,6 +37,7 @@ class AddFriendsBody extends StatelessWidget {
                 ),
                 child: CupertinoSearchTextField(
                   placeholder: 'Search ID or name',
+                  autocorrect: false,
                   onSubmitted: (value) {
                     searchBloc.add(
                       SearchUserEvent(searchString: value),
