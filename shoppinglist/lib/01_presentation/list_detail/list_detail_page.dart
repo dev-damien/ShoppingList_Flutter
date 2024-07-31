@@ -43,8 +43,8 @@ class _ListDetailPageState extends State<ListDetailPage> {
     final userOption = sl<AuthRepository>().getSignedInUser();
     final user = userOption.getOrElse(() => throw NotAuthenticatedError());
 
-    BlocProvider.of<ListObserverBloc>(context)
-        .add(ObserveListEvent(listId: widget.listId.value));
+    // BlocProvider.of<ListObserverBloc>(context)
+    //     .add(ObserveListEvent(listId: widget.listId.value));
 
     return MultiBlocProvider(
       providers: [

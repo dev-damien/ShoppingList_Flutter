@@ -31,6 +31,7 @@ class _AddItemCardState extends State<AddItemCard> {
     titleController = TextEditingController();
     _addItemFormBloc = sl<AddItemFormBloc>();
     _titleFocusNode = FocusNode();
+    _titleFocusNode.requestFocus();
   }
 
   @override
@@ -43,7 +44,7 @@ class _AddItemCardState extends State<AddItemCard> {
   @override
   Widget build(BuildContext context) {
     // Move focus to title input field
-    _titleFocusNode.requestFocus();
+    // _titleFocusNode.requestFocus();
 
     return BlocProvider.value(
       value: _addItemFormBloc,
