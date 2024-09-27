@@ -179,50 +179,54 @@ class SettingsAccount extends StatelessWidget {
                         );
                       }
                       if (state is PasswordResetFormMailSent) {
-                        return Column(
-                          children: [
-                            const Text(
-                              'Please enter the verification code you received in your email, along with your new password.',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Code',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                CupertinoTextField(
-                                  placeholder: 'Enter code',
-                                  onChanged: (value) {
-                                    codeInput = value;
-                                  },
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'New password',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                CupertinoTextField(
-                                  placeholder: 'Enter new password',
-                                  onChanged: (value) {
-                                    passwordInput = value;
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                        return const Center(
+                          child: Text(
+                              "An Mail to reset your password has been sent your email adress"),
                         );
+                        // return Column(
+                        //   children: [
+                        //     const Text(
+                        //       'Please enter the verification code you received in your email, along with your new password.',
+                        //       style: TextStyle(fontSize: 14),
+                        //     ),
+                        //     const SizedBox(
+                        //       height: 5,
+                        //     ),
+                        //     Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         const Text(
+                        //           'Code',
+                        //           style: TextStyle(fontSize: 16),
+                        //         ),
+                        //         CupertinoTextField(
+                        //           placeholder: 'Enter code',
+                        //           onChanged: (value) {
+                        //             codeInput = value;
+                        //           },
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     const SizedBox(
+                        //       height: 10,
+                        //     ),
+                        //     Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         const Text(
+                        //           'New password',
+                        //           style: TextStyle(fontSize: 16),
+                        //         ),
+                        //         CupertinoTextField(
+                        //           placeholder: 'Enter new password',
+                        //           onChanged: (value) {
+                        //             passwordInput = value;
+                        //           },
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // );
                       }
                       if (state is PasswordResetFormInProgress) {
                         return const Column(
@@ -250,20 +254,9 @@ class SettingsAccount extends StatelessWidget {
                 actions: (state is PasswordResetFormMailSent)
                     ? <CupertinoDialogAction>[
                         CupertinoDialogAction(
-                          child: const Text('Cancel'),
+                          child: const Text('OK'),
                           onPressed: () {
                             Navigator.of(context).pop();
-                          },
-                        ),
-                        CupertinoDialogAction(
-                          child: const Text('Confirm'),
-                          onPressed: () {
-                            passwordResetFormBloc.add(
-                              ResetPasswordEvent(
-                                code: codeInput,
-                                newPassword: passwordInput,
-                              ),
-                            );
                           },
                         ),
                       ]
