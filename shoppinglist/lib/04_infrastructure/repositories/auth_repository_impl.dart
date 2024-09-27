@@ -26,11 +26,13 @@ class AuthRepositoryImpl implements AuthRepository {
 
       // create basic document for user with default data
       String uuid = userCredential.user!.uid;
+      int index = email.lastIndexOf('@');
+      String username = (index != -1) ? email.substring(0, index) : 'default'; // Extract everything before the last '@'
       final Map<String, dynamic> initUserData =
           UserModel.fromDomain(UserData.empty())
               .copyWith(
                   id: uuid,
-                  name: "todo ask for name",
+                  name: username,
                   imageId: DefaultValues.defualtProfileIconId)
               .toMap();
       initUserData['createdTimestamp'] = initUserData['serverTimestamp'];
