@@ -17,6 +17,7 @@ import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart' as r;
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
         title: 'MinimaList',
         theme: const CupertinoThemeData(),
         localizationsDelegates: const [
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

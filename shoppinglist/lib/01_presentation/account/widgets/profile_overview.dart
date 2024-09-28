@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shoppinglist/03_domain/entities/user_data.dart';
+import 'package:shoppinglist/common.dart';
 import 'package:shoppinglist/core/mapper/image_mapper.dart';
 
 class ProfileOverview extends StatelessWidget {
@@ -24,7 +25,6 @@ class ProfileOverview extends StatelessWidget {
           children: [
             const Text("Name: "),
             Text(userData.name),
-            // Text(AppLocalizations.of(context)!.helloWorld),
           ],
         ),
         Row(
