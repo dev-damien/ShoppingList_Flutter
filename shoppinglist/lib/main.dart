@@ -97,6 +97,7 @@ class MyApp extends StatelessWidget {
         title: 'MinimaList',
         theme: const CupertinoThemeData(),
         localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
