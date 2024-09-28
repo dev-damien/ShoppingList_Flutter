@@ -16,6 +16,7 @@ import 'package:shoppinglist/02_application/verification/userVerification/user_v
 import 'package:shoppinglist/firebase_options.dart';
 import 'package:shoppinglist/injection.dart' as di;
 import 'package:shoppinglist/01_presentation/routes/router.gr.dart' as r;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '02_application/friend_requests/observer/friend_requests_observer_bloc.dart';
 
@@ -95,6 +96,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MinimaList',
         theme: const CupertinoThemeData(),
+        localizationsDelegates: const [
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'), // English
+          Locale('de'), // German
+        ],
       ),
     );
   }

@@ -24,6 +24,7 @@ class ProfileOverview extends StatelessWidget {
           children: [
             const Text("Name: "),
             Text(userData.name),
+            // Text(AppLocalizations.of(context)!.helloWorld),
           ],
         ),
         Row(
